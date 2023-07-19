@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            Hexo
+            Fuzzing101——Exercise 3
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -32,324 +32,107 @@
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body>
     <a id="cover"></a>
-    <link type="text/css" rel="stylesheet" href="/css/index.css">
-<div id="count"></div>
-<div id="header" >
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
+<div id="header" class="header">
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-title">Live For Code</h1>
-                <h2 class="header-description" id="hitokoto"></h2>
-                <h3 class="header-info" id="hitokotoAuthor"></h3>
+                <h1 class="header-subtitle">Fuzzing101——Exercise 3</h1>
+                <div class="header-subinfo">
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2023-07-11
+                        </span>
+                        
+                            
+                                <span id="/2023/07/11/Fuzzing101——Exercise 3/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 3">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/07/11/Fuzzing101——Exercise 3/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                    
+                </div>
             
         </div>
     </div>
     
-        <a class="scroll-down" href="javascript:;" target="_self" data-offset="-45">
-            <i class="scroll-down-icon iconfont icon-return"></i>
-        </a>
-    
 </div>
 <div id="container">
     
-        
-            <!-- 首页 -->
-            <div class="articles">
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h1 id="Fuzzing101——Exercise-3"><a href="#Fuzzing101——Exercise-3" class="headerlink" title="Fuzzing101——Exercise 3"></a>Fuzzing101——Exercise 3</h1><p>了解运行时内存错误检测工具ASan (Address Sanitizer)</p>
+<h2 id="使用ASAN编译"><a href="#使用ASAN编译" class="headerlink" title="使用ASAN编译"></a>使用ASAN编译</h2><pre><code>cd $HOME/fuzz_target/fuzzing_tcpdump/libpcap-1.8.0/
+export LLVM_CONFIG=&quot;llvm-config-12&quot;
+CC=/root/fuzz/AFLplusplus/afl-clang-lto ./configure --enable-shared=no --prefix=&quot;$HOME/fuzz_target/fuzzing_tcpdump/install/&quot;
+AFL_USE_ASAN=1 make
+AFL_USE_ASAN=1 make install
+ 
+cd $HOME/fuzz_target/fuzzing_tcpdump/tcpdump-tcpdump-4.9.2/
+AFL_USE_ASAN=1 CC=/root/fuzz/AFLplusplus/afl-clang-lto ./configure --prefix=&quot;$HOME/fuzz_target/fuzzing_tcpdump/install/&quot;
+AFL_USE_ASAN=1 make
+AFL_USE_ASAN=1 make install
+</code></pre>
+<h2 id="fuzz"><a href="#fuzz" class="headerlink" title="fuzz"></a>fuzz</h2><pre><code>afl-fuzz -m none -i ./tcpdump-tcpdump-4.9.2/tests/ -o ./afl_out/ -s 123 -- ./install/sbin/tcpdump -vvvvXX -ee -nn -r @@
+</code></pre>
+<h2 id="动态调试"><a href="#动态调试" class="headerlink" title="动态调试"></a>动态调试</h2><pre><code>./install/sbin/tcpdump -vvvvXX -ee -nn -r ./afl_out/default/crashes/id\:000000\,sig\:06\,src\:011483\,time\:43941578\,execs\:17770128\,op\:havoc\,rep\:8
+</code></pre>
+
                 
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/07/14/Fuzzing101%E2%80%94%E2%80%94Exercise%206/">Fuzzing101——Exercise 6</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-07-14
-                            </span>
-                            
-                                
-                                    <span id="/2023/07/14/Fuzzing101——Exercise 6/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 6">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/07/14/Fuzzing101——Exercise 6/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>Live For Code
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="/2023/07/11/Fuzzing101%E2%80%94%E2%80%94Exercise%203/" target="_blank">Fuzzing101——Exercise 3</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
                 
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/07/13/Fuzzing101%E2%80%94%E2%80%94Exercise%205/">Fuzzing101——Exercise 5</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-07-13
-                            </span>
-                            
-                                
-                                    <span id="/2023/07/13/Fuzzing101——Exercise 5/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 5">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/07/13/Fuzzing101——Exercise 5/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
                 
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/07/12/Fuzzing101%E2%80%94%E2%80%94Exercise%204/">Fuzzing101——Exercise 4</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-07-12
-                            </span>
-                            
-                                
-                                    <span id="/2023/07/12/Fuzzing101——Exercise 4/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 4">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/07/12/Fuzzing101——Exercise 4/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
-                
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/07/11/Fuzzing101%E2%80%94%E2%80%94Exercise%203/">Fuzzing101——Exercise 3</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-07-11
-                            </span>
-                            
-                                
-                                    <span id="/2023/07/11/Fuzzing101——Exercise 3/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 3">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/07/11/Fuzzing101——Exercise 3/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
-                
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/07/10/Fuzzing101%E2%80%94%E2%80%94Exercise%202/">Fuzzing101——Exercise 2</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-07-10
-                            </span>
-                            
-                                
-                                    <span id="/2023/07/10/Fuzzing101——Exercise 2/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 2">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/07/10/Fuzzing101——Exercise 2/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
-                
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/07/09/Fuzzing101%E2%80%94%E2%80%94Exercise%201/">Fuzzing101——Exercise 1</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-07-09
-                            </span>
-                            
-                                
-                                    <span id="/2023/07/09/Fuzzing101——Exercise 1/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 1">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/07/09/Fuzzing101——Exercise 1/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
-                
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/07/08/How%20to%20give%20a%20good%20research%20talk/">How to give a good research talk</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-07-08
-                            </span>
-                            
-                                
-                                    <span id="/2023/07/08/How to give a good research talk/" class="leancloud_visitors" data-flag-title="How to give a good research talk">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/07/08/How to give a good research talk/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
-                
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/07/07/So-you-want-to-work-in-security/">So you want to work in security</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-07-07
-                            </span>
-                            
-                                
-                                    <span id="/2023/07/07/So-you-want-to-work-in-security/" class="leancloud_visitors" data-flag-title="So you want to work in security">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/07/07/So-you-want-to-work-in-security/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
-                
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/07/07/hello-girl/">hello-girl</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-07-07
-                            </span>
-                            
-                                
-                                    <span id="/2023/07/07/hello-girl/" class="leancloud_visitors" data-flag-title="hello-girl">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/07/07/hello-girl/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
-                
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/07/07/hello-world/">Hello World</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-07-07
-                            </span>
-                            
-                                
-                                    <span id="/2023/07/07/hello-world/" class="leancloud_visitors" data-flag-title="Hello World">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/07/07/hello-world/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
-                
+                <div class="article-prev-next">
+                    
+                        <a href="/2023/07/12/Fuzzing101%E2%80%94%E2%80%94Exercise%204/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/07/12/Fuzzing101%E2%80%94%E2%80%94Exercise%204/" title="发布于 2023-07-12 08:33">Fuzzing101——Exercise 4</a>
+                        <br>
+                    
+                    
+                        <a href="/2023/07/10/Fuzzing101%E2%80%94%E2%80%94Exercise%202/" class="next-prefix">» </a> 下一篇：    <a href="/2023/07/10/Fuzzing101%E2%80%94%E2%80%94Exercise%202/" title="发布于 2023-07-10 01:43">Fuzzing101——Exercise 2</a>
+                    
+                </div>
             </div>
             
-            
+    <div class="article-comments">
         
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
+    </div>
+    
+ 
+        </div>
     
 </div>
     <div id="footer">
@@ -381,7 +164,7 @@
             <div class="menu-list">
                 <ul>
                     
-                        <li class=" active "><a href="/" class="" target="_self"><span class="iconfont icon-home-fill"></span>首页</a></li>
+                        <li class=""><a href="/" class="" target="_self"><span class="iconfont icon-home-fill"></span>首页</a></li>
                     
                         <li class=""><a href="/category" class="" target="_self"><span class="iconfont icon-folder-fill"></span>分类</a></li>
                     

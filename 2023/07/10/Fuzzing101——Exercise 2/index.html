@@ -70,7 +70,38 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                
+                <h1 id="Fuzzing101——Exercise-2"><a href="#Fuzzing101——Exercise-2" class="headerlink" title="Fuzzing101——Exercise 2"></a>Fuzzing101——Exercise 2</h1><p>学会AFL +的基本使用，学会复现crash。</p>
+<h2 id="使用fuzz编译器编译（afl-clang-lto）"><a href="#使用fuzz编译器编译（afl-clang-lto）" class="headerlink" title="使用fuzz编译器编译（afl-clang-lto）"></a>使用fuzz编译器编译（afl-clang-lto）</h2><p>先删除原先的安装，重新编译安装库</p>
+<pre><code>make clean
+export LLVM_CONFIG=&quot;llvm-config-12&quot;
+CC=/root/fuzz/AFLplusplus/afl-clang-lto ./configure --enable-shared=no --prefix=&quot;$HOME/fuzz_target/fuzzing_libexif/install/&quot; PKG_CONFIG_PATH=$HOME/fuzz_target/fuzzing_libexif/install/lib/pkgconfig
+make
+make install
+</code></pre>
+<p>测试运行</p>
+<pre><code>$HOME/fuzz_target/fuzzing_libexif/install/bin/exif $HOME/fuzz_target/fuzzing_libexif/exif-samples-master/jpg/Canon_40D_photoshop_import.jpg
+</code></pre>
+<h2 id="fuzz"><a href="#fuzz" class="headerlink" title="fuzz"></a>fuzz</h2><pre><code>afl-fuzz -i $HOME/fuzz_target/fuzzing_libexif/exif-samples-master/jpg/ -o $HOME/fuzz_target/fuzzing_libexif/out/ -s 123 -- $HOME/fuzz_target/fuzzing_libexif/install/bin/exif @@
+</code></pre>
+<h2 id="动态调试"><a href="#动态调试" class="headerlink" title="动态调试"></a>动态调试</h2><pre><code>cd libexif-libexif-0_6_14-release
+make clean
+CFLAGS=&quot;-g -O0&quot; CXXFLAGS=&quot;-g -O0&quot; ./configure --prefix=&quot;$HOME/fuzz_target/fuzzing_libexif/install/&quot;
+make
+make install
+ 
+cd exif-exif-0_6_15-release
+make clean
+CFLAGS=&quot;-g -O0&quot; CXXFLAGS=&quot;-g -O0&quot; PKG_CONFIG_PATH=$HOME/fuzz_target/fuzzing_libexif/install/lib/pkgconfig ./configure --prefix=&quot;$HOME/fuzz_target/fuzzing_libexif/install/&quot;
+make
+make install
+</code></pre>
+<h2 id="crash1"><a href="#crash1" class="headerlink" title="crash1"></a>crash1</h2><pre><code>gdb --args ./install/bin/exif ./out/default/crashes/id\:000000\,sig\:11\,src\:000281\,time\:64869\,execs\:64957\,op\:havoc\,rep\:16
+</code></pre>
+<h2 id="crash2"><a href="#crash2" class="headerlink" title="crash2"></a>crash2</h2><pre><code>gdb --args ./install/bin/exif ./out/default/crashes/id\:000002\,sig\:11\,src\:000301\,time\:126417\,execs\:126621\,op\:havoc\,rep\:8
+</code></pre>
+<h2 id="crash3"><a href="#crash3" class="headerlink" title="crash3"></a>crash3</h2><pre><code>gdb --args ./install/bin/exif ./out/default/crashes/id\:000006\,sig\:11\,src\:000492+000181\,time\:341313\,execs\:358541\,op\:splice\,rep\:8
+</code></pre>
+
                 
                 <p class="end">__END__</p>
             </div>
@@ -96,6 +127,9 @@
                 
                 
                 <div class="article-prev-next">
+                    
+                        <a href="/2023/07/11/Fuzzing101%E2%80%94%E2%80%94Exercise%203/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/07/11/Fuzzing101%E2%80%94%E2%80%94Exercise%203/" title="发布于 2023-07-11 10:59">Fuzzing101——Exercise 3</a>
+                        <br>
                     
                     
                         <a href="/2023/07/09/Fuzzing101%E2%80%94%E2%80%94Exercise%201/" class="next-prefix">» </a> 下一篇：    <a href="/2023/07/09/Fuzzing101%E2%80%94%E2%80%94Exercise%201/" title="发布于 2023-07-09 11:59">Fuzzing101——Exercise 1</a>

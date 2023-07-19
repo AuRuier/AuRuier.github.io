@@ -70,7 +70,84 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                
+                <h1 id="Fuzzing101——Exercise-1"><a href="#Fuzzing101——Exercise-1" class="headerlink" title="Fuzzing101——Exercise 1"></a>Fuzzing101——Exercise 1</h1><p><a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-273810.htm#msg_header_h1_0">参考</a></p>
+<p>学会AFL +的基本使用，学会复现crash</p>
+<h2 id="远程连接问题"><a href="#远程连接问题" class="headerlink" title="远程连接问题"></a>远程连接问题</h2><ul>
+<li><p>确保Ubuntu系统正在运行，并已配置为允许SSH连接。通过 sudo service ssh status 来检查SSH服务的状态。若没有运行，通过 sudo service ssh start 来启动它。</p>
+</li>
+<li><p>若Ubuntu系统上启用了防火墙，则可能需要打开SSH端口（默认为22）允许连接。可以通过命令 sudo ufw allow ssh 来打开SSH端口。</p>
+</li>
+<li><p>安装 open ssh:  sudo apt-get install openssh-server。通过 sudo vi &#x2F;etc&#x2F;ssh&#x2F;sshd_config 编辑配置文件，允许以 root 用户通过 ssh 登录：</p>
+<pre><code>    PermitRootLogin prohibit-password  --禁用
+    PermitRootLogin yes -- 添加
+    重新启动：sudo service ssh restart
+</code></pre>
+</li>
+</ul>
+<h2 id="下载安装目标"><a href="#下载安装目标" class="headerlink" title="下载安装目标"></a>下载安装目标</h2><pre><code>cd $HOME
+mkdir fuzzing_xpdf &amp;&amp; cd fuzzing_xpdf/
+</code></pre>
+<h2 id="下载Xpdf并解压"><a href="#下载Xpdf并解压" class="headerlink" title="下载Xpdf并解压"></a>下载Xpdf并解压</h2><p>   使用Wget下载文件 安装Wget： sudo apt install wget</p>
+<pre><code>wget https://dl.xpdfreader.com/old/xpdf-3.02.tar.gz
+tar -xvzf xpdf-3.02.tar.gz
+</code></pre>
+<h2 id="安装依赖和目标"><a href="#安装依赖和目标" class="headerlink" title="安装依赖和目标"></a>安装依赖和目标</h2><pre><code>cd xpdf-3.02
+sudo apt update &amp;&amp; sudo apt install -y build-essential gcc
+./configure --prefix=&quot;$HOME/fuzzing_xpdf/install/&quot;
+make
+make install
+</code></pre>
+<p>更新有误 输入下面命令导入公钥：</p>
+<pre><code>sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 公钥
+
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
+</code></pre>
+<h2 id="构建语料库并测试Xpdf"><a href="#构建语料库并测试Xpdf" class="headerlink" title="构建语料库并测试Xpdf"></a>构建语料库并测试Xpdf</h2><pre><code>cd $HOME/fuzzing_xpdf
+mkdir pdf_examples &amp;&amp; cd pdf_examples
+wget https://github.com/mozilla/pdf.js-sample-files/blob/master/helloworld.pdf
+wget http://www.africau.edu/images/default/sample.pdf
+wget https://www.melbpc.org.au/wp-content/uploads/2017/10/small-example-pdf-file.pdf
+</code></pre>
+<h2 id="安装需要依赖"><a href="#安装需要依赖" class="headerlink" title="安装需要依赖"></a>安装需要依赖</h2><pre><code>sudo apt-get update
+sudo apt-get install -y build-essential python3-dev automake git flex bison libglib2.0-dev libpixman-1-dev python3-setuptools
+sudo apt-get install -y lld-11 llvm-11 llvm-11-dev clang-11 || sudo apt-get install -y lld llvm llvm-dev clang 
+sudo apt-get install -y gcc-$(gcc --version|head -n1|sed &#39;s/.* //&#39;|sed &#39;s/\..*//&#39;)-plugin-dev libstdc++-$(gcc --version|head -n1|sed &#39;s/.* //&#39;|sed &#39;s/\..*//&#39;)-dev
+</code></pre>
+<p>  tips</p>
+<pre><code>sudo apt install libpcre3-dev 
+sudo apt install libpython3.10-stdlib=3.10.4-3
+sudo apt install libpython3.10=3.10.4-3
+sudo apt install libpython3.10-dev
+
+
+libpython3.10-minimal (= 3.10.4-3)
+
+sudo apt install python3.10=3.10.4-3
+sudo apt install python3.10-dev
+</code></pre>
+<h2 id="安装构建AFL"><a href="#安装构建AFL" class="headerlink" title="安装构建AFL++"></a>安装构建AFL++</h2><pre><code>cd $HOME
+git clone https://github.com/AFLplusplus/AFLplusplus &amp;&amp; cd AFLplusplus
+export LLVM_CONFIG=&quot;llvm-config-11&quot;
+make distrib
+sudo make install
+</code></pre>
+<h2 id="使用AFL"><a href="#使用AFL" class="headerlink" title="使用AFL++"></a>使用AFL++</h2><pre><code>rm -r $HOME/fuzzing_xpdf/install
+cd $HOME/fuzzing_xpdf/xpdf-3.02/
+make clean
+</code></pre>
+<h2 id="进行模糊测试："><a href="#进行模糊测试：" class="headerlink" title="进行模糊测试："></a>进行模糊测试：</h2><pre><code>afl-fuzz -i $HOME/fuzzing_xpdf/pdf_examples/ -o $HOME/fuzzing_xpdf/out/ -s 123 -- $HOME/fuzzing_xpdf/install/bin/pdftotext @@ $HOME/fuzzing_xpdf/output
+</code></pre>
+<h2 id="再现崩溃"><a href="#再现崩溃" class="headerlink" title="再现崩溃"></a>再现崩溃</h2><p>将文件作为输入，将会引起崩溃</p>
+<pre><code>$HOME/fuzzing_xpdf/install/bin/pdftotext &#39;$HOME/fuzzing_xpdf/out/default/crashes/&lt;your_filename&gt;&#39; $HOME/fuzzing_xpdf/output
+</code></pre>
+<h2 id="动态调试"><a href="#动态调试" class="headerlink" title="动态调试"></a>动态调试</h2><pre><code>make clean
+CFLAGS=&quot;-g -O0&quot; CXXFLAGS=&quot;-g -O0&quot; ./configure --prefix=&quot;$HOME/fuzz_target/fuzzing_xpdf/install/&quot;
+make
+make install
+</code></pre>
+<h2 id="运行gdb"><a href="#运行gdb" class="headerlink" title="运行gdb"></a>运行gdb</h2><pre><code>gdb --args $HOME/fuzz_target/fuzzing_xpdf/install/bin/pdftotext $HOME/fuzz_target/fuzzing_xpdf/out/default/crashes/&lt;your_filename&gt; $HOME/fuzz_target/fuzzing_xpdf/output
+</code></pre>
+
                 
                 <p class="end">__END__</p>
             </div>
