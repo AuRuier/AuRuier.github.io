@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            归档
+            A Large-scale and Longitudinal MeasurementStudy of DKIM Deployment
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -32,15 +32,32 @@
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body>
     <a id="cover"></a>
-    <link type="text/css" rel="stylesheet" href="/css/archive.css">
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
 <div id="header" class="header">
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">归档</h1>
+                <h1 class="header-subtitle">A Large-scale and Longitudinal MeasurementStudy of DKIM Deployment</h1>
                 <div class="header-subinfo">
-                    <p class="article-info-text Chinese"></p>
-                    <p class="article-info-text English"></p>                  
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2023-08-06
+                        </span>
+                        
+                            
+                                <span id="/2023/08/06/A Large-scale and Longitudinal MeasurementStudy of DKIM Deployment/" class="leancloud_visitors" data-flag-title="A Large-scale and Longitudinal MeasurementStudy of DKIM Deployment">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/08/06/A Large-scale and Longitudinal MeasurementStudy of DKIM Deployment/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                    
                 </div>
             
         </div>
@@ -49,135 +66,93 @@
 </div>
 <div id="container">
     
-        
-            <!-- 归档页面、分类归档页面、标签归档页面 -->
-            <div class="articles">
-                <div class="articles-wrap">
-                    <span class="archive-move-on"></span>
-                    <span class="archive-counter">
-                        
-                            目前共计 19 篇日志，继续加油！
-                        
-                    </span>
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro##"></a>Intro##</h2><blockquote>
+<p>on email Authentication Protocol Decay 电子邮件验证协议衰减</p>
+<p>A Large-scale and Longitudinal MeasurementStudy of DKIM Deployment 大规模纵向 DKIM 部署测量研究</p>
+</blockquote>
+<h2 id="What-is-DKIM"><a href="#What-is-DKIM" class="headerlink" title="What is DKIM?"></a>What is DKIM?</h2><blockquote>
+<p>Email service is one of the popular services in the internet world and it is because of its important position that email service has also become an important Target for attackers.</p>
+<p>The defined against the emails proving attacks, various email authentication protocols have been proposed under standardized during this year. </p>
+</blockquote>
+<p>为应对电子邮件证明攻击，这些年提出了各种标准化的电子邮件认证协议。</p>
+<blockquote>
+<p>At present, the DKIM is one of the most widely used email authentication protocols. The DKIM has been proposed to understandalized since 2008 and is now adopted by Yahoo、Google and other leading email service providers. The DKIM signature is generated based on HG algorithm and asymmetric encryption algorithm just like RSA.</p>
+</blockquote>
+<p>目前，DKIM 是使用最广泛的电子邮件验证协议之一。自 2008 年起，DKIM 就被提出来进行理解，现在已被雅虎、谷歌和其他领先的电子邮件服务提供商所采用。游戏签名是根据 HG 算法和非对称加密算法生成的，就像 RSA 算法一样。</p>
+<blockquote>
+<p>The game’s public key is deployed on a domain name in the following format just like that the selector here is a random string specified by the domain owner and example.com represents a real domain name the image here is an example of a real decaying signature.</p>
+</blockquote>
+<p><img src="https://github.com/AuRuier/pic/blob/main/DKIM-1.png" alt="DKIM-1.png"></p>
+<p>这里的选择器是由域名所有者指定的随机字符串，example.com 代表一个真实的域名，这里的图片是一个真实的衰减签名示例。</p>
+<p><img src="F:\Github\AuRuier\rmb\2023-8-13_1.png" alt="2023-8-13_1"></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/AuRuier/pic/blob/main/DKIM-1.png">https://github.com/AuRuier/pic/blob/main/DKIM-1.png</a></p>
+<h2 id="The-Workflow-of-DKIM-工作流程"><a href="#The-Workflow-of-DKIM-工作流程" class="headerlink" title="The Workflow of DKIM  工作流程##"></a>The Workflow of DKIM  工作流程##</h2><blockquote>
+<p>First the sender <strong>deploys the Decay protocol</strong> ，they need to generate a key Pair by <strong>asymmetric encryption algorithm</strong> and then deployed the camera course meaning the decaying public key on a DI server of a specified domain；Second window senders MTA sends an email it became signature is calculated for the outgoing email which includes the email headers、the email body and the became signature itself；last when receivers MTA receives an email with articum signature，it also first exercise the camera course for the sender’s domain to validate the game signature.</p>
+</blockquote>
+<p>首先，发送方<strong>部署衰变协议</strong>，他们需要通过<strong>非对称加密算法</strong>生成密钥对，然后在指定域的 DI 服务器上部署相机航向，即衰变公钥；其次，发送方 MTA 窗口发送电子邮件时，会为发出的电子邮件计算成签名，其中包括电子邮件标题、电子邮件正文和成签名本身；最后，接收方 MTA 收到带有成签名的电子邮件时，也会首先执行发送方域的相机航向，以验证游戏签名；最后，接收方 MTA 收到带有成签名的电子邮件时，也会首先执行发送方域的相机航向，以验证游戏签名。</p>
+<h2 id="How-to-Measure-DKIM-Deployment"><a href="#How-to-Measure-DKIM-Deployment" class="headerlink" title="How to Measure DKIM Deployment"></a>How to Measure DKIM Deployment</h2><p> although tkm is an important email security protocol and it has been proposed for more than 10 years.<br> video has been done to understand the adoption rate and the potential security issues of the claim in the previous Works they conduct life skill measurements of the other two protocol SPF and the mark but Kim was absent this is because the future of the game makes it difficult to be measured at scale from the previous description we are able to know that there are two main ways to obtain the game information once from the team records and the other is from the game signatures the camera course is deployed in this specified mean because the selector is randomly specified it’s difficult to measure and scale directly designs became signature also difficult to client by researchers the game signatures are binded in the email header and would not be publicly released it’s difficult for researchers to obtain large amounts of the game signatures data for further security analysis. however we find two ways to guide this game information . First we can pass the camera course from passive dance data size and the second we can extract the game signatures from email headers. therefore we collaborate with our industrial partners and get the data science. In total our data covers five million distinct domains and two million these instructors.</p>
+<p>虽然 tkm 是一个重要的电子邮件安全协议，而且已经提出了 10 多年。<br> 为了了解该协议的采用率和潜在的安全问题，我们制作了视频，在之前的作品中，他们对另外两个协议 SPF 和标记进行了生活技能测量，但 Kim 没有参与，这是因为游戏的未来性使其很难进行大规模测量，从之前的描述中我们可以知道，获取游戏信息有两种主要方式，一种是从团队记录中获取，另一种是从游戏签名中获取。由于选择器是随机指定的，因此很难直接测量和规模化设计成为签名，研究人员也很难通过客户端获得游戏签名，游戏签名绑定在电子邮件头中，不会公开发布，因此研究人员很难获得大量游戏签名数据以进行进一步的安全分析。不过，我们找到了两种方法来引导这些游戏信息。首先，我们可以从被动舞蹈的数据大小中通过相机课程；其次，我们可以从电子邮件标题中提取游戏签名。我们的数据总共涵盖了 500 万个不同的领域和 200 万名指导员。</p>
+<h2 id="Overview-of-DKIM-Data-Collection-and-Analysis"><a href="#Overview-of-DKIM-Data-Collection-and-Analysis" class="headerlink" title="Overview of DKIM Data Collection and Analysis"></a>Overview of DKIM Data Collection and Analysis</h2><p>our data collection and analysis process is shown in the future figure below which is mainly divided into three parts including data collection data processing and data analysis the data collection stage has been basically tasked talked earlier meaning through cooperation with industrial Partners to obtain the corresponding the camera course and the decimal signatures after data collection we will perform a series of operations such as data cleaning data aggregation and the dumplication on the raw data through the above passive collection stage. we found that there are many commonly used selectors such as mail default. Dacay which will be used by many domains therefore we conduct a large scale measurement of i like talk one meaning domains it was the top 40 sectors obtained from the passive collection and finally we can use the results of the measurement to analyze Decay adoption rate the grammatical problems of the camera course became key management issues and it because signature issues.</p>
+<h2 id="DKIM-数据收集和分析概述"><a href="#DKIM-数据收集和分析概述" class="headerlink" title="DKIM 数据收集和分析概述"></a>DKIM 数据收集和分析概述</h2><p>我们的数据收集和分析流程如下图所示，主要分为三个部分，包括数据收集、数据处理和数据分析。数据收集阶段的基本任务是通过与行业合作伙伴合作，获取相应的相机轨迹和十进制签名。Dacay 会被许多域使用，因此我们对 i like talk 的一个含义域进行了大规模测量，它是被动收集获得的前 40 个扇区，最后我们可以使用测量结果来分析 Decay 采用率，相机课程的语法问题成为关键的管理问题，这是因为签名问题。</p>
+<h2 id="The-Adoption-Rate-of-SPF-x2F-DKIM-x2F-DMARC"><a href="#The-Adoption-Rate-of-SPF-x2F-DKIM-x2F-DMARC" class="headerlink" title="The Adoption Rate of SPF&#x2F;DKIM&#x2F;DMARC"></a>The Adoption Rate of SPF&#x2F;DKIM&#x2F;DMARC</h2><p>In this paper we perform a large scale and longitudinal management study on the current state of the Kim the results shows that 28 percent of elect top 1 million domains have enabled the claim of which three percent are misconfigured besides we also measure the adoption rate of SPF and the DeMark by active scanning and the results can reflect the current status of the game deployment from the side. the image here shows the change in deployment rules of SPF Decay and Mark over the past few years part of the data comes from the two paper list below to know more about the game deployment we also analyze the game adoption of the domains under different country code top level domains and genetical top level domains.</p>
+<h2 id="SPF-x2F-DKIM-x2F-DMARC-的采用率"><a href="#SPF-x2F-DKIM-x2F-DMARC-的采用率" class="headerlink" title="SPF&#x2F;DKIM&#x2F;DMARC 的采用率"></a>SPF&#x2F;DKIM&#x2F;DMARC 的采用率</h2><p>在本文中，我们对金的现状进行了大规模的纵向管理研究，结果显示，在选取的前 100 万个域名中，有 28% 的域名启用了声明，其中有 3% 的域名配置错误，此外，我们还通过主动扫描测量了 SPF 和 DeMark 的采用率，结果可以从侧面反映出游戏部署的现状。这里的图片显示了 SPF Decay 和 Mark 的部署规则在过去几年中的变化，部分数据来自下面的两篇论文列表，为了了解更多有关游戏部署的信息，我们还分析了不同国家代码顶级域和基因顶级域下的域名采用游戏的情况。</p>
+<h2 id="DKIM-Key-Management-Issues"><a href="#DKIM-Key-Management-Issues" class="headerlink" title="DKIM Key Management Issues"></a>DKIM Key Management Issues</h2><p>Next let’s talk about game key management issues RFC recommends that the game Keys should be rotated on a routine basis however we found using long lifetime. Keys is common even for most high profiled meanws the below figure shows the number of long lifetime keys of LX top 100 domains covered by our data site the orange part represents the numbers of keys that have not been rotated in the last five years. finally we found it out of Alex top 20 domains have not rotated their keys in the past 12 years. we also analyzed the game key lines in passive against their site RFC has pointed out the short I say keys more easily succumbed to offline attacks and designers should use IC keys of at least 2048 bits. the NST has also recommended that however our reasearch shows 84 percent of more than 3 million domains still use the keys that are less or equal to 1024 bits well more than five thousand domains still use sticking keys that are even like them 512 bits.</p>
+<h2 id="DKIM-密钥管理问题"><a href="#DKIM-密钥管理问题" class="headerlink" title="DKIM 密钥管理问题"></a>DKIM 密钥管理问题</h2><p>接下来让我们谈谈游戏密钥管理问题 RFC 建议应定期轮换游戏密钥，但我们发现使用长使用期限的密钥在大多数高配置域名中也很常见。下图显示了我们的数据网站所覆盖的 LX 前 100 个域名中长使用期密钥的数量。我们还分析了游戏密钥线在被动与他们的网站 RFC 已指出短我说密钥更容易屈服于离线攻击和设计者应使用 IC 密钥至少 2048 位.NST 也建议，然而我们的研究表明 84%的超过 300 万域仍在使用小于或等于 1024 位的密钥，以及超过五千域仍在使用粘贴密钥，甚至像他们 512 位.</p>
+<h2 id="DKIM-Signature-Issues"><a href="#DKIM-Signature-Issues" class="headerlink" title="DKIM Signature Issues"></a>DKIM Signature Issues</h2><p>we also analyze issues of game’s signatures in practice based on 400 million real decaying signatures from Camile. we find most domains have become signature issues for example. Rick decam signatures are common what is rate became signature the game signatures should sign important email headers to protect the content integrity of email and avoid being abused for replay attacks however IFC only specified the from field to be must assigned although it also recommend the other 20 headers should be signed in the game signatures we find no domain in our designs signing all of the 20 headers RC only provide a basic guideline that dkm signatures need to protect the core con tect of the email message actuall we found that the Hydra Fields signing in the decam signatures vary among different email services this there is not a consensus in the actual implementation almost all of the domains have signed from and subtract. Fields however only 11 percent of domains have sogned replying two fields to prevent adding duplicate Hider field the game the designers proposed a method of oversigning which means a Hider name should appear in space tags once more than the actual numbers of that header in an email there is an example of over signing mechanism all setting mechanism is helpful to protect users from the emails grouping or text however we measured how many domains use ourseling to protect themselves against multiple headers attack were found only 2.2 percent of domains in our decaying signatures data side use our signing mechanism the last part is about mitigation and recommendation</p>
+<h2 id="DKIM-签名问题"><a href="#DKIM-签名问题" class="headerlink" title="DKIM 签名问题"></a>DKIM 签名问题</h2><p>我们还根据 Camile 提供的 4 亿个真实的衰减签名分析了游戏签名在实践中的问题。游戏签名应签署重要的电子邮件标题，以保护电子邮件内容的完整性，并避免被滥用于重放攻击，但 IFC 只指定了必须分配的 from 字段，尽管它也建议在游戏签名中签署其他 20 个标题。我们发现，在我们的设计中，没有任何域签署所有 20 个头信息 RC 只提供了一个基本准则，即 dkm 签名需要保护电子邮件的核心内容。然而，只有 11% 的域名对回复的两个字段进行了签名，以防止添加重复的 “隐藏 “字段，游戏设计者提出了一种过度签名的方法，这意味着 “隐藏 “名称在空格标签中出现的次数应多于电子邮件中该标题的实际数量。 在我们的衰减签名数据中，只有 2% 的域名使用了我们的签名机制。</p>
+<h2 id="Mitigations"><a href="#Mitigations" class="headerlink" title="Mitigations"></a>Mitigations</h2><p>first we have tried our biased to report all on vulnerabilities we found into the relevant email administrators for email vendors and 24 relevant email administrators have acknowledged our report and second we have developed developed an online tool for decline development based on our measurement and Analysis scripts this tool can have email administrators check and deploy their dick in records and further improve the status of the game development now this tool can be excised at notesproofing.cn at last we proposed to improvements which may have to ipmrove the protective effect of decam signatures and prevent decline signatures from being used for replay attacks if you are you interested in our work please read  our paper for details I’m sorry that I can’t attend a meeting in  person because of the kovid 19. please feel free to ask any questions on this like and I will respond in time that’s all thank you.                    </p>
+<h2 id="缓解措施"><a href="#缓解措施" class="headerlink" title="缓解措施"></a>缓解措施</h2><p>首先，我们已经尽力将我们发现的所有漏洞报告给相关的电子邮件厂商的电子邮件管理员，24 个相关的电子邮件管理员已经确认了我们的报告。其次，我们已经根据我们的测量和分析脚本开发了一个用于衰落开发的在线工具，这个工具可以让电子邮件管理员检查和部署他们的记录中的家伙，并进一步改善游戏开发的状态。 如果您对我们的工作感兴趣，请阅读我们的论文以了解详情。很抱歉，由于 Kovid 19，我无法亲自参加会议。                                                                      </p>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>Live For Code
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="/2023/08/06/A%20Large-scale%20and%20Longitudinal%20MeasurementStudy%20of%20DKIM%20Deployment/" target="_blank">A Large-scale and Longitudinal MeasurementStudy of DKIM Deployment</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                
+                <div class="article-prev-next">
+                    
+                        <a href="/2023/08/10/Detecting%20Logical%20Bugs%20of%20DBMS%20with%20Coverage-based%20Guidance/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/08/10/Detecting%20Logical%20Bugs%20of%20DBMS%20with%20Coverage-based%20Guidance/" title="发布于 2023-08-10 03:32">Detecting Logical Bugs of DBMS with Coverage-based Guidance</a>
+                        <br>
                     
                     
-                        
-                            <div class="archive-title">
-                                <h2 class="archive-year">2023</h2>
-                            </div>
-                            
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/30/Fuzzing101%E2%80%94%E2%80%94Exercise%2010/"><span>Fuzzing101——Exercise 10</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-30</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/29/An%20Evaluation%20of%20the%20Ninth%20SOSP%20Submissions/"><span>An Evaluation of the Ninth SOSP Submissions</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-29</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/22/Tips%20for%20Writing%20Technical%20Papers/"><span>Tips for Writing Technical Papers</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-22</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/21/Fuzzing101%E2%80%94%E2%80%94Exercise%209/"><span>Fuzzing101——Exercise 9</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-21</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/19/Fuzzing101%E2%80%94%E2%80%94Exercise%208/"><span>Fuzzing101——Exercise 8</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-19</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/17/Fuzzing101%E2%80%94%E2%80%94Exercise%207/"><span>Fuzzing101——Exercise 7</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-17</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/15/The%20structure%20of%20paper&report%20in%20Systems/"><span>The structure of paper/report in Systems</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-15</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/14/Fuzzing101%E2%80%94%E2%80%94Exercise%206/"><span>Fuzzing101——Exercise 6</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-14</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/13/Fuzzing101%E2%80%94%E2%80%94Exercise%205/"><span>Fuzzing101——Exercise 5</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-13</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/12/Fuzzing101%E2%80%94%E2%80%94Exercise%204/"><span>Fuzzing101——Exercise 4</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-12</span>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="/2023/07/30/Fuzzing101%E2%80%94%E2%80%94Exercise%2010/" class="next-prefix">» </a> 下一篇：    <a href="/2023/07/30/Fuzzing101%E2%80%94%E2%80%94Exercise%2010/" title="发布于 2023-07-30 07:23">Fuzzing101——Exercise 10</a>
                     
                 </div>
             </div>
             
+    <div class="article-comments">
         
-    <div class="pagination-bottom">
-        <div class="pagination">
-            
-                <a href="/archives/2023/07/page/2/">下一页</a>
-            
-        </div>
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
     </div>
-
+    
+ 
+        </div>
     
 </div>
     <div id="footer">
@@ -215,7 +190,7 @@
                     
                         <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
                     
-                        <li class=" active "><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
                         <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
                     

@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            归档
+            Detecting Logical Bugs of DBMS with Coverage-based Guidance
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -32,15 +32,32 @@
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body>
     <a id="cover"></a>
-    <link type="text/css" rel="stylesheet" href="/css/archive.css">
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
 <div id="header" class="header">
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">归档</h1>
+                <h1 class="header-subtitle">Detecting Logical Bugs of DBMS with Coverage-based Guidance</h1>
                 <div class="header-subinfo">
-                    <p class="article-info-text Chinese"></p>
-                    <p class="article-info-text English"></p>                  
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2023-08-10
+                        </span>
+                        
+                            
+                                <span id="/2023/08/10/Detecting Logical Bugs of DBMS with Coverage-based Guidance/" class="leancloud_visitors" data-flag-title="Detecting Logical Bugs of DBMS with Coverage-based Guidance">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/08/10/Detecting Logical Bugs of DBMS with Coverage-based Guidance/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                    
                 </div>
             
         </div>
@@ -49,135 +66,77 @@
 </div>
 <div id="container">
     
-        
-            <!-- 归档页面、分类归档页面、标签归档页面 -->
-            <div class="articles">
-                <div class="articles-wrap">
-                    <span class="archive-move-on"></span>
-                    <span class="archive-counter">
-                        
-                            目前共计 19 篇日志，继续加油！
-                        
-                    </span>
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <p>、</p>
+<p>据库管理系统（DBMS）是现代应用程序的关键组件，广泛用于各种数据密集型程序中， 帮助数十亿台设备托管数万亿个数据库。DBMS 中的任何错误都会影响大量用户。尽管此前人们在测试 DBMS 上已经付出了巨大的努力，但大多数情况下他们都仅专注于发现导致 DBMS 运行意外终止的错误，比如崩溃和断言错误。他们无法检测到导致 DBMS 返回非预期结果的逻辑错误，例如意外泄露出额外的数据。由于逻辑错误通常不会使程序崩溃，因此我们需要借助预言（Oracle，译为预言或判断准则，本文译为预言），来确定每次执行是否产生正确的结果。但是，由于各种 DBMS 查询语言的差异，以及功能的多样性，构建预言需要耗费大量的时间，且容易出错。</p>
+<p>通过将 SQL 查询语句转换成语义等价的另一个形式的语句，这两个 SQL 查询语句便构成了一个“预言”（Oracle）。因为这对语句的形式不同，DBMS 可能会使用不同的代码路径来处理这些查询语句，但由于两者语义等价，因此两个语句查询后返回的最终结果是相同的。任何的不一致都表明 DBMS 存在潜在的逻辑错误。此前，有研究工作提出了几种“预言”来识别不正确的结果，但它们依赖于基于规则且未经指导的方法来合成 SQL 查询语句，考虑到 DBMS 巨大的查询空间，这些方法会在类似的查询上花费很多时间，并且无法检查不同的程序代码。</p>
+<p>该研究创新性地提出， 通过结合覆盖率导向、面向有效性的突变和预言（Oracle）三者来检测 DBMS 的逻辑错误。为了实现我们的目标，我们首先设计了一组通用 API 来解耦 Fuzzer 和 预言（Oracle） 的逻辑，以便开发人员可以轻松地移植模糊测试工具来测试 DBMS，以及为现有的 Fuzzer 编写新的预言（Oracle）。我们进一步提供了面向有效性的突变，来生成高质量的查询语句，从而发现更多的逻辑错误。我们实现的检测系统原型 SQLRight，经过实验证明优于当前仅依赖预言或代码覆盖率的最先进工具。SQLRight 一共从三个经过良好测试的DBMS (SQLite、PostgreSQL 和 MySQL，这是世界上最流行的三个开源数据库) 中检测到了18 个逻辑错误。研究团队已将研究发现中的所有问题上报给DBMS相关官方，所有错误都已得到官方确认，其中 13 个错误已被修复。</p>
+<p>Oracle is a resource verifier that you can generate functional equivalent forms of the query for the same DBMS and check its resource inconsistencies for potential logical bugs<br> as a complete pipeline SQLlenser will generate its testing query using a rule-based query generator and then we use the Qracle to transform the query and check the results</p>
+<p>However for SQLenser relies on its rule-based query generator to generate<br>all its testing queries the key regeneration rules limits its capability to fast deep to test deep program logic</p>
+<hr>
+<p>today I’m going to present a paper named the technological box of DBMS with coverage based guidance box. In the DBMS database management system are being widely started most previous Works focus on detecting memory corruption bugs which will crush the DBMS program existing Works includes generation based query testing tools and mutation-based QE fasting tools.<br>今天，我将介绍一篇名为《基于覆盖范围的 DBMS 技术框指导框》的论文。在 DBMS 数据库管理系统正在广泛启动的过程中，以前的大多数作品都侧重于检测内存损坏 Bug，这些 Bug 会破坏 DBMS 程序，现有作品包括基于生成的查询测试工具和基于突变的 QE 快速工具。</p>
+<p>However little attention has been applied to the technological bugs in DBMS logical bugs are incorrect called logic that will make the DBMS returns incorrect results. the multiple logical bugs reported in recent years many of them could potentially lead to severe outcomes. there are some existing works that try to find logical bugs in the DBMS.<br>然而，人们对数据库管理系统中的技术缺陷很少关注，逻辑缺陷是不正确的逻辑，它会使数据库管理系统返回不正确的结果。近年来报告的多个逻辑错误，其中许多都可能导致严重的后果。有一些现有的工作试图找到DBMS中的逻辑错误。</p>
+<p>One existing works is differential testing that the idea of differential testing is to pass the same query to different DBMS and check whether they output the same results. However because each DBMS defines their own SQL dialects their only limited features are shared if differential testing only covers its share features we end up with low coverage for the dedicated feature for each DBMS.  On the other hand if differential testing try to cover all the SQL dialects in all DBMS to generate the Kiwi we end up with low correctness rate in other words low validity. these are some simple SQL dialects from ctbls，another existing works is SQLenser.<br>现有的一种方法是差分测试，差分测试的原理是将相同的查询传递给不同的 DBMS，并检查它们是否输出相同的结果。但是，由于每个数据库管理系统都定义了自己的 SQL 方言，如果差分测试只覆盖其共享的功能，那么它们共享的功能就很有限，最终导致每个数据库管理系统专用功能的覆盖率很低。 另一方面，如果差异测试试图覆盖所有 DBMS 中的所有 SQL 方言来生成 Kiwi，那么最终的正确率就会很低，换句话说，有效性就会很低。</p>
+<p> SQLenses use Oracle to find DBMS logical bugs and Oracle is a resource verifier that you can generate functional equivalent forms of the query for the same DBMS and check its resource inconsistencies for potential logical bugs as a complete pipeline. SQL lenser will generate its testing query using a rule-based query generator and then we use the Oracle to transform the query and check the results. However for SQL lenser relies on its rule-based query generator to generate all its testing queries. the key regeneration rules limits its capability to fast deep to test deep program logic. in this work we propose equal rights a general platform to test DBMS logical bugs. Secrets use coverage guided forcing and validity oriented mutations to more efficiently explore the DBMS program and it also includes a general interface for easy Oracle development.<br>SQLenser 使用 Oracle 来查找 DBMS 逻辑错误，而 Oracle 是一个资源验证器，可以为相同的 DBMS 生成功能等价的查询形式，并作为一个完整的管道检查其资源不一致的潜在逻辑错误。SQL lenser 将使用基于规则的查询生成器生成测试查询，然后我们使用 Oracle 转换查询并检查结果。然而，SQL lenser 依赖其基于规则的查询生成器来生成所有测试查询，关键的再生规则限制了其快速深入测试深层程序逻辑的能力。Secrets 使用覆盖率引导的强制和有效性导向的突变来更有效地探索 DBMS 程序，它还包括一个便于 Oracle 开发的通用接口。</p>
+<p>how to find 18 logical bugs in total and we open source R2<br>如何找到总共18个逻辑错误，我们开源R2</p>
+<p>here we present the motivated examples that triggers a logical bugs in the SQL like DBMS. the QE creates a table person we call them PID and then insert three rows of data one ten ten into the table. the query then creates a unique partial index we condition PID equals to 1. and at last the select output statements search for the table rows will constrain. this thing and PID equals to 10.<br>在这里，我们给出了触发SQL(如DBMS)中的逻辑错误的有动机的示例。QE创建了一个表，我们称之为PID，然后将三行数据一一插入到表中。查询然后创建一个唯一的部分索引，我们条件PID等于1。最后，select output语句搜索将要约束的表行。这个和PID等于10。</p>
+<p>the correct resource from this Q research should be one row of 10 only because the distinct keywords should remove all the duplicated results from the output. however sqlite returns all the matching rows with two rows of duplicated tens this resource is not correct. there are a few challenges we need to adjust in order to find logical bugs like this the first challenge is it is hard to generate High validity queries to find logical bug in dbms a complete pipeline of create database insert data，output data and chat resource are required. if any of this step failed because of invadically the logical back detection won’t be successful.<br>这个Q研究的正确资源应该是一行10个，因为不同的关键字应该从输出中删除所有重复的结果。然而，sqlite返回所有匹配的行，其中有两行重复的十，这个资源是不正确的。为了找到像这样的逻辑错误，我们需要调整一些挑战，第一个挑战是很难生成高有效性查询来发现dbms中的逻辑错误，需要一个完整的创建数据库插入数据，输出数据和聊天资源的管道。如果这些步骤中的任何一个因为入侵而失败，那么逻辑返回检测将不会成功</p>
+<p>the Second Challenge is that it is hard to implement dbms Oracle because first there are no General platform existed for easy Oracle development yet and second it is not easy to integrate a DBMS Oracle to existing testing techniques. Tech existing work SQLenser for example all the oracles from SQL lenser are implemented by non-trivial manual efforts.<br>第二个挑战是很难实现dbms Oracle，因为首先，还没有通用的平台来方便地开发Oracle，其次，将dbms Oracle集成到现有的测试技术中并不容易。技术现有的工作，例如SQLenser，所有来自SQL lenser的oracle都是通过非平凡的手工工作实现的。</p>
+<p>so to mitigate the first Challenge and to generate High validity queries we propose a few validity oriented techniques in our forcing engine the first technique is dedicated passing we noticed that most of the dbms we tested use bison to Define their password from ends. the DBMS python passes passes the input query and transform them into DBMS unique internal structure. thanks to the well-documented python format we use the translator script to transform the dbms python passer to secret right internal parser. secret then uses internal passers to transform the query inputs to secrete internal General IR. Security on this General IR in order to get a diverse set of mutated query by using this internal parser secret can enforce the original grammar rules dedicated to hdbms in its forcing mutation.<br>因此，为了缓解第一个挑战并生成高有效性查询，我们在我们的强制引擎中提出了一些面向有效性的技术，第一种技术是专用传递，我们注意到我们测试的大多数dbms都使用bison从端定义其密码。DBMS python传递输入查询并将其转换为DBMS唯一的内部结构。由于文档完备的python格式，我们使用translator脚本将DBMS python传递器转换为秘密的内部解析器。secret然后使用内部传递器将查询输入转换为秘密的内部通用IR。为了通过使用这个内部解析器秘密来获得多样化的变异查询集，通用IR上的安全性可以在其强制变异中强制执行专用于hdbms的原始语法规则。</p>
+<p>the second technique is context-based IR instantiation. this technique fills in the concrete operands based on the query context click this curious as for example or the table and column names will be inserted notice that this step is context based for instance it can correctly recognize. the column name changes in the order table statements. so you can always refers to the correct column names in the select statements. there are two other techniques we use to improve validity we leave the details in the paper. then to mitigate the Second Challenge and to fill in the missing platform for easy Oracle development.<br>第二种技术是基于上下文的IR实例化。该技术根据查询上下文填充具体的操作数，例如单击此按钮或插入表和列名，请注意此步骤是基于上下文的，例如它可以正确识别。顺序表语句中的列名会更改。因此，您总是可以在选择语句中引用正确的列名。我们还使用了另外两种技术来提高有效性，我们将细节留在论文中。然后缓解第二次挑战，并填补缺失的平台，以方便Oracle开发。</p>
+<p>secret proposed four General apis pre-process append output transform and compare the pre-process API remove improper queries from the inputs take this query says for example the random function from the insert interest statements will generate a different results at different query runtimes which could confuse the DBMS Oracle and generate false positive. In this case the insert into statements will be removed the second APl is append output it append Oracle compatible select statements to the query sets here with technolia oracles proposed by SQLenser for example the select statements in the format of Select something from something where something will be inserted the transform APl transform the query sets to its functional equivalent forms technology oracles for example again<br>secret提出了四个通用API预处理追加输出转换和比较预处理API从输入中删除不适当的查询，以这个查询为例，从插入兴趣语句中的随机函数将在不同的查询运行时产生不同的结果，这可能会混淆dbms Oracle并产生假阳性，在这种情况下，插入语句将被删除第二个API是追加输出，它追加Oracle兼容的选择语句这里的查询集是由SQLenser提出的，例如select语句的格式是select something from something where something将要插入，转换api将查询集转换为其功能等效的形式，例如技术oracle</p>
+<p>the constraint in the where class will be moved to the select class forming two select statements that are functional equivalent and at last the compare APl allows the developers to Define their own rules to verify the resource. here in this keyword sets the value returns from the first select statements should match the number of ones returns from the second select if the server if the first select returns one and the second select returns 0 1 the results are match.<br>where类中的约束将被移动到select类中，形成两个功能相同的选择语句，最后比较api允许开发人员定义自己的规则来验证资源。在这个关键字集合中，如果服务器第一次选择返回1，第二次选择返回0，那么从第一次选择语句返回的值应该匹配从第二次选择返回的1的数量，如果第一次选择返回1，第二个选择返回0 1，则结果匹配。</p>
+<p>however sqlite Returns value 2 in the frst select statements which are not matched from the second select here The Logical box we show represented in the motivated examples is font here is the overview of our two SQL right cigarette Tech query from the seed inputs mutated Theory with a restriction of the per dbms grammar rules and then secret use the dbms Oracle to transform the query to its functional equivalent forms after shooting all the queries to execution security used the Oracle again to check the resource and see if you can find logical bugs and at last if the IQ execution triggers a new code coverage from the dbms secret will save the mutated query to the forcing queue for further exploitation in the evaluation we aim to answer the following three questions can secretly find bugs can secretly find more bugs than existing tools and what’s the benefits of our proposed techniques<br>然而sqlite返回值2第一不匹配的select语句从第二个选择逻辑盒子我们显示在这里的动机的例子是字体是我们两个SQL对香烟的概述科技查询从种子输入突变理论的限制每dbms语法规则,然后秘密使用Oracle dbms将查询后其功能等价形式拍摄所有的查询执行安全使用Oracle再次检查资源，看看你是否能找到逻辑错误，最后如果IQ执行触发一个新的代码覆盖从dbms secret将保存突变查询强制队列进一步利用在评估中，我们的目标是回答以下三个问题可以秘密地发现错误可以秘密地发现比现有的工具更多的错误，我们提出的技术的好处是什么</p>
+<p>we evaluate SOL rate on cdbms first secret find 18 logical bugs in total 14 from sqlite 4 from bicycle among all the detecting bugs 15 logical bugs have been fixed notice that there are two logical bugs are detected from new newly proposed oracles and then we compare secret right to two existing Works SOL answer and score scroll is a instant State scroll is a state-of-the-art memory corruption box detector we introduced the Oracle interface into squirrel enable it to find logical bugs similar to what sQL red can do from the plots we can see that secret detects the most number of bugs in 72 hours. in the same experiments we also compare the branch coverage of the three twos secret detects nearly 13 more cool coverage than the best Baseline and then we compare the queue validity of the three twos. here sqlenser has the highest capability thanks to its rule-based QA generator.<br>我们评估索尔率cdbms第一秘诀发现18个逻辑错误总共14从sqlite 4自行车在所有检测错误15逻辑错误已经固定的注意,有两个逻辑错误检测到新的新提出的神谕,然后我们比较秘密的权利两个现有溶胶的答案和分数是一个即时滚动状态滚动是一种先进的内存损坏箱子探测器我们介绍了Oracle界面松鼠启用它找到类似于逻辑缺陷sQL red可以做什么?从图中我们可以看到，secret在72小时内检测到最多的bug。在相同的实验中，我们还比较了三个两个秘密检测的分支覆盖比最佳基线多近13个冷覆盖，然后我们比较了三个两个的队列有效性。在这里，sqlenser由于其基于规则的QA生成器而具有最高的能力。</p>
+<p>however this rule-based generator query are not as diverse as the one mutated from SQL right. this is proven by the lower codecoverage from SQL lenser in the previous co-coverage plot due to the lower due to the lack of keyword diversity SQL lenser does not detect as many logical bugs as SQL rate in the same plot we can see secret ride has a higher capability compared to the forcing to squirrel and then we evaluate on the coverage feedbacks we remove the coverage feedbacks from from SQL write and forms three baselines. the baselines either job or the mutated query run them instead of mutated query or save all the mutated query to the forcing queue. from the plots we can see that the coverage feedbacks helps security to find more bugs and at last we evaluate on the validity we incrementally remove the validity oriented techniques we introduced in SQL rate and unit test the Baseline.<br>然而，这个基于规则的生成器查询不像从SQL右边变异的查询那样多样化。在之前的共同覆盖图中，由于缺乏关键字多样性，SQL lenser没有像SQL rate那样检测到那么多逻辑错误，这证明了这一点。在同一图中，我们可以看到，与强制松鼠相比，secret ride具有更高的能力，然后我们对覆盖反馈进行评估，我们从SQL写入中删除覆盖反馈，形成三个基线。基线作业或变异查询运行它们而不是变异查询，或者将所有变异查询保存到强制队列中。从图中我们可以看到，覆盖率反馈帮助安全部门发现了更多的bug，最后我们评估了有效性，我们逐步删除了我们在SQL rate中引入的面向有效性的技术，并对基线进行了单元测试。</p>
+<p>from the plots we can see that the validity oriented techniques enables SQL rights to find more bugs. the more evaluation in the paper please check our paper for more details in conclusion in this paper we propose SQL write as a general platform to test DBMS logical bugs secret use coverage guided forcing and validity oriented mutations to more efficiently explore the TPMS program and it also includes a general interface for easy Oracle development.<br>从图中我们可以看到，面向有效性的技术使SQL权限能够发现更多的错误。在本文中，我们提出SQL write作为一个通用平台来测试DBMS逻辑错误，秘密使用覆盖引导强制和面向有效性的突变，以更有效地探索TPMS程序，它还包括一个通用接口，便于Oracle开发。</p>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>Live For Code
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="/2023/08/10/Detecting%20Logical%20Bugs%20of%20DBMS%20with%20Coverage-based%20Guidance/" target="_blank">Detecting Logical Bugs of DBMS with Coverage-based Guidance</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                
+                <div class="article-prev-next">
                     
                     
-                        
-                            <div class="archive-title">
-                                <h2 class="archive-year">2023</h2>
-                            </div>
-                            
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/30/Fuzzing101%E2%80%94%E2%80%94Exercise%2010/"><span>Fuzzing101——Exercise 10</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-30</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/29/An%20Evaluation%20of%20the%20Ninth%20SOSP%20Submissions/"><span>An Evaluation of the Ninth SOSP Submissions</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-29</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/22/Tips%20for%20Writing%20Technical%20Papers/"><span>Tips for Writing Technical Papers</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-22</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/21/Fuzzing101%E2%80%94%E2%80%94Exercise%209/"><span>Fuzzing101——Exercise 9</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-21</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/19/Fuzzing101%E2%80%94%E2%80%94Exercise%208/"><span>Fuzzing101——Exercise 8</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-19</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/17/Fuzzing101%E2%80%94%E2%80%94Exercise%207/"><span>Fuzzing101——Exercise 7</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-17</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/15/The%20structure%20of%20paper&report%20in%20Systems/"><span>The structure of paper/report in Systems</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-15</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/14/Fuzzing101%E2%80%94%E2%80%94Exercise%206/"><span>Fuzzing101——Exercise 6</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-14</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/13/Fuzzing101%E2%80%94%E2%80%94Exercise%205/"><span>Fuzzing101——Exercise 5</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-13</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/12/Fuzzing101%E2%80%94%E2%80%94Exercise%204/"><span>Fuzzing101——Exercise 4</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-12</span>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="/2023/08/06/A%20Large-scale%20and%20Longitudinal%20MeasurementStudy%20of%20DKIM%20Deployment/" class="next-prefix">» </a> 下一篇：    <a href="/2023/08/06/A%20Large-scale%20and%20Longitudinal%20MeasurementStudy%20of%20DKIM%20Deployment/" title="发布于 2023-08-06 09:39">A Large-scale and Longitudinal MeasurementStudy of DKIM Deployment</a>
                     
                 </div>
             </div>
             
+    <div class="article-comments">
         
-    <div class="pagination-bottom">
-        <div class="pagination">
-            
-                <a href="/archives/2023/07/page/2/">下一页</a>
-            
-        </div>
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
     </div>
-
+    
+ 
+        </div>
     
 </div>
     <div id="footer">
@@ -215,7 +174,7 @@
                     
                         <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
                     
-                        <li class=" active "><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
                         <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
                     
