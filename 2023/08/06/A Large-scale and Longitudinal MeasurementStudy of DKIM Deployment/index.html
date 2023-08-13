@@ -83,14 +83,11 @@
 <p>At present, the DKIM is one of the most widely used email authentication protocols. The DKIM has been proposed to understandalized since 2008 and is now adopted by Yahoo、Google and other leading email service providers. The DKIM signature is generated based on HG algorithm and asymmetric encryption algorithm just like RSA.</p>
 </blockquote>
 <p>目前，DKIM 是使用最广泛的电子邮件验证协议之一。自 2008 年起，DKIM 就被提出来进行理解，现在已被雅虎、谷歌和其他领先的电子邮件服务提供商所采用。游戏签名是根据 HG 算法和非对称加密算法生成的，就像 RSA 算法一样。</p>
-<p><img src="https://github.com/AuRuier/pic/blob/main/DKIM-1.png"></p>
 <blockquote>
 <p>The game’s public key is deployed on a domain name in the following format just like that the selector here is a random string specified by the domain owner and example.com represents a real domain name the image here is an example of a real decaying signature.</p>
 </blockquote>
-<p><img src="https://github.com/AuRuier/pic/blob/main/DKIM-1.png" alt="DKIM-1.png"></p>
 <p>这里的选择器是由域名所有者指定的随机字符串，example.com 代表一个真实的域名，这里的图片是一个真实的衰减签名示例。</p>
-<p><img src="F:\Github\AuRuier\rmb\2023-8-13_1.png" alt="2023-8-13_1"></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/AuRuier/pic/blob/main/DKIM-1.png">https://github.com/AuRuier/pic/blob/main/DKIM-1.png</a></p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/pic/20230813192219.png"></p>
 <h2 id="The-Workflow-of-DKIM-工作流程"><a href="#The-Workflow-of-DKIM-工作流程" class="headerlink" title="The Workflow of DKIM  工作流程##"></a>The Workflow of DKIM  工作流程##</h2><blockquote>
 <p>First the sender <strong>deploys the Decay protocol</strong> ，they need to generate a key Pair by <strong>asymmetric encryption algorithm</strong> and then deployed the camera course meaning the decaying public key on a DI server of a specified domain；Second window senders MTA sends an email it became signature is calculated for the outgoing email which includes the email headers、the email body and the became signature itself；last when receivers MTA receives an email with articum signature，it also first exercise the camera course for the sender’s domain to validate the game signature.</p>
 </blockquote>
