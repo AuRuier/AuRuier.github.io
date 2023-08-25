@@ -70,8 +70,10 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="Fuzzing101——Exercise-1"><a href="#Fuzzing101——Exercise-1" class="headerlink" title="Fuzzing101——Exercise 1"></a>Fuzzing101——Exercise 1</h1><p><a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-273810.htm#msg_header_h1_0">参考</a></p>
-<p>学会AFL +的基本使用，学会复现crash</p>
+                <h1 id="Fuzzing101——Exercise-1"><a href="#Fuzzing101——Exercise-1" class="headerlink" title="Fuzzing101——Exercise 1"></a>Fuzzing101——Exercise 1</h1><p>For this exercize we will fuzz <strong>Xpdf</strong> PDF viewer. The goal is to find a crash&#x2F;PoC for <a target="_blank" rel="noopener" href="https://www.cvedetails.com/cve/CVE-2019-13288/"><strong>CVE-2019-13288</strong></a> （可能通过精心制作的文件导致无限递归的漏洞）in XPDF 3.02. </p>
+<hr>
+<p><a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-273810.htm#msg_header_h1_0">参考</a></p>
+<p>学会AFL +的基本使用，学会复现crash。</p>
 <h2 id="远程连接问题"><a href="#远程连接问题" class="headerlink" title="远程连接问题"></a>远程连接问题</h2><ul>
 <li><p>确保Ubuntu系统正在运行，并已配置为允许SSH连接。通过 sudo service ssh status 来检查SSH服务的状态。若没有运行，通过 sudo service ssh start 来启动它。</p>
 </li>
@@ -86,9 +88,11 @@
 </ul>
 <h2 id="下载安装目标"><a href="#下载安装目标" class="headerlink" title="下载安装目标"></a>下载安装目标</h2><pre><code>cd $HOME
 mkdir fuzzing_xpdf &amp;&amp; cd fuzzing_xpdf/
+sudo apt install build-essential
 </code></pre>
-<h2 id="下载Xpdf并解压"><a href="#下载Xpdf并解压" class="headerlink" title="下载Xpdf并解压"></a>下载Xpdf并解压</h2><p>   使用Wget下载文件 安装Wget： sudo apt install wget</p>
-<pre><code>wget https://dl.xpdfreader.com/old/xpdf-3.02.tar.gz
+<h2 id="下载Xpdf并解压"><a href="#下载Xpdf并解压" class="headerlink" title="下载Xpdf并解压"></a>下载Xpdf并解压</h2><p>   使用Wget下载文件 安装Wget：</p>
+<pre><code>sudo apt install wget
+wget https://dl.xpdfreader.com/old/xpdf-3.02.tar.gz
 tar -xvzf xpdf-3.02.tar.gz
 </code></pre>
 <h2 id="安装依赖和目标"><a href="#安装依赖和目标" class="headerlink" title="安装依赖和目标"></a>安装依赖和目标</h2><pre><code>cd xpdf-3.02
@@ -99,7 +103,7 @@ make install
 </code></pre>
 <p>更新有误 输入下面命令导入公钥：</p>
 <pre><code>sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 公钥
-
+   
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
 </code></pre>
 <h2 id="构建语料库并测试Xpdf"><a href="#构建语料库并测试Xpdf" class="headerlink" title="构建语料库并测试Xpdf"></a>构建语料库并测试Xpdf</h2><pre><code>cd $HOME/fuzzing_xpdf
@@ -119,11 +123,19 @@ sudo apt install libpython3.10-stdlib=3.10.4-3
 sudo apt install libpython3.10=3.10.4-3
 sudo apt install libpython3.10-dev
 
-
 libpython3.10-minimal (= 3.10.4-3)
 
 sudo apt install python3.10=3.10.4-3
 sudo apt install python3.10-dev
+</code></pre>
+<h2 id="测试-pdf-二进制文件"><a href="#测试-pdf-二进制文件" class="headerlink" title="测试 pdf 二进制文件:"></a>测试 pdf 二进制文件:</h2><pre><code>$HOME/fuzzing_xpdf/install/bin/pdfinfo -box -meta $HOME/fuzzing_xpdf/pdf_examples/helloworld.pdf
+</code></pre>
+<p>运行如下：</p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-1-0.PNG?raw=true" alt="101-1-0.PNG"></p>
+<h2 id="下载依赖"><a href="#下载依赖" class="headerlink" title="下载依赖"></a>下载依赖</h2><pre><code>sudo apt-get update
+sudo apt-get install -y build-essential python3-dev automake git flex bison libglib2.0-dev libpixman-1-dev python3-setuptools
+sudo apt-get install -y lld-11 llvm-11 llvm-11-dev clang-11 || sudo apt-get install -y lld llvm llvm-dev clang 
+sudo apt-get install -y gcc-$(gcc --version|head -n1|sed &#39;s/.* //&#39;|sed &#39;s/\..*//&#39;)-plugin-dev libstdc++-$(gcc --version|head -n1|sed &#39;s/.* //&#39;|sed &#39;s/\..*//&#39;)-dev
 </code></pre>
 <h2 id="安装构建AFL"><a href="#安装构建AFL" class="headerlink" title="安装构建AFL++"></a>安装构建AFL++</h2><pre><code>cd $HOME
 git clone https://github.com/AFLplusplus/AFLplusplus &amp;&amp; cd AFLplusplus
@@ -131,22 +143,75 @@ export LLVM_CONFIG=&quot;llvm-config-11&quot;
 make distrib
 sudo make install
 </code></pre>
+<h2 id="docker"><a href="#docker" class="headerlink" title="docker"></a>docker</h2><pre><code>sudo apt install docker
+docker pull aflplusplus/aflplusplus
+docker run -ti -v $HOME:/home aflplusplus/aflplusplus
+export $HOME=&quot;/home&quot;
+</code></pre>
+<p>运行 afl-fuzz 即可得：</p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/Image1.png?raw=true" alt="Image1.png"></p>
 <h2 id="使用AFL"><a href="#使用AFL" class="headerlink" title="使用AFL++"></a>使用AFL++</h2><pre><code>rm -r $HOME/fuzzing_xpdf/install
 cd $HOME/fuzzing_xpdf/xpdf-3.02/
 make clean
 </code></pre>
-<h2 id="进行模糊测试："><a href="#进行模糊测试：" class="headerlink" title="进行模糊测试："></a>进行模糊测试：</h2><pre><code>afl-fuzz -i $HOME/fuzzing_xpdf/pdf_examples/ -o $HOME/fuzzing_xpdf/out/ -s 123 -- $HOME/fuzzing_xpdf/install/bin/pdftotext @@ $HOME/fuzzing_xpdf/output
-</code></pre>
-<h2 id="再现崩溃"><a href="#再现崩溃" class="headerlink" title="再现崩溃"></a>再现崩溃</h2><p>将文件作为输入，将会引起崩溃</p>
-<pre><code>$HOME/fuzzing_xpdf/install/bin/pdftotext &#39;$HOME/fuzzing_xpdf/out/default/crashes/&lt;your_filename&gt;&#39; $HOME/fuzzing_xpdf/output
-</code></pre>
-<h2 id="动态调试"><a href="#动态调试" class="headerlink" title="动态调试"></a>动态调试</h2><pre><code>make clean
-CFLAGS=&quot;-g -O0&quot; CXXFLAGS=&quot;-g -O0&quot; ./configure --prefix=&quot;$HOME/fuzz_target/fuzzing_xpdf/install/&quot;
+<p>使用 <strong>afl-clang-fast</strong> 编译器构建xpdf：</p>
+<pre><code>export LLVM_CONFIG=&quot;llvm-config-11&quot;
+CC=$HOME/AFLplusplus/afl-clang-fast CXX=$HOME/AFLplusplus/afl-clang-fast++ ./configure --prefix=&quot;$HOME/fuzzing_xpdf/install/&quot;
 make
 make install
 </code></pre>
-<h2 id="运行gdb"><a href="#运行gdb" class="headerlink" title="运行gdb"></a>运行gdb</h2><pre><code>gdb --args $HOME/fuzz_target/fuzzing_xpdf/install/bin/pdftotext $HOME/fuzz_target/fuzzing_xpdf/out/default/crashes/&lt;your_filename&gt; $HOME/fuzz_target/fuzzing_xpdf/output
+<h2 id="进行模糊测试："><a href="#进行模糊测试：" class="headerlink" title="进行模糊测试："></a>进行模糊测试：</h2><pre><code>AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 afl-fuzz -i $HOME/fuzzing_xpdf/pdf_examples/ -o $HOME/fuzzing_xpdf/out/ -s 123 -- $HOME/fuzzing_xpdf/install/bin/pdftotext @@ $HOME/fuzzing_xpdf/output
 </code></pre>
+<p>tips:</p>
+<ul>
+<li><em>-i</em> 表示我们必须放置输入大小写的目录(即文件示例)</li>
+<li><em>-o</em> 表示 afl++ 存储修改后文件的目录</li>
+<li><em>-s</em> 表示使用静态随机种子</li>
+<li><em>@@</em> 是AFL将用每个输入文件名替换的占位符目标的命令行</li>
+</ul>
+<p><code>$HOME/fuzzing_xpdf/install/bin/pdftotext &lt;input-file-name&gt; $HOME/fuzzing_xpdf/output</code> 用于每个不同的输入文件。</p>
+<p>如果有出错—— *”Hmm, your system is configured to send core dump notifications to an external utility…”*，那么：</p>
+<pre><code>sudo su
+echo core &gt;/proc/sys/kernel/core_pattern
+exit
+</code></pre>
+<p>运行一段时间即可看到crash：</p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-1-2.PNG?raw=true" alt="101-1-2.PNG"></p>
+<p> 在<code>$HOME/fuzzing_xpdf/out/</code> 中即可看到这些崩溃文件：</p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-1-3.PNG?raw=true" alt="101-1-3.PNG"></p>
+<hr>
+<h2 id="再现崩溃"><a href="#再现崩溃" class="headerlink" title="再现崩溃"></a>再现崩溃</h2><p>将选中文件作为输入，将会引起崩溃</p>
+<pre><code>$HOME/fuzzing_xpdf/install/bin/pdftotext &quot;$HOME/fuzzing_xpdf/out/default/crashes/id:000000,sig:11,src:001157,time:190859,execs:150075,op:havoc,rep:14&quot; $HOME/fuzzing_xpdf/output
+</code></pre>
+<h2 id="动态调试"><a href="#动态调试" class="headerlink" title="动态调试"></a>动态调试</h2><p>使用GDB来找出使用此输入导致程序崩溃的原因<a target="_blank" rel="noopener" href="http://people.cs.pitt.edu/~mosse/gdb-note.html">（GDB入门）</a>：</p>
+<p>调试信息重新构建Xpdf:</p>
+<pre><code>rm -r $HOME/fuzzing_xpdf/install
+cd $HOME/fuzzing_xpdf/xpdf-3.02/
+make clean
+CFLAGS=&quot;-g -O0&quot; CXXFLAGS=&quot;-g -O0&quot; ./configure --prefix=&quot;$HOME/fuzzing_xpdf/install/&quot;
+make
+make install
+</code></pre>
+<h2 id="运行gdb"><a href="#运行gdb" class="headerlink" title="运行gdb"></a>运行gdb</h2><pre><code>gdb --args $HOME/fuzzing_xpdf/install/bin/pdftotext $HOME/fuzzing_xpdf/out/default/crashes/id:000000,sig:11,src:001157,time:190859,execs:150075,op:havoc,rep:14 $HOME/fuzzing_xpdf/output
+</code></pre>
+<p>在GDB中输入： run<br>具体如下图所示：<br><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-1-4.PNG?raw=true" alt="101-1-4.PNG"></p>
+<p>通过bt来<a target="_blank" rel="noopener" href="https://www.cvedetails.com/cve/CVE-2019-13288/">回溯</a>:<br>发现有多条Parser::getObj，与CVE-2019-13288中无限递归的描述相符合</p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-1-5.PNG?raw=true" alt="101-1-5.PNG"></p>
+<h2 id="修复"><a href="#修复" class="headerlink" title="修复"></a>修复</h2><p>通过增加一个记录递归次数的变量，解决该漏洞:</p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-1-6.PNG?raw=true" alt="101-1-6.PNG"></p>
+<p>可下载 xpdf-4.02，与之对比：</p>
+<pre><code>wget https://dl.xpdfreader.com/old/xpdf-4.02.tar.gz
+tar -xvzf xpdf-4.02.tar.gz
+</code></pre>
+<hr>
+<ul>
+<li>本次实验的进行可谓是步步坎坷，最开始尝试的是通过CentOS，结果就是安装依赖过程各种不匹配；</li>
+<li>第二次尝试是老版的Ubuntu，进行过程出现了远程连接问题，更新问题等等；</li>
+<li>第三次尝试是利用本机，但总是在afl-fuzz这一步出现各种问题，且一直没有得到解决；</li>
+<li>第四次尝试是直接用提供的裸机，终究目的达成；</li>
+<li>经过多次的试错与尝试，可以说是使自己不得不一步步地再度学习与测试，在纠错中不断学习，在学习中不断纠错；</li>
+<li>此次实验的进行使自己不再惧怕Fuzz，终于敢去尝试并且努力征服。</li>
+</ul>
 
                 
                 <p class="end">__END__</p>
