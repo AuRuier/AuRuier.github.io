@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            归档
+            Fuzzing101——Exercise 8
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -32,15 +32,32 @@
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body>
     <a id="cover"></a>
-    <link type="text/css" rel="stylesheet" href="/css/archive.css">
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
 <div id="header" class="header">
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">归档</h1>
+                <h1 class="header-subtitle">Fuzzing101——Exercise 8</h1>
                 <div class="header-subinfo">
-                    <p class="article-info-text Chinese"></p>
-                    <p class="article-info-text English"></p>                  
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2023-08-25
+                        </span>
+                        
+                            
+                                <span id="/2023/08/25/Fuzzing101——Exercise 8/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 8">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/08/25/Fuzzing101——Exercise 8/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                    
                 </div>
             
         </div>
@@ -49,125 +66,165 @@
 </div>
 <div id="container">
     
-        
-            <!-- 归档页面、分类归档页面、标签归档页面 -->
-            <div class="articles">
-                <div class="articles-wrap">
-                    <span class="archive-move-on"></span>
-                    <span class="archive-counter">
-                        
-                            目前共计 19 篇日志，继续加油！
-                        
-                    </span>
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h1 id="Fuzzing101——Exercise-8"><a href="#Fuzzing101——Exercise-8" class="headerlink" title="Fuzzing101——Exercise 8"></a>Fuzzing101——Exercise 8</h1><p>对 <strong>Adobe Reader</strong> 应用程序进行模糊测试, 发现 Adobe Reader 9.5.1 中的越界漏洞。</p>
+<hr>
+<p>用AFL +的QEMU模式对闭源二进制程序fuzzing，了解二进制内存错误检测工具QASAN（QEMUAddressSanitizer）</p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li><ol>
+<li>创建 PDF 样本的种子语料库</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>启用持久模式</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>使用 QEMU 模式对 Adobe Reader 进行模糊处理，直到出现一些崩溃现象</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>对崩溃进行分类，找到漏洞的 PoC</li>
+</ol>
+</li>
+</ul>
+<h2 id="AFL-的-QEMU-安装"><a href="#AFL-的-QEMU-安装" class="headerlink" title="AFL++ 的 QEMU 安装"></a>AFL++ 的 QEMU 安装</h2><p>首先，需要在系统中安装 afl-qemu。</p>
+<pre><code>sudo apt install ninja-build libc6-dev-i386
+cd ~/AFLplusplus/qemu_mode/
+CPU_TARGET=i386 ./build_qemu_support.sh
+sudo cp $HOME/AFLplusplus/afl-qemu-trace /usr/local/bin/
+cd ..
+make distrib
+sudo make install
+</code></pre>
+<blockquote>
+<p>这里在运行 build_qemu_support.sh 后，即生成了 afl-qemu-trace 程序，但没有找到 Makefile 文件的踪迹，所以这里进行手动安装 <code>sudo cp $HOME/AFLplusplus/afl-qemu-trace /usr/local/bin/</code> ，否则，后面在进行模糊测试的时候，找不到 afl-qemu-trace 文件。 CPU_TARGET&#x3D;i386 为了使 afl-qemu-trace 的架构与目标程序匹配，否则进行测试的时候，会出现错误。</p>
+<p> <code>CPU_TARGET=i386 ./build_qemu_support.sh</code> 可能需多尝试几次。</p>
+</blockquote>
+<p>通过以下命令检查:</p>
+<pre><code>afl-qemu-trace --help
+</code></pre>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-8-1.png?raw=true" alt="101-8-1.png"></p>
+<h2 id="Adobe-Reader-安装"><a href="#Adobe-Reader-安装" class="headerlink" title="Adobe Reader 安装"></a>Adobe Reader 安装</h2><p>安装依赖项:</p>
+<pre><code>sudo apt-get install libxml2:i386
+</code></pre>
+<p>下载并解压 <code>AdbeRdr9.5.1-1_i386linux_enu.deb</code>:</p>
+<pre><code>wget ftp://ftp.adobe.com/pub/adobe/reader/unix/9.x/9.5.1/enu/AdbeRdr9.5.1-1_i386linux_enu.deb
+</code></pre>
+<p>安装:</p>
+<pre><code>sudo dpkg -i AdbeRdr9.5.1-1_i386linux_enu.deb
+</code></pre>
+<p>然后键入以下命令，接受许可协议，即可看到 Adobe Reader 界面:</p>
+<pre><code>acroread
+</code></pre>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-8-2.jpg?raw=true" alt="101-8-2.jpg"></p>
+<p>如果输入以下命令还可以查看可用命令行选项列表：</p>
+<pre><code>acroread -help 
+</code></pre>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-8-3.jpg?raw=true" alt="101-8-3.jpg"></p>
+<h2 id="Fuzz"><a href="#Fuzz" class="headerlink" title="Fuzz"></a>Fuzz</h2><h3 id="创建种子语料库"><a href="#创建种子语料库" class="headerlink" title="创建种子语料库"></a>创建种子语料库</h3><p>本次测试采用从 <strong>SafeDocs “Issue Tracker” Corpus</strong> 下载的语料。<a target="_blank" rel="noopener" href="https://www.pdfa.org/a-new-stressful-pdf-corpus/">更多信息</a>.</p>
+<pre><code>mkdir fuzzing_adobe
+cd fuzzing_adobe/
+</code></pre>
+<p>下载并解压缩语料库:</p>
+<pre><code>wget https://corpora.tika.apache.org/base/packaged/pdfs/archive/pdfs_202002/libre_office.zip
+unzip libre_office.zip -d extracted
+</code></pre>
+<p>从中选择 <strong>小于 2 kB</strong> 的文件作为语料库，以加快模糊处理过程:</p>
+<pre><code>mkdir -p $HOME/fuzzing_adobe/afl_in
+find ./extracted -type f -size -2k \
+    -exec cp &#123;&#125; $HOME/fuzzing_adobe/afl_in \;
+</code></pre>
+<h3 id="第一种方法"><a href="#第一种方法" class="headerlink" title="第一种方法"></a>第一种方法</h3><p>直接使用 <strong>-Q 参数</strong> 运行 afl-fuzz：</p>
+<pre><code>ACRO_INSTALL_DIR=/opt/Adobe/Reader9/Reader ACRO_CONFIG=intellinux LD_LIBRARY_PATH=$LD_LIBRARY_PATH:&#39;/opt/Adobe/Reader9/Reader/intellinux/lib&#39; afl-fuzz -Q -i ./afl_in/ -o ./afl_out/ -t 2000 -- /opt/Adobe/Reader9/Reader/intellinux/bin/acroread -toPostScript @@
+</code></pre>
+<ul>
+<li><code>ACRO_INSTALL_DIR=/opt/Adobe/Reader9/Reader</code> ：指定 Adobe Reader 9 的安装目录。</li>
+<li><code>ACRO_CONFIG=intellinux</code> ：指定 Adobe Reader 9 的配置选项为 “intellinux”。</li>
+<li><code>LD_LIBRARY_PATH=$LD_LIBRARY_PATH:&#39;/opt/Adobe/Reader9/Reader/intellinux/lib&#39;</code> ：设置环境变量 LD_LIBRARY_PATH，将 Adobe Reader 9 的库文件路径添加到其中，以便系统可以找到所需的库文件。</li>
+<li>-Q：以 QEMU 模式运行目标二进制文件。</li>
+<li>这里要注意，<code>/opt/Adobe/Reader9/bin/acroread</code> 只是 shell 脚本，真正的二进制路径是 <code>/opt/Adobe/Reader9/Reader/intellinux/bin/acroread</code> 。</li>
+<li>需要设置 <code>ACRO_INSTALL_DIR</code> 和 <code>ACRO_CONFIG</code> 环境变量，以及设置 <code>LD_LIBRARY_PATH</code> 来定义搜索动态链接库的目录。否则就会得到错误信息：<code>acroread</code> 必须从启动脚本中执行！！！</li>
+</ul>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/5.png?raw=true" alt="5.png"></p>
+<p>现在的模糊处理速度很慢！我们可以通过持久模糊来提高模糊速度！！！</p>
+<h3 id="持久方法"><a href="#持久方法" class="headerlink" title="持久方法"></a>持久方法</h3><blockquote>
+<p>在实验6中，我们是通过插入 <code>AFL_LOOP</code> 来告诉 AFL++ 想要启用持久化模式的方法。但在这种情况下，我们无法访问源代码。</p>
+<p>因此，我们可以使用 <code>AFL_QEMU_PERSISTENT_ADDR</code> 来指定持久循环的起始地址。在此建议将该地址设置为函数的起始位置。有关 AFL_QEMU 持久化选项的<a target="_blank" rel="noopener" href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/qemu_mode/README.persistent.md">更多信息</a>。</p>
+</blockquote>
+<p>为了找到合适的偏移量，可以使用 IDA 或 Ghidra 等反汇编器。这里选择了偏移量  <code>0x08546a00</code>：</p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/6.png?raw=true" alt="6.png"></p>
+<p>除了使用反汇编器，还可以使用 <strong>callgrind</strong> 进行动态分析。</p>
+<p>首先，安装 valgrind 和 kcachegrind：</p>
+<pre><code>sudo apt-get install valgrind
+sudo apt-get install kcachegrind
+</code></pre>
+<p>现在，我们可以用以下命令生成 callgrind 报告：</p>
+<pre><code>ACRO_INSTALL_DIR=/opt/Adobe/Reader9/Reader ACRO_CONFIG=intellinux LD_LIBRARY_PATH=$LD_LIBRARY_PATH:&#39;/opt/Adobe/Reader9/Reader/intellinux/lib&#39; valgrind --tool=callgrind /opt/Adobe/Reader9/Reader/intellinux/bin/acroread -toPostScript [samplePDF]
+</code></pre>
+<ul>
+<li>其中 <code>samplePDF</code> 是 PDF 样本的路径。它将在当前文件夹中生成一个 <code>callgrind.out</code> 输出文件。</li>
+</ul>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-8-4.png?raw=true" alt="101-8-4.png"></p>
+<p>此刻运行 <strong>kachegrind</strong> 即可查看该报告：</p>
+<pre><code>kcachegrind 
+</code></pre>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-8-6.png?raw=true" alt="101-8-6.png"></p>
+<h3 id="Fuzzing（QEMU模式）"><a href="#Fuzzing（QEMU模式）" class="headerlink" title="Fuzzing（QEMU模式）"></a>Fuzzing（QEMU模式）</h3><pre><code>AFL_QEMU_PERSISTENT_ADDR=0x085478AC AFL_QEMU_PERSISTENT_GPR=1 ACRO_INSTALL_DIR=/opt/Adobe/Reader9/Reader ACRO_CONFIG=intellinux LD_LIBRARY_PATH=$LD_LIBRARY_PATH:&#39;/opt/Adobe/Reader9/Reader/intellinux/lib&#39; afl-fuzz -Q -i ./afl_in/ -o ./afl_out/ -t 2000 -- /opt/Adobe/Reader9/Reader/intellinux/bin/acroread -toPostScript @@
+</code></pre>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-8-5.jpg?raw=true" alt="101-8-5.jpg"></p>
+<p>目前出现了一些问题，还未解决……</p>
+<p>此外，还有一种更快的方法： <strong>编写自定义线束</strong>！！！</p>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>Live For Code
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="/2023/08/25/Fuzzing101%E2%80%94%E2%80%94Exercise%208/" target="_blank">Fuzzing101——Exercise 8</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                
+                <div class="article-prev-next">
+                    
+                        <a href="/2023/08/30/Fuzzing101%E2%80%94%E2%80%94Exercise%209/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/08/30/Fuzzing101%E2%80%94%E2%80%94Exercise%209/" title="发布于 2023-08-30 11:26">Fuzzing101——Exercise 9</a>
+                        <br>
                     
                     
-                        
-                            <div class="archive-title">
-                                <h2 class="archive-year">2023</h2>
-                            </div>
-                            
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/13/Fuzzing101%E2%80%94%E2%80%94Exercise%201/"><span>Fuzzing101——Exercise 1</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-13</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/06/A%20Large-scale%20and%20Longitudinal%20MeasurementStudy%20of%20DKIM%20Deployment/"><span>A Large-scale and Longitudinal MeasurementStudy of DKIM Deployment</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-06</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/30/The%20structure%20of%20paper&report%20in%20Systems/"><span>The structure of paper/report in Systems</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-30</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/28/An%20Evaluation%20of%20the%20Ninth%20SOSP%20Submissions/"><span>An Evaluation of the Ninth SOSP Submissions</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-28</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/22/Tips%20for%20Writing%20Technical%20Papers/"><span>Tips for Writing Technical Papers</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-22</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/08/How%20to%20give%20a%20good%20research%20talk/"><span>How to give a good research talk</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-08</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/07/So-you-want-to-work-in-security/"><span>So you want to work in security</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-07</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/07/hello-girl/"><span>hello-girl</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-07</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/07/hello-world/"><span>Hello World</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-07</span>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="/2023/08/23/Fuzzing101%E2%80%94%E2%80%94Exercise%207/" class="next-prefix">» </a> 下一篇：    <a href="/2023/08/23/Fuzzing101%E2%80%94%E2%80%94Exercise%207/" title="发布于 2023-08-23 09:55">Fuzzing101——Exercise 7</a>
                     
                 </div>
             </div>
             
+    <div class="article-comments">
         
-    <div class="pagination-bottom">
-        <div class="pagination">
-            
-                <a class="extend prev" rel="prev" href="/archives/">上一页</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span>
-            
-        </div>
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
     </div>
-
+    
+ 
+        </div>
     
 </div>
     <div id="footer">
@@ -205,7 +262,7 @@
                     
                         <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
                     
-                        <li class=" active "><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
                         <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
                     

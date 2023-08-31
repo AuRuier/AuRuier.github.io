@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            归档
+            Fuzzing101——Exercise 4
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -32,15 +32,32 @@
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body>
     <a id="cover"></a>
-    <link type="text/css" rel="stylesheet" href="/css/archive.css">
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
 <div id="header" class="header">
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">归档</h1>
+                <h1 class="header-subtitle">Fuzzing101——Exercise 4</h1>
                 <div class="header-subinfo">
-                    <p class="article-info-text Chinese"></p>
-                    <p class="article-info-text English"></p>                  
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2023-08-18
+                        </span>
+                        
+                            
+                                <span id="/2023/08/18/Fuzzing101——Exercise 4/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 4">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/08/18/Fuzzing101——Exercise 4/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                    
                 </div>
             
         </div>
@@ -49,125 +66,169 @@
 </div>
 <div id="container">
     
-        
-            <!-- 归档页面、分类归档页面、标签归档页面 -->
-            <div class="articles">
-                <div class="articles-wrap">
-                    <span class="archive-move-on"></span>
-                    <span class="archive-counter">
-                        
-                            目前共计 19 篇日志，继续加油！
-                        
-                    </span>
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h1 id="Fuzzing101——Exercise-4"><a href="#Fuzzing101——Exercise-4" class="headerlink" title="Fuzzing101——Exercise 4"></a>Fuzzing101——Exercise 4</h1><p>对 <strong>LibTIFF</strong> 图像库进行模糊测试。目标是在 libtiff 4.0.4 中找到 <a target="_blank" rel="noopener" href="https://www.cvedetails.com/cve/CVE-2016-9297/"><strong>CVE-2016-9297</strong></a> 的崩溃&#x2F;PoC（一个越界读取漏洞，可通过伪造的 TIFF_SETGET_C16ASCII 或 TIFF_SETGET_C32_ASCII 标记值触发），并 <strong>测量崩溃&#x2F;PoC 的代码覆盖数据</strong> 。</p>
+<p>越界读取是指当程序读取的数据超过预定缓冲区的末尾或开头时发生的漏洞。因此，远程攻击者可利用该漏洞导致拒绝服务，或从进程内存中获取敏感信息。点击查看 “越界读取 “漏洞的<a target="_blank" rel="noopener" href="https://cwe.mitre.org/data/definitions/125.html">更多信息</a>。</p>
+<hr>
+<p>了解代码覆盖率，使用代码覆盖率数据来提高模糊处理的有效性</p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li><ol>
+<li>Fuzz LibTiff（启用 ASan），直到发现一些独特的崩溃现象</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>筛选崩溃，找到漏洞的 PoC</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>测量该 PoC 的代码覆盖率</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>修复问题</li>
+</ol>
+</li>
+</ul>
+<h2 id="下载安装目标"><a href="#下载安装目标" class="headerlink" title="下载安装目标"></a>下载安装目标</h2><pre><code>cd $HOME
+mkdir fuzzing_tiff &amp;&amp; cd fuzzing_tiff/
+</code></pre>
+<p><strong>下载并解压 libtiff 4.0.4:</strong></p>
+<pre><code>wget https://download.osgeo.org/libtiff/tiff-4.0.4.tar.gz
+tar -xzvf tiff-4.0.4.tar.gz
+</code></pre>
+<p><strong>build and install libtiff:</strong></p>
+<pre><code>cd tiff-4.0.4/
+./configure --prefix=&quot;$HOME/fuzzing_tiff/install/&quot; --disable-shared
+make
+make install
+</code></pre>
+<h3 id="创建语料库："><a href="#创建语料库：" class="headerlink" title="创建语料库："></a>创建语料库：</h3><p>使用 <code>/test/images/</code> 文件夹中的样本图像作为种子输入语料，模糊位于 <code>/bin</code> 文件夹中的 <code>tiffinfo</code> 二进制文件。</p>
+<h3 id="测试功能："><a href="#测试功能：" class="headerlink" title="测试功能："></a>测试功能：</h3><pre><code>$HOME/fuzzing_tiff/install/bin/tiffinfo -D -j -c -r -s -w $HOME/fuzzing_tiff/tiff-4.0.4/test/images/palette-1c-1b.tiff
+</code></pre>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-4-1.PNG?raw=true" alt="101-4-1.PNG"></p>
+<p>Tips:<br>在命令中，启用了 “-j -c -r -s -w” 所有这些标志。这是为了提高<strong>代码覆盖率</strong>，增加发现漏洞的机会。</p>
+<h2 id="代码覆盖率"><a href="#代码覆盖率" class="headerlink" title="代码覆盖率"></a>代码覆盖率</h2><p>代码覆盖率是一个软件度量指标，显示每行代码被触发的次数。通过使用代码覆盖率，我们可以了解模糊器触发了代码的哪些部分，并将模糊过程可视化。</p>
+<p><strong>首先，安装 lcov</strong></p>
+<pre><code>sudo apt install lcov
+</code></pre>
+<p><strong>使用 –coverage 标志重建 libtiff（使用lvoc（覆盖率检测）编译libtiff）：</strong></p>
+<pre><code>rm -r $HOME/fuzzing_tiff/install
+cd $HOME/fuzzing_tiff/tiff-4.0.4/
+make clean
+  
+CFLAGS=&quot;--coverage&quot; LDFLAGS=&quot;--coverage&quot; ./configure --prefix=&quot;$HOME/fuzzing_tiff/install/&quot; --disable-shared
+make
+make install
+</code></pre>
+<p><strong>键入以下内容来收集代码覆盖率数据:</strong></p>
+<pre><code>cd $HOME/fuzzing_tiff/tiff-4.0.4/
+lcov --zerocounters --directory ./
+lcov --capture --initial --directory ./ --output-file app.info
+$HOME/fuzzing_tiff/install/bin/tiffinfo -D -j -c -r -s -w $HOME/fuzzing_tiff/tiff-4.0.4/test/images/palette-1c-1b.tiff
+lcov --no-checksum --directory ./ --capture --output-file app2.info
+</code></pre>
+<p>Tips:</p>
+<ul>
+<li><code>lcov --zerocounters --directory ./</code>：重置计数器</li>
+<li><code>lcov --capture --initial --directory ./ --output-file app.info</code>：为每个instrumented line返回覆盖率数据的初始化基准</li>
+<li><code>$HOME/fuzzing_tiff/install/bin/tiffinfo -D -j -c -r -s -w $HOME/fuzzing_tiff/tiff-4.0.4/test/images/palette-1c-1b.tiff</code> ：运行需要分析的应用，可以用多个样本运行多次</li>
+<li><code>lcov --no-checksum --directory ./ --capture --output-file app2.info</code>： 将当前覆盖状态保存到 app2.info 文件中</li>
+</ul>
+<p><strong>最后，生成 HTML 输出：</strong></p>
+<pre><code>genhtml --highlight --legend -output-directory ./html-coverage/ ./app2.info
+</code></pre>
+<p>代码覆盖报告将在 html-coverage 文件夹中创建。打开 .&#x2F;html-coverage&#x2F;index.html 文件，即可看到如图：</p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-4-4.jpg?raw=true" alt="101-4-4.jpg"></p>
+<h2 id="Fuzzing"><a href="#Fuzzing" class="headerlink" title="Fuzzing"></a>Fuzzing</h2><p>###用 afl-clang-lto 在启用 ASAN 的情况下编译 libtiff:</p>
+<p><strong>首先，清理所有之前编译过的对象文件和可执行文件：</strong></p>
+<pre><code>rm -r $HOME/fuzzing_tiff/install
+cd $HOME/fuzzing_tiff/tiff-4.0.4/
+make clean
+</code></pre>
+<p><strong>在调用 make 之前设置 AFL_USE_ASAN&#x3D;1:</strong></p>
+<pre><code>export LLVM_CONFIG=&quot;llvm-config-11&quot;
+CC=afl-clang-lto ./configure --prefix=&quot;$HOME/fuzzing_tiff/install/&quot; --disable-shared
+AFL_USE_ASAN=1 make -j4
+AFL_USE_ASAN=1 make install
+</code></pre>
+<p><strong>Fuzzing:</strong></p>
+<pre><code>AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 afl-fuzz -m none -i $HOME/fuzzing_tiff/tiff-4.0.4/test/images/ -o $HOME/fuzzing_tiff/out/ -s 123 -- $HOME/fuzzing_tiff/install/bin/tiffinfo -D -j -c -r -s -w @@
+</code></pre>
+<p>首次测试出现如下错误：</p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-4-2.PNG?raw=true" alt="101-4-2.PNG"></p>
+<p>根据提示，执行以下操作：</p>
+<pre><code>sudo su
+echo core &gt;/proc/sys/kernel/core_pattern
+exit
+</code></pre>
+<p>再次运行：</p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-4-3.PNG?raw=true" alt="101-4-3.PNG"></p>
+<p>运行 8 小时的 crash：</p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-4-7.jpg?raw=true" alt="101-4-7.jpg"></p>
+<h2 id="动态调试"><a href="#动态调试" class="headerlink" title="动态调试"></a>动态调试</h2><blockquote>
+<p>假设跑出 crash：id:000000,sig:06,src:000016,time:556815,execs:377779,op:havoc,rep:4</p>
+</blockquote>
+<p>###查看报错</p>
+<pre><code>./install/bin/tiffinfo -D -j -c -r -s -w ./out/default/crashes/id\:000000\,sig\:06\,src\:000016\,time\:556815\,execs\:377779\,op\:havoc\,rep\:4
+</code></pre>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-4-4.PNG?raw=true" alt="101-4-4.PNG"></p>
+<ul>
+<li>报错信息：AddressSanitizer: heap-buffer-overflow (&#x2F;root&#x2F;fuzz_target&#x2F;fuzzing_tiff&#x2F;install&#x2F;bin&#x2F;tiffinfo+0x2aaf11) in fputs，堆溢出</li>
+</ul>
+<h2 id="代码覆盖率测量"><a href="#代码覆盖率测量" class="headerlink" title="代码覆盖率测量"></a>代码覆盖率测量</h2><p>尝试测量 PoC 的代码覆盖率，<strong>需要获取一份覆盖率 html 报告</strong>，与上面的示例类似。</p>
+<h2 id="修复"><a href="#修复" class="headerlink" title="修复"></a>修复</h2><p> <a target="_blank" rel="noopener" href="https://github.com/vadz/libtiff/commit/30c9234c7fd0dd5e8b1e83ad44370c875a0270ed">官方修复</a></p>
+<hr>
+<p>此次实验进行整体较为顺利，只是在动态调试时并没有查看到报错，如下图所示，后续再加以完善。<br><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-4-5.jpg?raw=true" alt="101-4-5.jpg"></p>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>Live For Code
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="/2023/08/18/Fuzzing101%E2%80%94%E2%80%94Exercise%204/" target="_blank">Fuzzing101——Exercise 4</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                
+                <div class="article-prev-next">
+                    
+                        <a href="/2023/08/19/Fuzzing101%E2%80%94%E2%80%94Exercise%205/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/08/19/Fuzzing101%E2%80%94%E2%80%94Exercise%205/" title="发布于 2023-08-19 01:56">Fuzzing101——Exercise 5</a>
+                        <br>
                     
                     
-                        
-                            <div class="archive-title">
-                                <h2 class="archive-year">2023</h2>
-                            </div>
-                            
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/13/Fuzzing101%E2%80%94%E2%80%94Exercise%201/"><span>Fuzzing101——Exercise 1</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-13</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/06/A%20Large-scale%20and%20Longitudinal%20MeasurementStudy%20of%20DKIM%20Deployment/"><span>A Large-scale and Longitudinal MeasurementStudy of DKIM Deployment</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-06</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/30/The%20structure%20of%20paper&report%20in%20Systems/"><span>The structure of paper/report in Systems</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-30</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/28/An%20Evaluation%20of%20the%20Ninth%20SOSP%20Submissions/"><span>An Evaluation of the Ninth SOSP Submissions</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-28</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/22/Tips%20for%20Writing%20Technical%20Papers/"><span>Tips for Writing Technical Papers</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-22</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/08/How%20to%20give%20a%20good%20research%20talk/"><span>How to give a good research talk</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-08</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/07/So-you-want-to-work-in-security/"><span>So you want to work in security</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-07</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/07/hello-girl/"><span>hello-girl</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-07</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/07/hello-world/"><span>Hello World</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-07</span>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="/2023/08/17/Fuzzing101%E2%80%94%E2%80%94Exercise%203/" class="next-prefix">» </a> 下一篇：    <a href="/2023/08/17/Fuzzing101%E2%80%94%E2%80%94Exercise%203/" title="发布于 2023-08-17 10:59">Fuzzing101——Exercise 3</a>
                     
                 </div>
             </div>
             
+    <div class="article-comments">
         
-    <div class="pagination-bottom">
-        <div class="pagination">
-            
-                <a class="extend prev" rel="prev" href="/archives/">上一页</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span>
-            
-        </div>
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
     </div>
-
+    
+ 
+        </div>
     
 </div>
     <div id="footer">
@@ -205,7 +266,7 @@
                     
                         <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
                     
-                        <li class=" active "><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
                         <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
                     

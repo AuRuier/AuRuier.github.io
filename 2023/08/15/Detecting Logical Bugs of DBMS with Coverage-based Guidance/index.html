@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            归档
+            Detecting Logical Bugs of DBMS with Coverage-based Guidance
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -32,15 +32,32 @@
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body>
     <a id="cover"></a>
-    <link type="text/css" rel="stylesheet" href="/css/archive.css">
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
 <div id="header" class="header">
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">归档</h1>
+                <h1 class="header-subtitle">Detecting Logical Bugs of DBMS with Coverage-based Guidance</h1>
                 <div class="header-subinfo">
-                    <p class="article-info-text Chinese"></p>
-                    <p class="article-info-text English"></p>                  
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2023-08-15
+                        </span>
+                        
+                            
+                                <span id="/2023/08/15/Detecting Logical Bugs of DBMS with Coverage-based Guidance/" class="leancloud_visitors" data-flag-title="Detecting Logical Bugs of DBMS with Coverage-based Guidance">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/08/15/Detecting Logical Bugs of DBMS with Coverage-based Guidance/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                    
                 </div>
             
         </div>
@@ -49,125 +66,107 @@
 </div>
 <div id="container">
     
-        
-            <!-- 归档页面、分类归档页面、标签归档页面 -->
-            <div class="articles">
-                <div class="articles-wrap">
-                    <span class="archive-move-on"></span>
-                    <span class="archive-counter">
-                        
-                            目前共计 19 篇日志，继续加油！
-                        
-                    </span>
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <p>、</p>
+<h1 id="Detecting-Logical-Bugs-of-DBMS-with-Coverage-based-Guidance"><a href="#Detecting-Logical-Bugs-of-DBMS-with-Coverage-based-Guidance" class="headerlink" title="Detecting Logical Bugs of DBMS with Coverage-based Guidance"></a>Detecting Logical Bugs of DBMS with Coverage-based Guidance</h1><h2 id="USENIX-Security-2022"><a href="#USENIX-Security-2022" class="headerlink" title="USENIX Security 2022"></a>USENIX Security 2022</h2><p>Authors: Yu Liang, Pennsylvania State University; Song Liu, Pennsylvania State University and Qi-AnXin Tech. Research Institute; Hong Hu, Pennsylvania State University</p>
+<p>链接: <a target="_blank" rel="noopener" href="https://www.usenix.org/conference/usenixsecurity22/presentation/liang">Detecting Logical Bugs of DBMS with Coverage-based Guidance</a> </p>
+<blockquote>
+<p>数据库管理系统（DBMS）是现代应用程序的关键组件，广泛用于各种数据密集型程序中， 帮助数十亿台设备托管数万亿个数据库。DBMS 中的任何错误都会影响大量用户。尽管此前人们在测试 DBMS 上已经付出了巨大的努力，但大多数情况下他们都仅专注于发现导致 DBMS 运行意外终止的错误，比如崩溃和断言错误。他们无法检测到导致 DBMS 返回非预期结果的逻辑错误，例如意外泄露出额外的数据。由于逻辑错误通常不会使程序崩溃，因此我们需要借助预言（Oracle，译为预言或判断准则，本文译为预言），来确定每次执行是否产生正确的结果。但是，由于各种 DBMS 查询语言的差异，以及功能的多样性，构建预言需要耗费大量的时间，且容易出错。</p>
+<p>通过将 SQL 查询语句转换成语义等价的另一个形式的语句，这两个 SQL 查询语句便构成了一个“预言”（Oracle）。因为这对语句的形式不同，DBMS 可能会使用不同的代码路径来处理这些查询语句，但由于两者语义等价，因此两个语句查询后返回的最终结果是相同的。任何的不一致都表明 DBMS 存在潜在的逻辑错误。此前，有研究工作提出了几种“预言”来识别不正确的结果，但它们依赖于基于规则且未经指导的方法来合成 SQL 查询语句，考虑到 DBMS 巨大的查询空间，这些方法会在类似的查询上花费很多时间，并且无法检查不同的程序代码。</p>
+<p>该研究创新性地提出， 通过结合覆盖率导向、面向有效性的突变和预言（Oracle）三者来检测 DBMS 的逻辑错误。为了实现目标，首先设计了一组通用 API 来解耦 Fuzzer 和 预言（Oracle） 的逻辑，以便开发人员可以轻松地移植模糊测试工具来测试 DBMS，以及为现有的 Fuzzer 编写新的预言（Oracle）。文中进一步提供了面向有效性的突变，来生成高质量的查询语句，从而发现更多的逻辑错误。文中实现的检测系统原型 SQLRight，经过实验证明优于当前仅依赖预言或代码覆盖率的最先进工具。SQLRight 一共从三个经过良好测试的DBMS (SQLite、PostgreSQL 和 MySQL，这是世界上最流行的三个开源数据库) 中检测到了18 个逻辑错误。研究团队已将研究发现中的所有问题上报给DBMS相关官方，所有错误都已得到官方确认，其中 13 个错误已被修复。</p>
+</blockquote>
+<blockquote>
+<p>Oracle is a resource verifier that you can generate functional equivalent forms of the query for the same DBMS and check its resource inconsistencies for potential logical bugs.<br>As a complete pipeline, SQLenser will generate its testing query using a rule-based query generator and then we use the Qracle to transform the query and check the results.</p>
+<p>However for SQLenser relies on its rule-based query generator to generate all its testing queries the key regeneration rules limits its capability to fast deep to test deep program logic.</p>
+</blockquote>
+<hr>
+<ul>
+<li><p>Today I’m going to present a paper named Detecting Logical Bugs of DBMS with Coverage-based Guidance. In the DBMS, database management system are being widely started most previous Works focus on detecting memory corruption bugs,  which will crush the DBMS program existing Works includes generation based query testing tools and mutation-based QE fasting tools.</p>
+</li>
+<li><p>However, little attention has been applied to the technological bugs in DBMS. logical bugs are incorrect called logic that will make the DBMS returns incorrect results. The multiple logical bugs reported in recent years many of them could potentially lead to severe outcomes. There are some existing works that try to find logical bugs in the DBMS.</p>
+</li>
+<li><p>One existing works is differential testing that the idea of differential testing is to pass the same query to different DBMS and check whether they output the same results. However because each DBMS defines their own SQL dialects their only limited features are shared if differential testing only covers its share features we end up with low coverage for the dedicated feature for each DBMS.  On the other hand if differential testing try to cover all the SQL dialects in all DBMS to generate the Kiwi we end up with low correctness rate in other words low validity. These are some simple SQL dialects from ctbls，another existing works is SQLenser.</p>
+</li>
+<li><p>SQLenses use Oracle to find DBMS logical bugs and Oracle is a resource verifier that you can generate functional equivalent forms of the query for the same DBMS and check its resource inconsistencies for potential logical bugs as a complete pipeline. SQLenser will generate its testing query using a rule-based query generator and then we use the Oracle to transform the query and check the results. However for SQLenser relies on its rule-based query generator to generate all its testing queries. The key regeneration rules limits its capability to fast deep to test deep program logic. In this work, we propose SQLright a general platform to test DBMS logical bugs. SQLright use coverage guided forcing and validity oriented mutations to more efficiently explore the DBMS program and it also includes a general interface for easy Oracle development.</p>
+</li>
+<li><p>Here we present the motivated examples that triggers a logical bugs in the SQL like DBMS. The SQLright a table person we call them PID and then insert three rows of data one ten ten into the table. The query then creates a unique partial index we condition PID equals to 1. And at last the select output statements search for the table rows will constrain. This thing and PID equals to 10.</p>
+</li>
+<li><p>The correct resource from this Q research should be one row of 10 only because the distinct keywords should remove all the duplicated results from the output. However sqlite returns all the matching rows with two rows of duplicated tens this resource is not correct. There are a few challenges, we need to adjust in order to find logical bugs like this. The first challenge is it is hard to generate High validity queries to find logical bug in dbms a complete pipeline of create database insert data，output data and chat resource are required. If any of this step failed because of invadically the logical back detection won’t be successful.</p>
+</li>
+<li><p>The Second Challenge is that it is hard to implement DBMS Oracle. Because first there are no General platform existed for easy Oracle development yet and second it is not easy to integrate a DBMS Oracle to existing testing techniques. Tech existing work SQLenser for example all the oracles from SQLenser are implemented by non-trivial manual efforts. </p>
+</li>
+<li><p>So to mitigate the first Challenge and to generate High validity queries, we propose a few validity oriented techniques in our forcing engine, the first technique is dedicated passing, we noticed that most of the DBMS we tested use bison to Define their password from ends. The DBMS python passes passes the input query and transform them into DBMS unique internal structure. Thanks to the well-documented python format we use the translator script to transform the DBMS python passer to secret right internal parser. SQLright then uses internal passers to transform the query inputs to secrete internal General IR. Security on this General IR in order to get a diverse set of mutated query by using this internal parser secret can enforce the original grammar rules dedicated to DBMS in its forcing mutation.</p>
+</li>
+<li><p>The second technique is context-based IR instantiation. This technique fills in the concrete operands based on the query context click this curious as for example or the table and column names will be inserted notice that this step is context based for instance it can correctly recognize. The column name changes in the order table statements. So you can always refers to the correct column names in the select statements. There are two other techniques we use to improve validity we leave the details in the paper. Then to mitigate the Second Challenge and to fill in the missing platform for easy Oracle development.</p>
+</li>
+<li><p>SQLright proposed four General APIs pre-process append output transform and compare the pre-process API remove improper queries from the inputs take this query says for example the random function from the insert interest statements will generate a different results at different query runtimes which could confuse the DBMS Oracle and generate false positive. In this case the insert into statements will be removed the second APl is append output it append Oracle compatible select statements to the query sets here with technolia oracles proposed by SQLenser for example the select statements in the format of Select something from something where something will be inserted the transform APl transform the query sets to its functional equivalent forms technology oracles for example again.</p>
+</li>
+<li><p>The constraint in the where class will be moved to the select class forming two select statements that are functional equivalent and at last the compare APl allows the developers to Define their own rules to verify the resource. Here in this keyword sets the value returns from the first select statements should match the number of ones returns from the second select if the server if the first select returns one and the second select returns 0 1 the results are match.</p>
+</li>
+<li><p>However sqlite Returns value 2 in the frst select statements which are not matched from the second select here The Logical box we show represented in the motivated examples is font here is the overview of our two SQLright cigarette Tech query from the seed inputs mutated Theory with a restriction of the per dbms grammar rules and then secret use the DBMS Oracle to transform the query to its functional equivalent forms after shooting all the queries to execution security used the Oracle again to check the resource and see if you can find logical bugs and at last if the IQ execution triggers a new code coverage from the dbms secret will save the mutated query to the forcing queue for further exploitation in the evaluation we aim to answer the following three questions can secretly find bugs can secretly find more bugs than existing tools and what’s the benefits of our proposed techniques.</p>
+</li>
+<li><p>We evaluate SQLright on DBMS first secret find 18 logical bugs in total 14 from sqlite 4 from bicycle among all the detecting bugs 15 logical bugs have been fixed notice that there are two logical bugs are detected from new newly proposed oracles and then we compare SQLright to two existing Works SOL answer and score scroll is a instant State scroll is a state-of-the-art memory corruption box detector we introduced the Oracle interface into squirrel enable it to find logical bugs similar to what SQLright can do from the plots we can see that SQLright detects the most number of bugs in 72 hours. In the same experiments, we also compare the branch coverage of the three twos secret detects nearly 13 more cool coverage than the best Baseline and then we compare the queue validity of the three twos. Here sqlenser has the highest capability thanks to its rule-based QA generator.</p>
+</li>
+</ul>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/20230815230129.png?raw=true" alt="20230815230129.png"></p>
+<ul>
+<li>However this rule-based generator query are not as diverse as the one mutated from SQLright. This is proven by the lower codecoverage from SQLenser in the previous co-coverage plot due to the lower due to the lack of keyword diversity SQLenser does not detect as many logical bugs as SQL rate in the same plot we can see secret ride has a higher capability compared to the forcing to squirrel and then we evaluate on the coverage feedbacks we remove the coverage feedbacks from from SQLright and forms three baselines. The baselines either job or the mutated query run them instead of mutated query or save all the mutated query to the forcing queue. From the plots we can see that the coverage feedbacks helps security to find more bugs and at last we evaluate on the validity we incrementally remove the validity oriented techniques we introduced in SQLright and unit test the Baseline.</li>
+</ul>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/20230815224501.png?raw=true" alt="20230815224501.png"></p>
+<ul>
+<li>The validity oriented techniques enables SQLright to find more bugs. The more evaluation in the paper please check our paper for more details in conclusion in this paper. We propose SQLright as a general platform to test DBMS logical bugs secret use coverage guided forcing and validity oriented mutations to more efficiently explore the TPMS program and it also includes a general interface for easy Oracle development.</li>
+</ul>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/20230815224511.png?raw=true" alt="20230815224511.png"></p>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>Live For Code
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="/2023/08/15/Detecting%20Logical%20Bugs%20of%20DBMS%20with%20Coverage-based%20Guidance/" target="_blank">Detecting Logical Bugs of DBMS with Coverage-based Guidance</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                
+                <div class="article-prev-next">
+                    
+                        <a href="/2023/08/17/Fuzzing101%E2%80%94%E2%80%94Exercise%203/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/08/17/Fuzzing101%E2%80%94%E2%80%94Exercise%203/" title="发布于 2023-08-17 10:59">Fuzzing101——Exercise 3</a>
+                        <br>
                     
                     
-                        
-                            <div class="archive-title">
-                                <h2 class="archive-year">2023</h2>
-                            </div>
-                            
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/13/Fuzzing101%E2%80%94%E2%80%94Exercise%201/"><span>Fuzzing101——Exercise 1</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-13</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/06/A%20Large-scale%20and%20Longitudinal%20MeasurementStudy%20of%20DKIM%20Deployment/"><span>A Large-scale and Longitudinal MeasurementStudy of DKIM Deployment</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-06</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/30/The%20structure%20of%20paper&report%20in%20Systems/"><span>The structure of paper/report in Systems</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-30</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/28/An%20Evaluation%20of%20the%20Ninth%20SOSP%20Submissions/"><span>An Evaluation of the Ninth SOSP Submissions</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-28</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/22/Tips%20for%20Writing%20Technical%20Papers/"><span>Tips for Writing Technical Papers</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-22</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/08/How%20to%20give%20a%20good%20research%20talk/"><span>How to give a good research talk</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-08</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/07/So-you-want-to-work-in-security/"><span>So you want to work in security</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-07</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/07/hello-girl/"><span>hello-girl</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-07</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/07/hello-world/"><span>Hello World</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-07</span>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="/2023/08/14/Fuzzing101%E2%80%94%E2%80%94Exercise%202/" class="next-prefix">» </a> 下一篇：    <a href="/2023/08/14/Fuzzing101%E2%80%94%E2%80%94Exercise%202/" title="发布于 2023-08-14 01:43">Fuzzing101——Exercise 2</a>
                     
                 </div>
             </div>
             
+    <div class="article-comments">
         
-    <div class="pagination-bottom">
-        <div class="pagination">
-            
-                <a class="extend prev" rel="prev" href="/archives/">上一页</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span>
-            
-        </div>
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
     </div>
-
+    
+ 
+        </div>
     
 </div>
     <div id="footer">
@@ -205,7 +204,7 @@
                     
                         <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
                     
-                        <li class=" active "><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
                         <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
                     

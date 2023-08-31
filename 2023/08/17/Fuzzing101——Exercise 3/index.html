@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            归档
+            Fuzzing101——Exercise 3
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -32,15 +32,32 @@
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body>
     <a id="cover"></a>
-    <link type="text/css" rel="stylesheet" href="/css/archive.css">
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
 <div id="header" class="header">
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">归档</h1>
+                <h1 class="header-subtitle">Fuzzing101——Exercise 3</h1>
                 <div class="header-subinfo">
-                    <p class="article-info-text Chinese"></p>
-                    <p class="article-info-text English"></p>                  
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2023-08-17
+                        </span>
+                        
+                            
+                                <span id="/2023/08/17/Fuzzing101——Exercise 3/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 3">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/08/17/Fuzzing101——Exercise 3/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                    
                 </div>
             
         </div>
@@ -49,125 +66,162 @@
 </div>
 <div id="container">
     
-        
-            <!-- 归档页面、分类归档页面、标签归档页面 -->
-            <div class="articles">
-                <div class="articles-wrap">
-                    <span class="archive-move-on"></span>
-                    <span class="archive-counter">
-                        
-                            目前共计 19 篇日志，继续加油！
-                        
-                    </span>
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h1 id="Fuzzing101——Exercise-3"><a href="#Fuzzing101——Exercise-3" class="headerlink" title="Fuzzing101——Exercise 3"></a>Fuzzing101——Exercise 3</h1><p>In this exercise we will fuzz <strong>TCPdump</strong> packet analyzer. The goal is to find a crash&#x2F;PoC for <a target="_blank" rel="noopener" href="https://www.cvedetails.com/cve/CVE-2017-13028/"><strong>CVE-2017-13028</strong></a> （越界读取漏洞，可通过 BOOTP 数据包（引导协议）触发）in TCPdump 4.9.2.</p>
+<p><a target="_blank" rel="noopener" href="https://www.cvedetails.com/cve/CVE-2017-13028/"><strong>CVE-2017-13028</strong></a> 是指当程序读取的数据超过预定缓冲区的末尾或开始之前时发生的漏洞。因此，远程攻击者可利用该漏洞导致拒绝服务，或从进程内存中获取敏感信息。有关 “越界读取 “漏洞的<a target="_blank" rel="noopener" href="https://cwe.mitre.org/data/definitions/125.html">更多信息</a>。</p>
+<hr>
+<p>了解运行时内存错误检测工具ASan (Address Sanitizer)</p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li><ol>
+<li>找到对 TCPdump 进行模糊处理的有效方法</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>尝试找出如何启用 ASan 进行模糊处理</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>对 TCPdump 进行模糊处理，直到出现一些独特的崩溃</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>对崩溃进行分类，找到漏洞的 PoC</li>
+</ol>
+</li>
+<li><ol start="5">
+<li>修复问题</li>
+</ol>
+</li>
+</ul>
+<h2 id="下载安装目标"><a href="#下载安装目标" class="headerlink" title="下载安装目标"></a>下载安装目标</h2><pre><code>cd $HOME
+mkdir fuzzing_tcpdump &amp;&amp; cd fuzzing_tcpdump/
+</code></pre>
+<p><strong>下载 tcpdump-4.9.2.tar.gz 并解压：</strong></p>
+<pre><code>wget https://github.com/the-tcpdump-group/tcpdump/archive/refs/tags/tcpdump-4.9.2.tar.gz
+tar -xzvf tcpdump-4.9.2.tar.gz
+</code></pre>
+<p><strong>下载并解压 libpcap-1.8.0.tar.gz:</strong></p>
+<pre><code>wget https://github.com/the-tcpdump-group/libpcap/archive/refs/tags/libpcap-1.8.0.tar.gz
+tar -xzvf libpcap-1.8.0.tar.gz
+</code></pre>
+<p><strong>构建并安装 libpcap 和 tcpdump ：</strong></p>
+<p>将 libpcap-libpcap-1.8.0 的文件夹重命名为 libpcap-1.8.0 ，否则 tcpdump 会找不到 libpcap.a 的本地路径：</p>
+<pre><code>mv libpcap-libpcap-1.8.0/ libpcap-1.8.0
+</code></pre>
+<p>Build and install libpcap:</p>
+<pre><code>cd $HOME/fuzzing_tcpdump/libpcap-1.8.0/
+./configure --enable-shared=no
+make
+</code></pre>
+<p>build and install tcpdump:</p>
+<pre><code>cd $HOME/fuzzing_tcpdump/tcpdump-tcpdump-4.9.2/
+./configure --prefix=&quot;$HOME/fuzzing_tcpdump/install/&quot;
+make
+make install
+</code></pre>
+<p><strong>测试功能：</strong></p>
+<pre><code>$HOME/fuzzing_tcpdump/install/sbin/tcpdump -h
+</code></pre>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-3-2.jpg?raw=true" alt="101-3-2.jpg"></p>
+<h3 id="创建语料库："><a href="#创建语料库：" class="headerlink" title="创建语料库："></a>创建语料库：</h3><p>在” tests “文件夹中存在大量 .pcacp 示例。以下命令行可以运行 .pcap 文件</p>
+<pre><code>$HOME/fuzzing_tcpdump/install/sbin/tcpdump -vvvvXX -ee -nn -r ./tests/ahcp.pcap 
+</code></pre>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-3-3.jpg?raw=true" alt="101-3-3.jpg"></p>
+<h2 id="使用ASAN编译"><a href="#使用ASAN编译" class="headerlink" title="使用ASAN编译"></a>使用ASAN编译</h2><p><strong>AddressSanitizer（ASan）</strong> 是一种用于 C 和 C++ 的快速内存错误检测器。它最初由 Google（Konstantin Serebryany、Derek Bruening、Alexander Potapenko 和 Dmitry Vyukov）开发，于 2011 年 5 月首次发布。</p>
+<p>它由一个编译器工具模块和一个运行时库组成。该工具能够发现对堆、堆栈和全局对象的越界访问，以及使用后释放、双重释放和内存泄露等错误。AddressSanitizer 是开源的，从 3.1 版开始与 LLVM 编译器工具链集成。它最初是作为 LLVM 的一个项目开发的，现已移植到 GCC，并包含在 GCC &gt;&#x3D; 4.8 版本中。有关 AddressSanitizer 的更多信息，请访问以下 <a target="_blank" rel="noopener" href="https://clang.llvm.org/docs/AddressSanitizer.html">链接</a>。</p>
+<h3 id="启用-ASan-进行编译"><a href="#启用-ASan-进行编译" class="headerlink" title="启用 ASan 进行编译"></a>启用 ASan 进行编译</h3><p>用 afl-clang-lto 在启用 ASan 的情况下，编译 tcpdump（和 libpcap） ：</p>
+<p>首先，清理所有之前编译过的对象文件和可执行文件：</p>
+<pre><code>rm -r $HOME/fuzzing_tcpdump/install
+cd $HOME/fuzzing_tcpdump/libpcap-1.8.0/
+make clean
+
+cd $HOME/fuzzing_tcpdump/tcpdump-tcpdump-4.9.2/
+make clean
+</code></pre>
+<p>在调用 <code>configure</code> 和 <code>make</code> 前设置 <code>AFL_USE_ASAN=1</code>（设置环境变量 AFL_USE_ASAN 的值为 1，启用 AFL 的 ASAN 功能，以便在模糊测试过程中检测内存错误）。</p>
+<pre><code>cd $HOME/fuzzing_tcpdump/libpcap-1.8.0/
+export LLVM_CONFIG=&quot;llvm-config-11&quot;
+CC=afl-clang-lto ./configure --enable-shared=no --prefix=&quot;$HOME/fuzzing_tcpdump/install/&quot;
+AFL_USE_ASAN=1 make
+
+cd $HOME/fuzzing_tcpdump/tcpdump-tcpdump-4.9.2/
+AFL_USE_ASAN=1 CC=afl-clang-lto ./configure --prefix=&quot;$HOME/fuzzing_tcpdump/install/&quot;
+AFL_USE_ASAN=1 make
+AFL_USE_ASAN=1 make install
+</code></pre>
+<p>Tips: </p>
+<ul>
+<li>libcap 是 tcpdump 的依赖库，可以不 install，但需要保证目录位置与 tcpdump 根目录相同，且名称可识别。</li>
+<li>这里配置tcpdump的configure时也要加AFL_USE_ASAN&#x3D;1，因为它的依赖库也加了ASAN。</li>
+</ul>
+<h2 id="Fuzz"><a href="#Fuzz" class="headerlink" title="Fuzz"></a>Fuzz</h2><pre><code>afl-fuzz -m none -i ./tcpdump-tcpdump-4.9.2/tests/ -o ./afl_out/ -s 123 -- ./install/sbin/tcpdump -vvvvXX -ee -nn -r @@
+</code></pre>
+<p>临时停止，再次运行：</p>
+<pre><code>AFL_AUTORESUME=1 afl-fuzz -m none -i $HOME/fuzzing_tcpdump/tcpdump-tcpdump-4.9.2/tests/ -o $HOME/fuzzing_tcpdump/out/ -s 123 -- $HOME/fuzzing_tcpdump/install/sbin/tcpdump -vvvvXX -ee -nn -r @@
+</code></pre>
+<p>Tips: ASAN 会消耗大量内存，使用 -m none 不限制内存使用。</p>
+<p>结果如图：</p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-3-1.PNG?raw=true" alt="101-3-1.PNG"></p>
+<h2 id="分流"><a href="#分流" class="headerlink" title="分流"></a>分流</h2><h3 id="动态调试"><a href="#动态调试" class="headerlink" title="动态调试"></a>动态调试</h3><p>这里调试用 ASan 构建的程序要更简单，仅需运行崩溃文件即可（通过 ASan 进行debug，不再需要重新对目标程序进行编译）：</p>
+<pre><code>$HOME/fuzzing_tcpdump/install/sbin/tcpdump -vvvvXX -ee -nn -r $HOME/fuzzing_tcpdump/out/default/crashes/id:000000,sig:06,src:005093,time:6442866,execs:983798,op:havoc,rep:5
+</code></pre>
+<p>Tips: 这里如果用普通编译来运行crash反而得不到报错信息，显然这里的内存泄露不会直接导致crash。</p>
+<p>The summary of the crash, including the execution trace:</p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-3-4.PNG?raw=true" alt="101-3-4.PNG"></p>
+<p><strong>heap-buffer-overflow</strong> ！！! 堆溢出！！！</p>
+<h2 id="修复"><a href="#修复" class="headerlink" title="修复"></a>修复</h2><p> <a target="_blank" rel="noopener" href="https://github.com/the-tcpdump-group/tcpdump/commit/85078eeaf4bf8fcdc14a4e79b516f92b6ab520fc#diff-05f854a9033643de07f0d0059bc5b98f3b314eeb1e2499ea1057e925e6501ae8L381">官方修复</a></p>
+<hr>
+<p>本次实验进行整体较为顺利，相较于之前两个，抓取 crash 耗时较长，且在抓取过程中临时停止了一下，通过 AFL_AUTORESUME&#x3D;1 的加持，可以使得之前的运行状态持续进行，继续抓取。</p>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>Live For Code
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="/2023/08/17/Fuzzing101%E2%80%94%E2%80%94Exercise%203/" target="_blank">Fuzzing101——Exercise 3</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                
+                <div class="article-prev-next">
+                    
+                        <a href="/2023/08/18/Fuzzing101%E2%80%94%E2%80%94Exercise%204/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/08/18/Fuzzing101%E2%80%94%E2%80%94Exercise%204/" title="发布于 2023-08-18 08:33">Fuzzing101——Exercise 4</a>
+                        <br>
                     
                     
-                        
-                            <div class="archive-title">
-                                <h2 class="archive-year">2023</h2>
-                            </div>
-                            
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/13/Fuzzing101%E2%80%94%E2%80%94Exercise%201/"><span>Fuzzing101——Exercise 1</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-13</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/06/A%20Large-scale%20and%20Longitudinal%20MeasurementStudy%20of%20DKIM%20Deployment/"><span>A Large-scale and Longitudinal MeasurementStudy of DKIM Deployment</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-06</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/30/The%20structure%20of%20paper&report%20in%20Systems/"><span>The structure of paper/report in Systems</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-30</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/28/An%20Evaluation%20of%20the%20Ninth%20SOSP%20Submissions/"><span>An Evaluation of the Ninth SOSP Submissions</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-28</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/22/Tips%20for%20Writing%20Technical%20Papers/"><span>Tips for Writing Technical Papers</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-22</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/08/How%20to%20give%20a%20good%20research%20talk/"><span>How to give a good research talk</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-08</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/07/So-you-want-to-work-in-security/"><span>So you want to work in security</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-07</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/07/hello-girl/"><span>hello-girl</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-07</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/07/hello-world/"><span>Hello World</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-07</span>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="/2023/08/15/Detecting%20Logical%20Bugs%20of%20DBMS%20with%20Coverage-based%20Guidance/" class="next-prefix">» </a> 下一篇：    <a href="/2023/08/15/Detecting%20Logical%20Bugs%20of%20DBMS%20with%20Coverage-based%20Guidance/" title="发布于 2023-08-15 03:32">Detecting Logical Bugs of DBMS with Coverage-based Guidance</a>
                     
                 </div>
             </div>
             
+    <div class="article-comments">
         
-    <div class="pagination-bottom">
-        <div class="pagination">
-            
-                <a class="extend prev" rel="prev" href="/archives/">上一页</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span>
-            
-        </div>
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
     </div>
-
+    
+ 
+        </div>
     
 </div>
     <div id="footer">
@@ -205,7 +259,7 @@
                     
                         <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
                     
-                        <li class=" active "><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
                         <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
                     

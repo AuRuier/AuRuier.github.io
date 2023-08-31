@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            归档
+            Fuzzing101——Exercise 6
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -32,15 +32,32 @@
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body>
     <a id="cover"></a>
-    <link type="text/css" rel="stylesheet" href="/css/archive.css">
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
 <div id="header" class="header">
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">归档</h1>
+                <h1 class="header-subtitle">Fuzzing101——Exercise 6</h1>
                 <div class="header-subinfo">
-                    <p class="article-info-text Chinese"></p>
-                    <p class="article-info-text English"></p>                  
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2023-08-20
+                        </span>
+                        
+                            
+                                <span id="/2023/08/20/Fuzzing101——Exercise 6/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 6">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/08/20/Fuzzing101——Exercise 6/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                    
                 </div>
             
         </div>
@@ -49,125 +66,138 @@
 </div>
 <div id="container">
     
-        
-            <!-- 归档页面、分类归档页面、标签归档页面 -->
-            <div class="articles">
-                <div class="articles-wrap">
-                    <span class="archive-move-on"></span>
-                    <span class="archive-counter">
-                        
-                            目前共计 19 篇日志，继续加油！
-                        
-                    </span>
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h1 id="Fuzzing101——Exercise-6"><a href="#Fuzzing101——Exercise-6" class="headerlink" title="Fuzzing101——Exercise 6"></a>Fuzzing101——Exercise 6</h1><p>Fuzz <strong>GIMP</strong> image editor. The goal is to find a crash&#x2F;PoC for <a target="_blank" rel="noopener" href="https://www.cvedetails.com/cve/CVE-2016-4994/"><strong>CVE-2016-4994</strong></a> in GIMP 2.8.16.</p>
+<hr>
+<p>学会使用<a target="_blank" rel="noopener" href="https://github.com/AFLplusplus/AFLplusplus/blob/stable/instrumentation/README.persistent_mode.md">持久模式</a>（persistent mode）来加快模糊测试的速度，学会对交互式&#x2F;GUI应用程序进行 fuzzing</p>
+<h1 id="模糊测试（持久模式）"><a href="#模糊测试（持久模式）" class="headerlink" title="模糊测试（持久模式）"></a>模糊测试（持久模式）</h1><h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><pre><code>cd $HOME 
+mkdir Fuzzing_gimp &amp;&amp; cd Fuzzing_gimp
+</code></pre>
+<p>下载依赖：</p>
+<pre><code>sudo apt-get install build-essential libatk1.0-dev libfontconfig1-dev libcairo2-dev libgudev-1.0-0 libdbus-1-dev libdbus-glib-1-dev libexif-dev libxfixes-dev libgtk2.0-dev python2.7-dev libpango1.0-dev libglib2.0-dev zlib1g-dev intltool libbabl-dev
+</code></pre>
+<p>下载 **GEGL 0.2(Generic Graphics Library)**：</p>
+<pre><code>wget https://download.gimp.org/pub/gegl/0.2/gegl-0.2.0.tar.bz2 
+tar xvf gegl-0.2.0.tar.bz2 &amp;&amp; cd gegl-0.2.0
+</code></pre>
+<p>修改部分源码：</p>
+<pre><code>sed -i &#39;s/CODEC_CAP_TRUNCATED/AV_CODEC_CAP_TRUNCATED/g&#39; ./operations/external/ff-load.c 
+sed -i &#39;s/CODEC_FLAG_TRUNCATED/AV_CODEC_FLAG_TRUNCATED/g&#39; ./operations/external/ff-load.c
+</code></pre>
+<p>Build and install Gegl-0.2：</p>
+<pre><code>./configure --enable-debug --disable-glibtest --without-vala --without-cairo --without-pango --without-pangocairo --without-gdk-pixbuf --without-lensfun --without-libjpeg --without-libpng --without-librsvg --without-openexr --without-sdl --without-libopenraw --without-jasper --without-graphviz --without-lua --without-libavformat --without-libv4l --without-libspiro --without-exiv2 --without-umfpack 
+make -j$(nproc)    
+sudo make install
+</code></pre>
+<p>下载并反编译 GIMP 2.8.16：</p>
+<pre><code>cd .. 
+wget https://mirror.klaus-uwe.me/gimp/pub/gimp/v2.8/gimp-2.8.16.tar.bz2 
+tar xvf gimp-2.8.16.tar.bz2 &amp;&amp; cd gimp-2.8.16/
+</code></pre>
+<p>通过 <strong>afl-clang-lto</strong> 作为编译器 building GIMP：</p>
+<pre><code>CC=afl-clang-lto CXX=afl-clang-lto++ PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$HOME/Fuzzing_gimp/gegl-0.2.0/ CFLAGS=&quot;-fsanitize=address&quot; CXXFLAGS=&quot;-fsanitize=address&quot; LDFLAGS=&quot;-fsanitize=address&quot; ./configure --disable-gtktest --disable-glibtest --disable-alsatest --disable-nls --without-libtiff --without-libjpeg --without-bzip2 --without-gs --without-libpng --without-libmng --without-libexif --without-aa --without-libxpm --without-webkit --without-librsvg --without-print --without-poppler --without-cairo-pdf --without-gvfs --without-libcurl --without-wmf --without-libjasper --without-alsa --without-gudev --disable-python --enable-gimp-console --without-mac-twain --without-script-fu --without-gudev --without-dbus --disable-mp --without-linux-input --without-xvfb-run --with-gif-compression=none --without-xmc --with-shm=none --enable-debug --prefix=&quot;$HOME/Fuzzing_gimp/gimp-2.8.16/install&quot; 
+make -j$(nproc) 
+make install
+</code></pre>
+<h2 id="持久模式"><a href="#持久模式" class="headerlink" title="持久模式"></a>持久模式</h2><p>两种简单的方式:</p>
+<ul>
+<li>第一个方法是修改 <code>app.c</code> 文件，在 for 循环中加入 AFL_LOOP macro :</li>
+</ul>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-6-2-1.PNG?raw=true" alt="101-6-2-1.PNG"></p>
+<ul>
+<li>第二个方法是在  <code>xcf_load_invoker</code> 函数中插入AFL_LOOP macro :</li>
+</ul>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-6-3.PNG?raw=true" alt="101-6-3.PNG"></p>
+<p>第一种方法允许针对不同的输入格式，而第二种方法更快，有更多机会捕捉到错误。</p>
+<p>通过 <a target="_blank" rel="noopener" href="https://github.com/antonio-morales/Fuzzing101/blob/main/Exercise%206/persistent.patch">patch</a> 测试：</p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-6-6.PNG?raw=true" alt="101-6-6.PNG"></p>
+<h3 id="创建-Seed-语料库"><a href="#创建-Seed-语料库" class="headerlink" title="创建 Seed 语料库"></a>创建 Seed 语料库</h3><ul>
+<li>方式1：创建多个 GIMP 项目并保存，以获得多个 .xcf 样本。</li>
+<li>方式2：直接将 <a target="_blank" rel="noopener" href="https://github.com/antonio-morales/Fuzzing101/blob/main/Exercise%206/SampleInput.xcf">SampleInput.xcf</a> 文件复制到 AFL 输入文件夹中。</li>
+</ul>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-6-7.PNG?raw=true" alt="101-6-7.PNG"></p>
+<h2 id="Fuzzing"><a href="#Fuzzing" class="headerlink" title="Fuzzing"></a>Fuzzing</h2><p>由于漏洞会影响 GIMP 核心，因此可以删除不需要的插件，从而节省一些启动时间：</p>
+<pre><code>rm ./install/lib/gimp/2.0/plug-ins/*
+</code></pre>
+<p>使用以下命令运行fuzz：</p>
+<pre><code>ASAN_OPTIONS=detect_leaks=0,abort_on_error=1,symbolize=0 afl-fuzz -i &#39;./afl_in&#39; -o &#39;./afl_out&#39; -D -t 100 -- ./install/bin/gimp-console-2.8 --verbose -d -f @@
+</code></pre>
+<p><strong>notes：</strong></p>
+<ul>
+<li><code>gimp-console-2.8</code> 是 GIMP 的纯控制台版本，这里启用确定性突变 (-D) 。代码中还有一个无限循环 bug，因此需要设置一个较低的超时限制（例如 -t 100）。 这个超时限制取决于机器能力，所以需要根据具体情况进行调整。</li>
+</ul>
+<hr>
+<p>测试结果如下:</p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-6-8.PNG?raw=true" alt="101-6-8.PNG"></p>
+<p>显示超时，尝试解决，再次运行：</p>
+<pre><code>ASAN_OPTIONS=detect_leaks=0,abort_on_error=1,symbolize=0 afl-fuzz -i &#39;./afl_in&#39; -o &#39;./afl_out&#39; -D -t 100 -- ./install/bin/gimp-console-2.8 --verbose -d -f @@ -t
+</code></pre>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-6-11.PNG?raw=true" alt="101-6-11.PNG"></p>
+<p>目前还未跑出 crash……  5 days，17 hrs，42 min，3 sec……</p>
+<h3 id="Triage"><a href="#Triage" class="headerlink" title="Triage"></a>Triage</h3><p>假设已跑出 crash, ASan 跟踪结果可能如下：</p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-6-10.png?raw=true" alt="101-6-10.png"></p>
+<h3 id="修复问题"><a href="#修复问题" class="headerlink" title="修复问题"></a>修复问题</h3><p><a target="_blank" rel="noopener" href="https://gitlab.gnome.org/GNOME/gimp/-/commit/6d804bf9ae77bc86a0a97f9b944a129844df9395">官方修复</a>:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://gitlab.gnome.org/GNOME/gimp/-/commit/6d804bf9ae77bc86a0a97f9b944a129844df9395">https://gitlab.gnome.org/GNOME/gimp/-/commit/6d804bf9ae77bc86a0a97f9b944a129844df9395</a></li>
+</ul>
+<h3 id="Bonus"><a href="#Bonus" class="headerlink" title="Bonus"></a>Bonus</h3><p>代码中还有其他一些小错误:</p>
+<ul>
+<li>一个取消引用为空的错误</li>
+<li>一个无限循环错误</li>
+<li>一个内存耗尽错误</li>
+</ul>
+<hr>
+<p>此次实验进行，也是，坎坷，前后尝试了多次都没跑出 crash，目前还是正在抓取，待后续更新……</p>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>Live For Code
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="/2023/08/20/Fuzzing101%E2%80%94%E2%80%94Exercise%206/" target="_blank">Fuzzing101——Exercise 6</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                
+                <div class="article-prev-next">
+                    
+                        <a href="/2023/08/23/Fuzzing101%E2%80%94%E2%80%94Exercise%207/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/08/23/Fuzzing101%E2%80%94%E2%80%94Exercise%207/" title="发布于 2023-08-23 09:55">Fuzzing101——Exercise 7</a>
+                        <br>
                     
                     
-                        
-                            <div class="archive-title">
-                                <h2 class="archive-year">2023</h2>
-                            </div>
-                            
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/13/Fuzzing101%E2%80%94%E2%80%94Exercise%201/"><span>Fuzzing101——Exercise 1</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-13</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/06/A%20Large-scale%20and%20Longitudinal%20MeasurementStudy%20of%20DKIM%20Deployment/"><span>A Large-scale and Longitudinal MeasurementStudy of DKIM Deployment</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-06</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/30/The%20structure%20of%20paper&report%20in%20Systems/"><span>The structure of paper/report in Systems</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-30</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/28/An%20Evaluation%20of%20the%20Ninth%20SOSP%20Submissions/"><span>An Evaluation of the Ninth SOSP Submissions</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-28</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/22/Tips%20for%20Writing%20Technical%20Papers/"><span>Tips for Writing Technical Papers</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-22</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/08/How%20to%20give%20a%20good%20research%20talk/"><span>How to give a good research talk</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-08</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/07/So-you-want-to-work-in-security/"><span>So you want to work in security</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-07</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/07/hello-girl/"><span>hello-girl</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-07</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/07/hello-world/"><span>Hello World</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-07</span>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="/2023/08/19/Fuzzing101%E2%80%94%E2%80%94Exercise%205/" class="next-prefix">» </a> 下一篇：    <a href="/2023/08/19/Fuzzing101%E2%80%94%E2%80%94Exercise%205/" title="发布于 2023-08-19 01:56">Fuzzing101——Exercise 5</a>
                     
                 </div>
             </div>
             
+    <div class="article-comments">
         
-    <div class="pagination-bottom">
-        <div class="pagination">
-            
-                <a class="extend prev" rel="prev" href="/archives/">上一页</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span>
-            
-        </div>
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
     </div>
-
+    
+ 
+        </div>
     
 </div>
     <div id="footer">
@@ -205,7 +235,7 @@
                     
                         <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
                     
-                        <li class=" active "><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
                         <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
                     
