@@ -112,8 +112,7 @@
 </ol>
 </li>
 </ul>
-<h2 id="并行"><a href="#并行" class="headerlink" title="并行"></a>并行</h2><p>###并行化</p>
-<p>如果有多核系统，最好将模糊测试工作并行化，以充分利用 CPU 资源。</p>
+<h2 id="并行"><a href="#并行" class="headerlink" title="并行"></a>并行</h2><h3 id="并行化"><a href="#并行化" class="headerlink" title="并行化"></a>并行化</h3><p>如果有多核系统，最好将模糊测试工作并行化，以充分利用 CPU 资源。</p>
 <h3 id="独立实例"><a href="#独立实例" class="headerlink" title="独立实例"></a>独立实例</h3><ul>
 <li>这是最简单的并行化策略。在这种模式下，是运行完全独立的 afl-fuzz 实例。</li>
 <li>AFL 使用的是非确定性测试算法。因此，如果要运行多个 AFL 实例，成功的几率就会增加。</li>
@@ -184,16 +183,14 @@ afl-fuzz -m none -i ./afl_in -o afl_out -s 345 -S slave2 -- ./xmllint --memory -
 <h2 id="动态调试"><a href="#动态调试" class="headerlink" title="动态调试"></a>动态调试</h2><blockquote>
 <p>已跑出 crash：id:000000,sig:06,src:012792,time:632879854,execs:20956521,op:havoc,rep:2</p>
 </blockquote>
-<p>###法1：GDB</p>
-<p>先手动编译出不插桩的程序，丢进gdb里调试</p>
+<h3 id="法1：GDB"><a href="#法1：GDB" class="headerlink" title="法1：GDB"></a>法1：GDB</h3><p>先手动编译出不插桩的程序，丢进gdb里调试</p>
 <pre><code>gdb --args ./xmllint --memory --noenc --nocdata --dtdattr --loaddtd --valid --xinclude ./afl_out/slave1/crashes/id:000000,sig:06,src:012792,time:632879854,execs:20956521,op:havoc,rep:2
 </code></pre>
 <ul>
 <li>报错信息*** stack-buffer-overflow ***: 判断为栈溢出漏洞</li>
 </ul>
 <p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-5-10.png?raw=true" alt="101-5-10.png"></p>
-<p>###法2：ASAN</p>
-<p>调试使用 ASan 构建的程序要更简单，仅需向程序提供崩溃文件：</p>
+<h3 id="法2：ASAN"><a href="#法2：ASAN" class="headerlink" title="法2：ASAN"></a>法2：ASAN</h3><p>调试使用 ASan 构建的程序要更简单，仅需向程序提供崩溃文件：</p>
 <pre><code>./xmllint --memory --noenc --nocdata --dtdattr --loaddtd --valid --xinclude ./afl_out/default/crashes/id:000000,sig:06,src:012792,time:632879854,execs:20956521,op:havoc,rep:2
 </code></pre>
 <p>如采用 ASAN，这里是崩溃的详细摘要，包括执行跟踪：</p>
