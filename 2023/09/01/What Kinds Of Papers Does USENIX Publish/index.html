@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            Fuzzing101——Exercise 10
+            What Kinds Of Papers Does USENIX Publish?
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -37,21 +37,21 @@
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">Fuzzing101——Exercise 10</h1>
+                <h1 class="header-subtitle">What Kinds Of Papers Does USENIX Publish?</h1>
                 <div class="header-subinfo">
                     <p class="article-info-text">
                         <span>
-                            <i class="iconfont icon-time"></i> 发表时间：2023-08-31
+                            <i class="iconfont icon-time"></i> 发表时间：2023-09-01
                         </span>
                         
                             
-                                <span id="/2023/08/31/Fuzzing101——Exercise 10/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 10">
+                                <span id="/2023/09/01/What Kinds Of Papers Does USENIX Publish/" class="leancloud_visitors" data-flag-title="What Kinds Of Papers Does USENIX Publish?">
                                     <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
                                 </span>
                             
                             
                                 <span>
-                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/08/31/Fuzzing101——Exercise 10/"></span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/09/01/What Kinds Of Papers Does USENIX Publish/"></span>
                                 </span>
                               
                         
@@ -70,66 +70,59 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="Fuzzing101——Exercise-10"><a href="#Fuzzing101——Exercise-10" class="headerlink" title="Fuzzing101——Exercise 10"></a>Fuzzing101——Exercise 10</h1><p>CVE-2019-5847 in v8 7.5（infinite recursion）</p>
-<hr>
-<p>了解JS语法fuzzing工具Fuzzilli</p>
-<h2 id="安装Fuzzilli"><a href="#安装Fuzzilli" class="headerlink" title="安装Fuzzilli"></a>安装Fuzzilli</h2><p>先配置依赖，这里采用的是 ubuntu20.04</p>
-<pre><code>sudo apt install clang libicu-dev libpython2.7-dev libtinfo5 libncurses5 libpython2.7 libz3-dev
-wget https://swift.org/builds/swift-5.3.3-release/ubuntu2004/swift-5.3.3-RELEASE/swift-5.3.3-RELEASE-ubuntu20.04.tar.gz
-tar xzvf swift-5.3.3-RELEASE-ubuntu20.04.tar.gz
-sudo mv swift-5.3.3-RELEASE-ubuntu20.04 /usr/share/swift
-echo &quot;export PATH=/usr/share/swift/usr/bin:$PATH&quot; &gt;&gt; ~/.bashrc
-source ~/.bashrc
-</code></pre>
-<p>安装 fuzzilli，fuzzili 是一个针对 JS 引擎的 fuzz 工具，使用编程语言是 swift</p>
-<pre><code>wget https://github.com/googleprojectzero/fuzzilli/archive/refs/tags/v0.9.zip
-unzip v0.9.zip
-cd fuzzilli-0.9/
-swift build -c release -Xlinker=&#39;-lrt&#39;
-</code></pre>
-<h2 id="安装V8-Engine"><a href="#安装V8-Engine" class="headerlink" title="安装V8 Engine"></a>安装V8 Engine</h2><p>先下载谷歌的代码管理工具 depot_tools</p>
-<pre><code>cd $HOME
-git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
-echo &quot;export PATH=`pwd`/depot_tools:$PATH&quot; &gt;&gt; ~/.bashrc
-source  ~/.bashrc
-</code></pre>
-<p>获取 v8 源码</p>
-<pre><code>cd $HOME
-mkdir Fuzzing_v8_75 &amp;&amp; cd Fuzzing_v8_75
-fetch v8
-cd v8
-git checkout 1ca088652d3aad04caceb648bcffef100bc4abc0
-gclient sync
-</code></pre>
+                <h2 id="What-Kinds-Of-Papers-Does-USENIX-Publish"><a href="#What-Kinds-Of-Papers-Does-USENIX-Publish" class="headerlink" title="What Kinds Of Papers Does USENIX Publish?"></a>What Kinds Of Papers Does USENIX Publish?</h2><p>链接（系统论文写作）：<a target="_blank" rel="noopener" href="https://www.usenix.org/legacy/events/lisa99/cfp/guidelines.html">《What Kinds Of Papers Does USENIX Publish?》</a></p>
+<blockquote>
+<p>一篇好论文的关键在于：</p>
+<p>要么能教给读者在进行系统管理或开发系统管理工具时可以使用的知识，</p>
+<p>要么能推动系统管理科学的发展，</p>
+<p>或者两者兼而有之……</p>
+</blockquote>
+<h2 id="USENIX-发表什么样的论文？"><a href="#USENIX-发表什么样的论文？" class="headerlink" title="USENIX 发表什么样的论文？"></a>USENIX 发表什么样的论文？</h2><h3 id="提交前重要一问："><a href="#提交前重要一问：" class="headerlink" title="提交前重要一问："></a>提交前重要一问：</h3><p><strong>what will the audience or readers learn from my paper?</strong></p>
+<p>USENIX 的需求：</p>
 <ul>
-<li>gclient sync：该命令用于同步solution的各个仓库，由于v8代码中包含多个git仓库，使用checkout后需要更新其他仓库内容进行有coverage instrumentation的编译，这里建议先按照原文中编译一个release版本出来，测试环境是否正常</li>
+<li>new</li>
+<li>potentially useful</li>
+<li>not entirely obvious</li>
 </ul>
-<p>patch过程：</p>
-<pre><code>cd $HOME/Fuzzing_v8_75/v8
-./build/install-build-deps.sh
-cp ../../fuzzilli-0.9/Targets/V8/v8.patch ./
-patch -p1 &lt; v8.patch
-gn gen out/fuzzbuild --args=&#39;is_debug=false dcheck_always_on=true v8_static_library=true v8_enable_slow_dchecks=true v8_enable_v8_checks=true v8_enable_verify_heap=true v8_enable_verify_csa=true v8_enable_verify_predictable=true sanitizer_coverage_flags=&quot;trace-pc-guard&quot; target_cpu=&quot;x64&quot;&#39;
-ninja -C ./out/fuzzbuild
-</code></pre>
+<p>四大思考：</p>
 <ul>
-<li>gn gen：生成build文件</li>
+<li>思考自己的工作与以前发表的论文有什么不同？——应该比以前发表的论文有所改进。</li>
+<li>思考其他人会发现你的工作有怎样的用处，能否将你提出的东西应用到自己的系统或环境中？</li>
+<li>思考自己的工作是否表明了其他人是如何困惑的？——与传统智慧相悖的 “负面结果 “往往比正面结果更重要……</li>
+<li>思考 LISA 会议是否适合发表您的论文。</li>
 </ul>
-<p>同样可以用 patch 命令还原文件</p>
-<pre><code>patch-RE -p1 &lt; v8.patch
-</code></pre>
-<p>运行 minibrowser 时如果报错，需要先加载lib库</p>
-<pre><code>sudo vi /etc/ld.so.conf
-在文件中添加webkit文件夹下lib路径
-sudo /sbin/ldconfig -v
-</code></pre>
-<h2 id="fuzz"><a href="#fuzz" class="headerlink" title="fuzz"></a>fuzz</h2><pre><code>swift run -Xlinker=&#39;-lrt&#39; -c release FuzzilliCli --profile=v8 --storagePath=Targets/V8/out &#39;/home/ubuntu/fuzz/fuzzing_v8/v8/out/fuzzbuild/d8&#39;
-</code></pre>
-<p>如果这里不加存储路径，发现的 crash 样本会被丢弃，导致要重新跑</p>
-<h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><p>这里由于可能出现语法错误，即 false positive，需要先用之前编译出来的正常 Release 版本运行 crash，判断是否存在语法错误等问题，得到不会报错的脚本，再丢进 gdb 里运行</p>
-<pre><code>gdb --args v8/out/fuzzbuild/d8 fuzzilli-0.9/Targets/V8/out/crashes/crash_1662073648445_9153_deterministic_4.js
-crash_1662137004583_12367_deterministic_4.js
-</code></pre>
+<blockquote>
+<p>LISA 会议鼓励以 SA（system administration） 为重点的理论论文。</p>
+<p>不以 SA（system administration） 为重点的理论或其他论文应提交给 USENIX General Technical Conference。</p>
+<p>若论文很短或者更像是一篇观点文章，则更适合 USENIX newsletter。</p>
+</blockquote>
+<h3 id="提交前再有一问："><a href="#提交前再有一问：" class="headerlink" title="提交前再有一问："></a>提交前再有一问：</h3><p><strong>what do I intend to teach the reader?</strong></p>
+<p>Tips：</p>
+<ul>
+<li>要将论文的重点放在一个或几个要点上。</li>
+<li>不要在论文中填充太多大问题，也不要用无关紧要的细节来填充论文。</li>
+<li>要提供足够的背景资料，让读者明白为什么你的问题很重要。</li>
+<li>你的工作与该领域以前的工作有什么联系，以及如何将其融入一个实用的系统中。</li>
+<li>要提供足够的细节，以便读者将您的性能测量或其他技术评估与上下文联系起来。</li>
+<li>提供参考书目，这样既可以对以前的工作给予适当的肯定，也可以让读者知道从哪里可以找到更多的背景信息。</li>
+</ul>
+<p>有关 USENIX 以前发表的论文的完整列表， <a target="_blank" rel="noopener" href="https://www.usenix.org/publications/library/">https://www.usenix.org/publications/library/</a>。</p>
+<h2 id="什么叫扩展摘要？"><a href="#什么叫扩展摘要？" class="headerlink" title="什么叫扩展摘要？"></a>什么叫扩展摘要？</h2><blockquote>
+<p>其实也被视为 “浓缩论文”。需要被评估的是最终论文，而不仅仅是报告的工作是否出色。</p>
+<p>扩展摘要可以证明你是否有能力清楚地论述你的主题、组织你的论文并向读者传达足够的信息。</p>
+<p>要求：大纲、幻灯片副本或 1 页的摘要不太可能被接受。</p>
+<p>作用：据此判断最终论文是否能促成一场 25 分钟的精彩演讲。</p>
+</blockquote>
+<h3 id="扩展摘要需要一问："><a href="#扩展摘要需要一问：" class="headerlink" title="扩展摘要需要一问："></a>扩展摘要需要一问：</h3><p>在撰写扩展摘要删减内容时，需要一问：这会不会让程序委员会难以评判我的论文？</p>
+<p>Tips：</p>
+<ul>
+<li>在判断一篇论文的价值时可能至关重要的东西，在另一篇论文中可能是无关紧要的细节。</li>
+<li>最好省略那些需要大量解释，但对论文要点并不重要的内容。</li>
+<li>也可以省略对主要概念的变化或延伸的描述。</li>
+<li>不要遗漏相关工作的参考文献，但可以将这部分内容简化，而不是为非专业读者撰写的 “领域介绍”。</li>
+<li>需要对理解论文至关重要的图表（尽量设计无需大量解释性文字即可理解的图表）！！！不计入 5 页的限制！！！</li>
+<li>可以在摘要中写注释，表明为什么删减了某些内容！（以便一些特殊情况对意见的需求）</li>
+</ul>
 
                 
                 <p class="end">__END__</p>
@@ -142,7 +135,7 @@ crash_1662137004583_12367_deterministic_4.js
     <div class="suffix-box-right">
         <span class="suffix-box-title">文章作者：</span>Live For Code
         <br>
-        <span class="suffix-box-title">文章出处：</span><a href="/2023/08/31/Fuzzing101%E2%80%94%E2%80%94Exercise%2010/" target="_blank">Fuzzing101——Exercise 10</a>
+        <span class="suffix-box-title">文章出处：</span><a href="/2023/09/01/What%20Kinds%20Of%20Papers%20Does%20USENIX%20Publish/" target="_blank">What Kinds Of Papers Does USENIX Publish?</a>
         <br>
         <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
         <br>
@@ -157,11 +150,8 @@ crash_1662137004583_12367_deterministic_4.js
                 
                 <div class="article-prev-next">
                     
-                        <a href="/2023/09/01/What%20Kinds%20Of%20Papers%20Does%20USENIX%20Publish/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/09/01/What%20Kinds%20Of%20Papers%20Does%20USENIX%20Publish/" title="发布于 2023-09-01 11:07">What Kinds Of Papers Does USENIX Publish?</a>
-                        <br>
                     
-                    
-                        <a href="/2023/08/30/Fuzzing101%E2%80%94%E2%80%94Exercise%209/" class="next-prefix">» </a> 下一篇：    <a href="/2023/08/30/Fuzzing101%E2%80%94%E2%80%94Exercise%209/" title="发布于 2023-08-30 11:26">Fuzzing101——Exercise 9</a>
+                        <a href="/2023/08/31/Fuzzing101%E2%80%94%E2%80%94Exercise%2010/" class="next-prefix">» </a> 下一篇：    <a href="/2023/08/31/Fuzzing101%E2%80%94%E2%80%94Exercise%2010/" title="发布于 2023-08-31 11:47">Fuzzing101——Exercise 10</a>
                     
                 </div>
             </div>

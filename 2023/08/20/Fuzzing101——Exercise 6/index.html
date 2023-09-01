@@ -108,7 +108,7 @@ make install
 </ul>
 <p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-6-2-1.PNG?raw=true" alt="101-6-2-1.PNG"></p>
 <ul>
-<li>第二个方法是在  <code>xcf_load_invoker</code> 函数中插入AFL_LOOP macro :</li>
+<li>第二个方法是在 <code>xcf.c</code> 中的 <code>xcf_load_invoker</code> 函数中插入AFL_LOOP macro :</li>
 </ul>
 <p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-6-3.PNG?raw=true" alt="101-6-3.PNG"></p>
 <p>第一种方法允许针对不同的输入格式，而第二种方法更快，有更多机会捕捉到错误。</p>

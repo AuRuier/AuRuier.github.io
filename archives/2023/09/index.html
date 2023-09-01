@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            Fuzzing101——Exercise 10
+            归档
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -32,32 +32,15 @@
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body>
     <a id="cover"></a>
-    <link type="text/css" rel="stylesheet" href="/css/post.css">
+    <link type="text/css" rel="stylesheet" href="/css/archive.css">
 <div id="header" class="header">
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">Fuzzing101——Exercise 10</h1>
+                <h1 class="header-subtitle">归档</h1>
                 <div class="header-subinfo">
-                    <p class="article-info-text">
-                        <span>
-                            <i class="iconfont icon-time"></i> 发表时间：2023-08-31
-                        </span>
-                        
-                            
-                                <span id="/2023/08/31/Fuzzing101——Exercise 10/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 10">
-                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                </span>
-                            
-                            
-                                <span>
-                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/08/31/Fuzzing101——Exercise 10/"></span>
-                                </span>
-                              
-                        
-                    </p>
-                    
-                    
+                    <p class="article-info-text Chinese"></p>
+                    <p class="article-info-text English"></p>                  
                 </div>
             
         </div>
@@ -66,117 +49,37 @@
 </div>
 <div id="container">
     
-        <!-- 文章页面 -->
-        <div id="article">
-            <div class="toc"></div>
-            <div class="article-body">
-                <h1 id="Fuzzing101——Exercise-10"><a href="#Fuzzing101——Exercise-10" class="headerlink" title="Fuzzing101——Exercise 10"></a>Fuzzing101——Exercise 10</h1><p>CVE-2019-5847 in v8 7.5（infinite recursion）</p>
-<hr>
-<p>了解JS语法fuzzing工具Fuzzilli</p>
-<h2 id="安装Fuzzilli"><a href="#安装Fuzzilli" class="headerlink" title="安装Fuzzilli"></a>安装Fuzzilli</h2><p>先配置依赖，这里采用的是 ubuntu20.04</p>
-<pre><code>sudo apt install clang libicu-dev libpython2.7-dev libtinfo5 libncurses5 libpython2.7 libz3-dev
-wget https://swift.org/builds/swift-5.3.3-release/ubuntu2004/swift-5.3.3-RELEASE/swift-5.3.3-RELEASE-ubuntu20.04.tar.gz
-tar xzvf swift-5.3.3-RELEASE-ubuntu20.04.tar.gz
-sudo mv swift-5.3.3-RELEASE-ubuntu20.04 /usr/share/swift
-echo &quot;export PATH=/usr/share/swift/usr/bin:$PATH&quot; &gt;&gt; ~/.bashrc
-source ~/.bashrc
-</code></pre>
-<p>安装 fuzzilli，fuzzili 是一个针对 JS 引擎的 fuzz 工具，使用编程语言是 swift</p>
-<pre><code>wget https://github.com/googleprojectzero/fuzzilli/archive/refs/tags/v0.9.zip
-unzip v0.9.zip
-cd fuzzilli-0.9/
-swift build -c release -Xlinker=&#39;-lrt&#39;
-</code></pre>
-<h2 id="安装V8-Engine"><a href="#安装V8-Engine" class="headerlink" title="安装V8 Engine"></a>安装V8 Engine</h2><p>先下载谷歌的代码管理工具 depot_tools</p>
-<pre><code>cd $HOME
-git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
-echo &quot;export PATH=`pwd`/depot_tools:$PATH&quot; &gt;&gt; ~/.bashrc
-source  ~/.bashrc
-</code></pre>
-<p>获取 v8 源码</p>
-<pre><code>cd $HOME
-mkdir Fuzzing_v8_75 &amp;&amp; cd Fuzzing_v8_75
-fetch v8
-cd v8
-git checkout 1ca088652d3aad04caceb648bcffef100bc4abc0
-gclient sync
-</code></pre>
-<ul>
-<li>gclient sync：该命令用于同步solution的各个仓库，由于v8代码中包含多个git仓库，使用checkout后需要更新其他仓库内容进行有coverage instrumentation的编译，这里建议先按照原文中编译一个release版本出来，测试环境是否正常</li>
-</ul>
-<p>patch过程：</p>
-<pre><code>cd $HOME/Fuzzing_v8_75/v8
-./build/install-build-deps.sh
-cp ../../fuzzilli-0.9/Targets/V8/v8.patch ./
-patch -p1 &lt; v8.patch
-gn gen out/fuzzbuild --args=&#39;is_debug=false dcheck_always_on=true v8_static_library=true v8_enable_slow_dchecks=true v8_enable_v8_checks=true v8_enable_verify_heap=true v8_enable_verify_csa=true v8_enable_verify_predictable=true sanitizer_coverage_flags=&quot;trace-pc-guard&quot; target_cpu=&quot;x64&quot;&#39;
-ninja -C ./out/fuzzbuild
-</code></pre>
-<ul>
-<li>gn gen：生成build文件</li>
-</ul>
-<p>同样可以用 patch 命令还原文件</p>
-<pre><code>patch-RE -p1 &lt; v8.patch
-</code></pre>
-<p>运行 minibrowser 时如果报错，需要先加载lib库</p>
-<pre><code>sudo vi /etc/ld.so.conf
-在文件中添加webkit文件夹下lib路径
-sudo /sbin/ldconfig -v
-</code></pre>
-<h2 id="fuzz"><a href="#fuzz" class="headerlink" title="fuzz"></a>fuzz</h2><pre><code>swift run -Xlinker=&#39;-lrt&#39; -c release FuzzilliCli --profile=v8 --storagePath=Targets/V8/out &#39;/home/ubuntu/fuzz/fuzzing_v8/v8/out/fuzzbuild/d8&#39;
-</code></pre>
-<p>如果这里不加存储路径，发现的 crash 样本会被丢弃，导致要重新跑</p>
-<h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><p>这里由于可能出现语法错误，即 false positive，需要先用之前编译出来的正常 Release 版本运行 crash，判断是否存在语法错误等问题，得到不会报错的脚本，再丢进 gdb 里运行</p>
-<pre><code>gdb --args v8/out/fuzzbuild/d8 fuzzilli-0.9/Targets/V8/out/crashes/crash_1662073648445_9153_deterministic_4.js
-crash_1662137004583_12367_deterministic_4.js
-</code></pre>
-
-                
-                <p class="end">__END__</p>
-            </div>
-            <div class="article-footer">
-                <div class="suffix-box">
-    <div class="suffix-box-left">
-        <img src="/image/sidebar/avatar.jpg" alt="Live For Code">
-    </div>
-    <div class="suffix-box-right">
-        <span class="suffix-box-title">文章作者：</span>Live For Code
-        <br>
-        <span class="suffix-box-title">文章出处：</span><a href="/2023/08/31/Fuzzing101%E2%80%94%E2%80%94Exercise%2010/" target="_blank">Fuzzing101——Exercise 10</a>
-        <br>
-        <span class="suffix-box-title">作者签名：</span>简单地活着, 肆意又精彩.
-        <br>
-        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
-        <br>
-        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
-        <br>
-    </div>
-    <div style="clear: both;"></div>
-</div>
-                
-                
-                <div class="article-prev-next">
-                    
-                        <a href="/2023/09/01/What%20Kinds%20Of%20Papers%20Does%20USENIX%20Publish/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/09/01/What%20Kinds%20Of%20Papers%20Does%20USENIX%20Publish/" title="发布于 2023-09-01 11:07">What Kinds Of Papers Does USENIX Publish?</a>
-                        <br>
+        
+            <!-- 归档页面、分类归档页面、标签归档页面 -->
+            <div class="articles">
+                <div class="articles-wrap">
+                    <span class="archive-move-on"></span>
+                    <span class="archive-counter">
+                        
+                            目前共计 20 篇日志，继续加油！
+                        
+                    </span>
                     
                     
-                        <a href="/2023/08/30/Fuzzing101%E2%80%94%E2%80%94Exercise%209/" class="next-prefix">» </a> 下一篇：    <a href="/2023/08/30/Fuzzing101%E2%80%94%E2%80%94Exercise%209/" title="发布于 2023-08-30 11:26">Fuzzing101——Exercise 9</a>
+                        
+                            <div class="archive-title">
+                                <h2 class="archive-year">2023</h2>
+                            </div>
+                            
+                           
+                        <div class="article">
+                            <div class="article-header">
+                                <h1 class="article-title"><a href="/2023/09/01/What%20Kinds%20Of%20Papers%20Does%20USENIX%20Publish/"><span>What Kinds Of Papers Does USENIX Publish?</span></a></h1>
+                                <div class="article-meta">
+                                    <span class="article-time">09-01</span>
+                                </div>
+                            </div>
+                        </div>
                     
                 </div>
             </div>
             
-    <div class="article-comments">
         
-            <div class="comments-title">
-                评论列表
-            </div>
-        
-        <div class="comments-content"></div>
-    </div>
-    
- 
-        </div>
     
 </div>
     <div id="footer">
@@ -214,7 +117,7 @@ crash_1662137004583_12367_deterministic_4.js
                     
                         <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
                     
-                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                        <li class=" active "><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
                         <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
                     
