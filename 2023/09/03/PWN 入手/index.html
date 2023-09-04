@@ -231,21 +231,22 @@ obj.dump(&quot;__libc_start_main_ret&quot;)
 </ul>
 <p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-3.png?raw=true" alt="9.3-3.png"></p>
 <ul>
-<li>在磁盘中的 elf 里具有<strong>读和写</strong>权限的节（.data节，.bss节，.got.plt节），在虚拟内存中变成了 <strong>data 段</strong>;</li>
-<li>其他节具有<strong>可读可执行</strong>（不可写）权限，被划分到 <strong>code 段</strong>；</li>
-<li>一个 elf 可执行程序对应的进程的虚拟内存映像，不仅包含 elf 程序内容；</li>
-<li>elf 程序内容只是其对应的进程的虚拟内存映像中的一部分，仅仅占据 data 和 code，其虚拟内存映像还包含了大量其他的数据区域；</li>
-<li>对于 elf 结构的查看，除了借助 IDA 静态分析工具，也可以直接借用 Linux 中的 GNU Binutils 包中的objdump工具；<blockquote>
-<pre><code>objdump -s elf
-</code></pre>
-</blockquote>
+<li><p>在磁盘中的 elf 里具有<strong>读和写</strong>权限的节（.data节，.bss节，.got.plt节），在虚拟内存中变成了 <strong>data 段</strong>;</p>
+</li>
+<li><p>其他节具有<strong>可读可执行</strong>（不可写）权限，被划分到 <strong>code 段</strong>；</p>
+</li>
+<li><p>一个 elf 可执行程序对应的进程的虚拟内存映像，不仅包含 elf 程序内容；</p>
+</li>
+<li><p>elf 程序内容只是其对应的进程的虚拟内存映像中的一部分，仅仅占据 data 和 code，其虚拟内存映像还包含了大量其他的数据区域；</p>
+</li>
+<li><p>对于 elf 结构的查看，除了借助 IDA 静态分析工具，也可以直接借用 Linux 中的 GNU Binutils 包中的 objdump 工具；</p>
 </li>
 </ul>
 <blockquote>
-<p>输出 elf 在磁盘中的结构</p>
-<pre><code>cat /proc/pid/maps
-</code></pre>
-<p>需找到对应的 elf 文件生成的进程号，将 proc 换成对应 elf 生成的进程号即可在终端看到对应进程的虚拟内存的结构</p>
+<p> objdump -s elf</p>
+<p>   输出 elf 在磁盘中的结构</p>
+<p> cat &#x2F;proc&#x2F;pid&#x2F;maps</p>
+<p>   需找到对应的 elf 文件生成的进程号，将 proc 换成对应 elf 生成的进程号即可在终端看到对应进程的虚拟内存的结构</p>
 </blockquote>
 <p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-4.png?raw=true" alt="9.3-4.png"></p>
 <h3 id="进程虚拟地址空间"><a href="#进程虚拟地址空间" class="headerlink" title="进程虚拟地址空间"></a>进程虚拟地址空间</h3><blockquote>
@@ -354,39 +355,29 @@ obj.dump(&quot;__libc_start_main_ret&quot;)
 <p>已知偏移地址：0+2*4&#x3D;8。</p>
 <p>假设，位移为0x10。 0+2*4+0x10&#x3D;24。</p>
 </blockquote>
+<blockquote>
 <p><strong>MOV</strong></p>
-<pre><code>MOV DEST, SRC; 把源操作数传送给目标
-MOV EAX,1234H 	 ; 执行结果（EAX） = 1234H
-MOV EBX, EAX 
-MOV EAX, [00404011H]  ; [ ] 表示取地址内的值
-MOV EAX, [ESI]  
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">MOV DEST, SRC; 把源操作数传送给目标</span><br><span class="line">MOV EAX,1234H 	 ; 执行结果（EAX） = 1234H</span><br><span class="line">MOV EBX, EAX </span><br><span class="line">MOV EAX, [00404011H]  ; [ ] 表示取地址内的值</span><br><span class="line">MOV EAX, [ESI]  </span><br></pre></td></tr></table></figure>
+
 <p><strong>LEA</strong></p>
-<pre><code>LEA REG, SRC; 把源操作数的有效地址送给指定的寄存器
-LEA EBX, ASC; 取 ASC 的地址存放至 EBX 寄存器中
-LEA EAX, 6[ESI] ; 把 ESI+6 单元的32位地址送给 EAX
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LEA REG, SRC; 把源操作数的有效地址送给指定的寄存器</span><br><span class="line">LEA EBX, ASC; 取 ASC 的地址存放至 EBX 寄存器中</span><br><span class="line">LEA EAX, 6[ESI] ; 把 ESI+6 单元的32位地址送给 EAX</span><br></pre></td></tr></table></figure>
+
 <p><strong>PUSH</strong></p>
-<pre><code>PUSH VALUE ; 把目标值压栈，同时SP指针-1字长
-PUSH 1234H 
-PUSH EAX
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PUSH VALUE ; 把目标值压栈，同时SP指针-1字长</span><br><span class="line">PUSH 1234H </span><br><span class="line">PUSH EAX</span><br></pre></td></tr></table></figure>
+
 <p><strong>POP</strong></p>
-<pre><code>POP DEST ; 将栈顶的值弹出至目的存储位置，同时SP指针+1字长
-POP EAX
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">POP DEST ; 将栈顶的值弹出至目的存储位置，同时SP指针+1字长</span><br><span class="line">POP EAX</span><br></pre></td></tr></table></figure>
+
 <p><strong>LEAVE</strong></p>
-<pre><code>在函数返回时，恢复父函数栈帧的指令
-等效于：
-MOV ESP, EBP
-POP EBP
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">在函数返回时，恢复父函数栈帧的指令</span><br><span class="line">等效于：</span><br><span class="line">MOV ESP, EBP</span><br><span class="line">POP EBP</span><br></pre></td></tr></table></figure>
+
 <p><strong>RET</strong></p>
-<pre><code>在函数返回时，控制程序执行流返回父函数的指令
-等效于： POP RIP（这条指令实际是不存在的，不能直接向RIP寄存器传送数据）
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">在函数返回时，控制程序执行流返回父函数的指令</span><br><span class="line">等效于： POP RIP（这条指令实际是不存在的，不能直接向RIP寄存器传送数据）</span><br></pre></td></tr></table></figure>
+
+
 <p><strong>Call 指令</strong></p>
 <p>push 调用函数后的下一条指令。然后，jmp过去。</p>
+</blockquote>
 <p><strong>溢出的问题</strong></p>
 <blockquote>
 <p>正数加正数，不可能等于一个负数，如果出现了，就是溢出。负数加负数，也不可能等于一个正数，如果出现了，就是溢出。溢出的概念，只发生在有符号数。无符号数，是没有溢出这个概念的。</p>
