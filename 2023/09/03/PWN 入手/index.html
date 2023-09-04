@@ -72,25 +72,16 @@
             <div class="article-body">
                 <h1 id="PWN-入手"><a href="#PWN-入手" class="headerlink" title="PWN 入手"></a>PWN 入手</h1><p>二进制漏洞挖掘与利用</p>
 <hr>
-<h2 id="PWN-Tools"><a href="#PWN-Tools" class="headerlink" title="PWN Tools"></a>PWN Tools</h2><ul>
-<li>IDA Pro（静态分析工具）</li>
-</ul>
-<blockquote>
+<h2 id="PWN-Tools"><a href="#PWN-Tools" class="headerlink" title="PWN Tools"></a>PWN Tools</h2><h4 id="IDA-Pro（静态分析工具）"><a href="#IDA-Pro（静态分析工具）" class="headerlink" title="IDA Pro（静态分析工具）"></a>IDA Pro（静态分析工具）</h4><blockquote>
 <p>链接1：<a target="_blank" rel="noopener" href="https://share.weiyun.com/9tPuUCCV">IDA7.7.zip</a></p>
 <p>链接2：<a target="_blank" rel="noopener" href="https://down.52pojie.cn/Tools/Disassemblers/">在线破解工具包</a></p>
 </blockquote>
-<ul>
-<li>pwntools</li>
-</ul>
-<blockquote>
+<h4 id="pwntools"><a href="#pwntools" class="headerlink" title="pwntools"></a>pwntools</h4><blockquote>
 <p>下载安装：</p>
 <pre><code>sudo pip3 install pwntools -i https://pypi.tuna.tsinghua.edu.cn/simple
 </code></pre>
 </blockquote>
-<ul>
-<li>pwndbg（动态调试）</li>
-</ul>
-<p>链接1：<a target="_blank" rel="noopener" href="https://github.com/pwndbg/pwndbg">https://github.com/pwndbg/pwndbg</a></p>
+<h4 id="pwndbg（动态调试）"><a href="#pwndbg（动态调试）" class="headerlink" title="pwndbg（动态调试）"></a>pwndbg（动态调试）</h4><p>链接1：<a target="_blank" rel="noopener" href="https://github.com/pwndbg/pwndbg">https://github.com/pwndbg/pwndbg</a></p>
 <pre><code>sudo apt install gdb
 
 git clone https://github.com/pwndbg/pwndbg
@@ -121,25 +112,16 @@ $ gdb -q
 (gdb) pi import urllib.request as u, tempfile as t; g=t.NamedTemporaryFile(suffix=&#39;-gef.py&#39;); open(g.name, &#39;wb+&#39;).write(u.urlopen(&#39;https://tinyurl.com/gef-main&#39;).read()); gdb.execute(&#39;source %s&#39; % g.name)
 </code></pre>
 <p>好用程度：pwndbg &gt; peda &gt; gef</p>
-<ul>
-<li><p>checksec：在pwntools安装成功即有</p>
-</li>
-<li><p>ROPgadget：在pwntools安装成功即有</p>
-</li>
-<li><p>one_gadget</p>
-</li>
-</ul>
-<blockquote>
+<h4 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h4><p>在pwntools安装成功即有</p>
+<h4 id="ROPgadget"><a href="#ROPgadget" class="headerlink" title="ROPgadget"></a>ROPgadget</h4><p>在pwntools安装成功即有</p>
+<h4 id="one-gadget"><a href="#one-gadget" class="headerlink" title="one_gadget"></a>one_gadget</h4><blockquote>
 <p>下载安装：</p>
 <pre><code>sudo apt install ruby 
 sudo apt install gem 
 gem install one_gadget
 </code></pre>
 </blockquote>
-<ul>
-<li>LibcSearcher</li>
-</ul>
-<blockquote>
+<h4 id="LibcSearcher"><a href="#LibcSearcher" class="headerlink" title="LibcSearcher"></a>LibcSearcher</h4><blockquote>
 <p>链接：<a target="_blank" rel="noopener" href="https://github.com/lieanu/LibcSearcher">https://github.com/lieanu/LibcSearcher</a></p>
 <p>安装：</p>
 <pre><code>git clone https://github.com/lieanu/LibcSearcher.git
@@ -160,10 +142,7 @@ obj.dump(&quot;__libc_start_main_ret&quot;)
 </code></pre>
 <p>可替代的好用工具：<a target="_blank" rel="noopener" href="https://libc.blukat.me/">https://libc.blukat.me/</a></p>
 </blockquote>
-<ul>
-<li>main_arena_offset</li>
-</ul>
-<blockquote>
+<h4 id="main-arena-offset"><a href="#main-arena-offset" class="headerlink" title="main_arena_offset"></a>main_arena_offset</h4><blockquote>
 <p>链接1：<a target="_blank" rel="noopener" href="https://github.com/bash-c/main_arena_offset">https://github.com/bash-c/main_arena_offset</a></p>
 <p>安装：<code>git clone https://github.com/bash-c/main_arena_offset</code></p>
 <p>作用：一键输出 main_arena 偏移值</p>
@@ -182,18 +161,12 @@ obj.dump(&quot;__libc_start_main_ret&quot;)
 <blockquote>
 <p>链接2：（脚本包装）<a target="_blank" rel="noopener" href="https://github.com/zarkivy/py_main_arena_offset">https://github.com/zarkivy/py_main_arena_offset</a></p>
 <p>安装：</p>
-<pre><code>git clone https://github.com/IZAY01/py_main_arena_offset
-cd py_main_arena_offset
-sudo python3 setup.py develop
-</code></pre>
+<p> git clone <a target="_blank" rel="noopener" href="https://github.com/IZAY01/py_main_arena_offset">https://github.com/IZAY01/py_main_arena_offset</a><br> cd py_main_arena_offset<br> sudo python3 setup.py develop</p>
 <p>依赖于 objdump，需确保 Linux 中已安装 binutils 包</p>
 <p>eg：</p>
-<pre><code>from pymao import *
-
-libc = &quot;./libc-2.27.so&quot;
-main_arena_offset = gmao( libc )
-# or main_arena_offset = get_main_arena_offset( libc ) 
-</code></pre>
+<p> from pymao import *</p>
+<p> libc &#x3D; “.&#x2F;libc-2.27.so”<br> main_arena_offset &#x3D; gmao( libc )</p>
+<p>#or main_arena_offset &#x3D; get_main_arena_offset( libc ) </p>
 </blockquote>
 <h2 id="Hack"><a href="#Hack" class="headerlink" title="Hack"></a>Hack</h2><ul>
 <li>exploit：用于攻击的脚本与方案</li>
