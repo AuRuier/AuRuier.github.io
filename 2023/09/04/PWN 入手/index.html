@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            睿儿的Blog
+            PWN 入手
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -32,332 +32,410 @@
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body>
     <a id="cover"></a>
-    <link type="text/css" rel="stylesheet" href="/css/index.css">
-<div id="count"></div>
-<div id="header" >
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
+<div id="header" class="header">
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-title">AuRuier</h1>
-                <h2 class="header-description" id="hitokoto"></h2>
-                <h3 class="header-info" id="hitokotoAuthor"></h3>
+                <h1 class="header-subtitle">PWN 入手</h1>
+                <div class="header-subinfo">
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2023-09-03
+                        </span>
+                        
+                            
+                                <span id="/2023/09/04/PWN 入手/" class="leancloud_visitors" data-flag-title="PWN 入手">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/09/04/PWN 入手/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                    
+                </div>
             
         </div>
     </div>
-    
-        <a class="scroll-down" href="javascript:;" target="_self" data-offset="-45">
-            <i class="scroll-down-icon iconfont icon-return"></i>
-        </a>
     
 </div>
 <div id="container">
     
-        
-            <!-- 首页 -->
-            <div class="articles">
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h1 id="PWN-入手"><a href="#PWN-入手" class="headerlink" title="PWN 入手"></a>PWN 入手</h1><p>二进制漏洞挖掘与利用</p>
+<hr>
+<h2 id="PWN-Tools"><a href="#PWN-Tools" class="headerlink" title="PWN Tools"></a>PWN Tools</h2><h4 id="IDA-Pro（静态分析工具）"><a href="#IDA-Pro（静态分析工具）" class="headerlink" title="IDA Pro（静态分析工具）"></a>IDA Pro（静态分析工具）</h4><blockquote>
+<p>链接1：<a target="_blank" rel="noopener" href="https://share.weiyun.com/9tPuUCCV">IDA7.7.zip</a></p>
+<p>链接2：<a target="_blank" rel="noopener" href="https://down.52pojie.cn/Tools/Disassemblers/">在线破解工具包</a></p>
+</blockquote>
+<h4 id="pwntools"><a href="#pwntools" class="headerlink" title="pwntools"></a>pwntools</h4><blockquote>
+<p>下载安装：</p>
+<pre><code>sudo pip3 install pwntools -i https://pypi.tuna.tsinghua.edu.cn/simple
+</code></pre>
+</blockquote>
+<h4 id="pwndbg（动态调试）"><a href="#pwndbg（动态调试）" class="headerlink" title="pwndbg（动态调试）"></a>pwndbg（动态调试）</h4><p>链接1：<a target="_blank" rel="noopener" href="https://github.com/pwndbg/pwndbg">https://github.com/pwndbg/pwndbg</a></p>
+<pre><code>sudo apt install gdb
+
+git clone https://github.com/pwndbg/pwndbg
+cd pwndbg
+./setup.sh
+</code></pre>
+<p><img src="/image/comment/pic/9.2-02.png?raw=true" alt="9.2-02.png"></p>
+<p><img src="/image/comment/pic/9.2-03.png?raw=true" alt="9.2-03.png"></p>
+<p>链接2：<a target="_blank" rel="noopener" href="https://github.com/longld/peda">https://github.com/longld/peda</a></p>
+<pre><code>git clone https://github.com/longld/peda.git ~/peda
+echo &quot;source ~/peda/peda.py&quot; &gt;&gt; ~/.gdbinit
+echo &quot;DONE! debug your program with gdb and enjoy&quot;
+</code></pre>
+<p>链接3：<a target="_blank" rel="noopener" href="https://github.com/hugsy/gef">https://github.com/hugsy/gef</a></p>
+<pre><code># via the install script
+## using curl
+$ bash -c &quot;$(curl -fsSL https://gef.blah.cat/sh)&quot;
+
+## using wget
+$ bash -c &quot;$(wget https://gef.blah.cat/sh -O -)&quot;
+
+# or manually
+$ wget -O ~/.gdbinit-gef.py -q https://gef.blah.cat/py
+$ echo source ~/.gdbinit-gef.py &gt;&gt; ~/.gdbinit
+
+# or alternatively from inside gdb directly
+$ gdb -q
+(gdb) pi import urllib.request as u, tempfile as t; g=t.NamedTemporaryFile(suffix=&#39;-gef.py&#39;); open(g.name, &#39;wb+&#39;).write(u.urlopen(&#39;https://tinyurl.com/gef-main&#39;).read()); gdb.execute(&#39;source %s&#39; % g.name)
+</code></pre>
+<p>好用程度：pwndbg &gt; peda &gt; gef</p>
+<h4 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h4><p>在pwntools安装成功即有</p>
+<h4 id="ROPgadget"><a href="#ROPgadget" class="headerlink" title="ROPgadget"></a>ROPgadget</h4><p>在pwntools安装成功即有</p>
+<h4 id="one-gadget"><a href="#one-gadget" class="headerlink" title="one_gadget"></a>one_gadget</h4><blockquote>
+<p>下载安装：</p>
+<pre><code>sudo apt install ruby 
+sudo apt install gem 
+gem install one_gadget
+</code></pre>
+</blockquote>
+<h4 id="LibcSearcher"><a href="#LibcSearcher" class="headerlink" title="LibcSearcher"></a>LibcSearcher</h4><blockquote>
+<p>链接：<a target="_blank" rel="noopener" href="https://github.com/lieanu/LibcSearcher">https://github.com/lieanu/LibcSearcher</a></p>
+<p>安装：</p>
+<pre><code>git clone https://github.com/lieanu/LibcSearcher.git
+cd LibcSearcher
+python setup.py develop
+</code></pre>
+<p>使用eg：</p>
+<pre><code>from LibcSearcher import *
+
+#第二个参数，为已泄露的实际地址,或最后12位(比如：d90)，int类型
+obj = LibcSearcher(&quot;fgets&quot;, 0X7ff39014bd90)
+
+#system 偏移
+obj.dump(&quot;system&quot;)
+#/bin/sh 偏移
+obj.dump(&quot;str_bin_sh&quot;)
+obj.dump(&quot;__libc_start_main_ret&quot;)
+</code></pre>
+<p>可替代的好用工具：<a target="_blank" rel="noopener" href="https://libc.blukat.me/">https://libc.blukat.me/</a></p>
+</blockquote>
+<h4 id="main-arena-offset"><a href="#main-arena-offset" class="headerlink" title="main_arena_offset"></a>main_arena_offset</h4><blockquote>
+<p>链接1：<a target="_blank" rel="noopener" href="https://github.com/bash-c/main_arena_offset">https://github.com/bash-c/main_arena_offset</a></p>
+<p>安装：<code>git clone https://github.com/bash-c/main_arena_offset</code></p>
+<p>作用：一键输出 main_arena 偏移值</p>
+<p>用法eg：<code>main_arena *your_libc*</code></p>
+<pre><code> `main_arena /lib/x86_64-linux-gnu/libc.so.6`
+[+]libc version : glibc 2.27
+[+]build ID : BuildID[sha1]=8fd0a29758bf6615673836bb20ffdf11dcb531e6
+[+]main_arena_offset : 0x3b4c40
+ `main_arena /lib/i386-linux-gnu/libc.so.6`
+[+]libc version : glibc 2.27
+[+]build ID : BuildID[sha1]=2e6f3ca2f94f25f84946f8277d7588a00a90791b
+[+]main_arena_offset : 0x1d57a0
+</code></pre>
+</blockquote>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-04.png?raw=true" alt="9.2-04.png"></p>
+<blockquote>
+<p>链接2：（脚本包装）<a target="_blank" rel="noopener" href="https://github.com/zarkivy/py_main_arena_offset">https://github.com/zarkivy/py_main_arena_offset</a></p>
+<p>安装：</p>
+<p> git clone <a target="_blank" rel="noopener" href="https://github.com/IZAY01/py_main_arena_offset">https://github.com/IZAY01/py_main_arena_offset</a><br> cd py_main_arena_offset<br> sudo python3 setup.py develop</p>
+<p>依赖于 objdump，需确保 Linux 中已安装 binutils 包</p>
+<p>eg：</p>
+<p> from pymao import *</p>
+<p> libc &#x3D; “.&#x2F;libc-2.27.so”<br> main_arena_offset &#x3D; gmao( libc )</p>
+<p>#or main_arena_offset &#x3D; get_main_arena_offset( libc ) </p>
+</blockquote>
+<h2 id="Hack"><a href="#Hack" class="headerlink" title="Hack"></a>Hack</h2><ul>
+<li>exploit：用于攻击的脚本与方案</li>
+<li>payload：攻击载荷，是的目标进程被劫持控制流的数据</li>
+<li>shellcode：调用攻击目标的shell的代码</li>
+</ul>
+<h2 id="ELF-文件"><a href="#ELF-文件" class="headerlink" title="ELF 文件"></a>ELF 文件</h2><p>ELF 文件为 Linux 下可执行文件的格式！！！</p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-06.png?raw=true" alt="9.2-06.png"></p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-05.png?raw=true" alt="9.2-05.png"></p>
+<h3 id="从C源代码到可执行文件的生成过程"><a href="#从C源代码到可执行文件的生成过程" class="headerlink" title="从C源代码到可执行文件的生成过程"></a>从C源代码到可执行文件的生成过程</h3><ul>
+<li>编译：由C语言代码生成汇编代码</li>
+<li>汇编：由汇编代码生成机器码</li>
+<li>链接：将多个机器码的目标文件链接成一个可执行文件</li>
+</ul>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-08.png?raw=true" alt="9.2-08.png"></p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-07.png?raw=true" alt="9.2-07.png"></p>
+<h3 id="什么是可执行文件？"><a href="#什么是可执行文件？" class="headerlink" title="什么是可执行文件？"></a>什么是可执行文件？</h3><blockquote>
+<p>广义：文件中的数据是可执行代码的文件<br><code>.out、.exe、.sh、.py</code></p>
+<p>狭义：文件中的数据是机器码的文件 (二进制为狭义）<br><code>.out、.exe、.dll、.so</code></p>
+</blockquote>
+<h3 id="可执行文件的分类"><a href="#可执行文件的分类" class="headerlink" title="可执行文件的分类"></a>可执行文件的分类</h3><p>在 Windows 系统下：<strong>PE</strong>（Portable Executable）</p>
+<ul>
+<li>可执行程序 <code>.exe</code></li>
+<li>动态链接库 <code>.dll</code></li>
+<li>静态链接库 <code>.lib</code></li>
+</ul>
+<p>在 Linux 系统下：<strong>ELF</strong>（Executable and Linkable Format）</p>
+<ul>
+<li>可执行程序 <code>.out</code></li>
+<li>动态链接库 <code>.so</code></li>
+<li>静态链接库 <code>.a</code></li>
+</ul>
+<h3 id="Linux-下的可执行文件格式-ELF"><a href="#Linux-下的可执行文件格式-ELF" class="headerlink" title="Linux 下的可执行文件格式 ELF"></a>Linux 下的可执行文件格式 ELF</h3><p>放在<strong>磁盘</strong>中的是 <strong>ELF</strong>（定义的是文件的格式），放到<strong>内存</strong>中会创建虚拟内存映像，成为一个<strong>进程</strong>！</p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-09.png?raw=true" alt="9.2-09.png"></p>
+<h3 id="ELF-文件结构"><a href="#ELF-文件结构" class="headerlink" title="ELF 文件结构"></a>ELF 文件结构</h3><p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-10.png?raw=true" alt="9.2-10.png"></p>
+<blockquote>
+<p><strong>ELF文件头表</strong>（ELF header）: </p>
+<ul>
+<li>记录了ELF文件的组织结构</li>
+</ul>
+<p><strong>程序头表&#x2F;段表</strong>（Program header table）:</p>
+<ul>
+<li>告诉系统如何创建进程</li>
+<li>生成进程的可执行文件必须拥有此结构</li>
+<li>重定位文件不一定需要</li>
+</ul>
+<p><strong>节头表</strong>（Section header table）:</p>
+<ul>
+<li>记录了ELF文件的节区信息</li>
+<li>用于链接的目标文件必须拥有此结构</li>
+<li>其它类型目标文件不一定需要</li>
+</ul>
+</blockquote>
+<h2 id="程序装载与虚拟内存"><a href="#程序装载与虚拟内存" class="headerlink" title="程序装载与虚拟内存"></a>程序装载与虚拟内存</h2><h3 id="磁盘中的ELF（可执行文件）与内存中的ELF（进程内存映像）"><a href="#磁盘中的ELF（可执行文件）与内存中的ELF（进程内存映像）" class="headerlink" title="磁盘中的ELF（可执行文件）与内存中的ELF（进程内存映像）"></a>磁盘中的ELF（可执行文件）与内存中的ELF（进程内存映像）</h3><p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-2.png?raw=true" alt="9.3-2.png"></p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-15.png?raw=true" alt="9.3-15.png"></p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-1.png?raw=true" alt="9.3-1.png"></p>
+<p>节视图：在磁盘中的可执行文件，不同区域划分成不同节。不同功能区域对应的节，由于他们读写执行权限相同<br>会被合并成一个一个的段，然后在虚拟内存中发挥作用。</p>
+<p>如上图，左边对应右边内容，不同的节直接被合并到一个段并且到内存中所使用的。</p>
+<ul>
+<li>节视图是用来放在磁盘中划分功能的</li>
+<li>段视图是程序装载内存中用来划分不同的读写执行权限的</li>
+</ul>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-3.png?raw=true" alt="9.3-3.png"></p>
+<ul>
+<li><p>在磁盘中的 elf 里具有<strong>读和写</strong>权限的节（.data节，.bss节，.got.plt节），在虚拟内存中变成了 <strong>data 段</strong>;</p>
+</li>
+<li><p>其他节具有<strong>可读可执行</strong>（不可写）权限，被划分到 <strong>code 段</strong>；</p>
+</li>
+<li><p>一个 elf 可执行程序对应的进程的虚拟内存映像，不仅包含 elf 程序内容；</p>
+</li>
+<li><p>elf 程序内容只是其对应的进程的虚拟内存映像中的一部分，仅仅占据 data 和 code，其虚拟内存映像还包含了大量其他的数据区域；</p>
+</li>
+<li><p>对于 elf 结构的查看，除了借助 IDA 静态分析工具，也可以直接借用 Linux 中的 GNU Binutils 包中的 objdump 工具；</p>
+</li>
+</ul>
+<blockquote>
+<p> objdump -s elf</p>
+<p>   输出 elf 在磁盘中的结构</p>
+<p> cat &#x2F;proc&#x2F;pid&#x2F;maps</p>
+<p>   需找到对应的 elf 文件生成的进程号，将 proc 换成对应 elf 生成的进程号即可在终端看到对应进程的虚拟内存的结构</p>
+</blockquote>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-4.png?raw=true" alt="9.3-4.png"></p>
+<h3 id="进程虚拟地址空间"><a href="#进程虚拟地址空间" class="headerlink" title="进程虚拟地址空间"></a>进程虚拟地址空间</h3><blockquote>
+<p>地址以字节编码<br>1Byte &#x3D; 8bits</p>
+<p>常以16进制表示<br>0x3c &#x3D; 0011 1100</p>
+<ul>
+<li>虚拟内存用户空间每个进程一份</li>
+<li>虚拟内存内核空间所有进程共享一份</li>
+<li>虚拟内存 mmap 段中的动态链接库仅在物理内存中装载一份</li>
+</ul>
+</blockquote>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-5.png?raw=true" alt="9.3-5.png"></p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-6.png?raw=true" alt="9.3-6.png"></p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-7.png?raw=true" alt="9.3-7.png"></p>
+<h2 id="CPU-与进程的执行"><a href="#CPU-与进程的执行" class="headerlink" title="CPU 与进程的执行"></a>CPU 与进程的执行</h2><h3 id="段（segment）与节（section）"><a href="#段（segment）与节（section）" class="headerlink" title="段（segment）与节（section）"></a>段（segment）与节（section）</h3><blockquote>
+<p>代码段（Text segment）包含了代码与只读数据</p>
+<ul>
+<li>.text 节</li>
+<li>.rodata 节 </li>
+<li>.hash 节 </li>
+<li>.dynsym 节 </li>
+<li>.dynstr 节 </li>
+<li>.plt 节 </li>
+<li>.rel.got 节 </li>
+<li>……</li>
+</ul>
+<p>数据段（Data segment）包含了可读可写数据</p>
+<ul>
+<li>.data 节 </li>
+<li>.dynamic 节 </li>
+<li>.got 节 </li>
+<li>.got.plt 节</li>
+<li>.bss 节 </li>
+<li>……</li>
+</ul>
+<p>栈段（Stack segment）</p>
+</blockquote>
+<ul>
+<li>段视图用于<strong>进程</strong>的<strong>内存</strong>区域的 <strong>rwx 权限划分</strong>;</li>
+<li>节视图用于 <strong>ELF 文件</strong>编译链接时与在<strong>磁盘</strong>上存储时的<strong>文件结构</strong>的组织。</li>
+</ul>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-8.png?raw=true" alt="9.3-8.png"></p>
+<p>glb（全局变量）不需要占用磁盘空间，但需要占用内存空间，被划分到 Bss 区域；</p>
+<h3 id="大端序与小端序"><a href="#大端序与小端序" class="headerlink" title="大端序与小端序"></a>大端序与小端序</h3><p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-9.png?raw=true" alt="9.3-9.png"></p>
+<ul>
+<li><strong>小端序 LSB：低地址存放数据低位、高地址存放数据高位</strong></li>
+<li>大端序 MSB：低地址存放数据高位、高地址存放数据低位</li>
+</ul>
+<h3 id="进程的执行过程"><a href="#进程的执行过程" class="headerlink" title="进程的执行过程"></a>进程的执行过程</h3><p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-10.png?raw=true" alt="9.3-10.png"></p>
+<h3 id="寄存结构"><a href="#寄存结构" class="headerlink" title="寄存结构"></a>寄存结构</h3><p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-11.png?raw=true" alt="9.3-11.png"></p>
+<blockquote>
+<p>amd64寄存器结构：</p>
+<ul>
+<li>rax： 8Bytes</li>
+<li>eax：4Bytes</li>
+<li>ax：  2Bytes</li>
+<li>ah：  1Bytes</li>
+<li>al：   1Bytes</li>
+</ul>
+<p>部分寄存器的功能：</p>
+<ul>
+<li>RIP-pc(program counter)：存放下一条指令的偏移地址</li>
+<li>RSP：存放当前栈帧的栈顶偏移地址</li>
+<li>RBP：存放当前栈帧的栈底偏移地址</li>
+<li>RAX：通用寄存器。存放函数返回值</li>
+</ul>
+</blockquote>
+<h2 id="装载与汇编"><a href="#装载与汇编" class="headerlink" title="装载与汇编"></a>装载与汇编</h2><h3 id="静态链接的程序的执行过程"><a href="#静态链接的程序的执行过程" class="headerlink" title="静态链接的程序的执行过程"></a>静态链接的程序的执行过程</h3><p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-12.png?raw=true" alt="9.3-12.png"></p>
+<h3 id="动态链接的程序的执行过程"><a href="#动态链接的程序的执行过程" class="headerlink" title="动态链接的程序的执行过程"></a>动态链接的程序的执行过程</h3><p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-13.png?raw=true" alt="9.3-13.png"></p>
+<h3 id="常用汇编指令"><a href="#常用汇编指令" class="headerlink" title="常用汇编指令"></a>常用汇编指令</h3><blockquote>
+<ul>
+<li>MOV</li>
+<li>LEA</li>
+<li>ADD&#x2F;SUB</li>
+<li>PUSH</li>
+<li>POP</li>
+<li>CMP</li>
+<li>JMP</li>
+<li>J[Condition]</li>
+<li>CALL</li>
+<li>LEAVE</li>
+<li>RET</li>
+<li>……</li>
+</ul>
+</blockquote>
+<h3 id="汇编"><a href="#汇编" class="headerlink" title="汇编"></a>汇编</h3><p><strong>指令格式</strong></p>
+<table>
+<thead>
+<tr>
+<th>Base</th>
+<th>index</th>
+<th>scale</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>2</td>
+<td>4</td>
+</tr>
+</tbody></table>
+<ul>
+<li>位移 Displacement</li>
+<li>偏移 offset</li>
+</ul>
+<blockquote>
+<p>已知偏移地址：0+2*4&#x3D;8。</p>
+<p>假设，位移为0x10。 0+2*4+0x10&#x3D;24。</p>
+</blockquote>
+<blockquote>
+<p><strong>MOV</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">MOV DEST, SRC; 把源操作数传送给目标</span><br><span class="line">MOV EAX,1234H 	 ; 执行结果（EAX） = 1234H</span><br><span class="line">MOV EBX, EAX </span><br><span class="line">MOV EAX, [00404011H]  ; [ ] 表示取地址内的值</span><br><span class="line">MOV EAX, [ESI]  </span><br></pre></td></tr></table></figure>
+
+<p><strong>LEA</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LEA REG, SRC; 把源操作数的有效地址送给指定的寄存器</span><br><span class="line">LEA EBX, ASC; 取 ASC 的地址存放至 EBX 寄存器中</span><br><span class="line">LEA EAX, 6[ESI] ; 把 ESI+6 单元的32位地址送给 EAX</span><br></pre></td></tr></table></figure>
+
+<p><strong>PUSH</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PUSH VALUE ; 把目标值压栈，同时SP指针-1字长</span><br><span class="line">PUSH 1234H </span><br><span class="line">PUSH EAX</span><br></pre></td></tr></table></figure>
+
+<p><strong>POP</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">POP DEST ; 将栈顶的值弹出至目的存储位置，同时SP指针+1字长</span><br><span class="line">POP EAX</span><br></pre></td></tr></table></figure>
+
+<p><strong>LEAVE</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">在函数返回时，恢复父函数栈帧的指令</span><br><span class="line">等效于：</span><br><span class="line">MOV ESP, EBP</span><br><span class="line">POP EBP</span><br></pre></td></tr></table></figure>
+
+<p><strong>RET</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">在函数返回时，控制程序执行流返回父函数的指令</span><br><span class="line">等效于： POP RIP（这条指令实际是不存在的，不能直接向RIP寄存器传送数据）</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Call 指令</strong></p>
+<p>push 调用函数后的下一条指令。然后，jmp过去。</p>
+</blockquote>
+<p><strong>溢出的问题</strong></p>
+<blockquote>
+<p>正数加正数，不可能等于一个负数，如果出现了，就是溢出。负数加负数，也不可能等于一个正数，如果出现了，就是溢出。溢出的概念，只发生在有符号数。无符号数，是没有溢出这个概念的。</p>
+<p>于是，这就涉及到了，有符号数的大小判断。因为 CMP，作的是目的操作数，减去源操作数的一个减法运算。试想一下，如果目的操作数，是一个正数，而源操作数，是一个负数。那么，正数减去负数，就相当于正数加正数。</p>
+<p>有符号数，正数的最高位，是0。但是，两个正数相加，最高位，可能溢出，变成了1。这不就出现了负数了吗。从，目的操作数，与源操作数的符号(正负)，可知，目的操作数为正数，肯定大于负数。结果为，”&gt;”，大于。</p>
+<p>发生了溢出之后，OF&#x3D;1。但SF&#x3D;1(负数)。此时，OF&#x3D;SF，所以是大于。</p>
+</blockquote>
+<p><strong>两种汇编格式总结</strong></p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-14.png?raw=true" alt="9.3-14.png"></p>
+<p><strong>Jmp 指令</strong></p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-16.png?raw=true" alt="9.3-16.png"></p>
+
                 
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/09/07/How%20(and%20How%20Not)%20to%20Write%20a%20Good%20Design%20Paper/">How (and How Not) to Write a Good Design Paper</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-09-07
-                            </span>
-                            
-                                
-                                    <span id="/2023/09/07/How (and How Not) to Write a Good Design Paper/" class="leancloud_visitors" data-flag-title="How (and How Not) to Write a Good Design Paper">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/09/07/How (and How Not) to Write a Good Design Paper/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="AuRuier">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>AuRuier
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="/2023/09/04/PWN%20%E5%85%A5%E6%89%8B/" target="_blank">PWN 入手</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>有志者事竟成！
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
                 
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/09/04/Writing%20a%20good%20introduction/">Writing a good introduction</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-09-04
-                            </span>
-                            
-                                
-                                    <span id="/2023/09/04/Writing a good introduction/" class="leancloud_visitors" data-flag-title="Writing a good introduction">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/09/04/Writing a good introduction/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
                 
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/09/04/PWN%20%E5%85%A5%E6%89%8B/">PWN 入手</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-09-03
-                            </span>
-                            
-                                
-                                    <span id="/2023/09/04/PWN 入手/" class="leancloud_visitors" data-flag-title="PWN 入手">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/09/04/PWN 入手/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
-                
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/09/01/What%20Kinds%20Of%20Papers%20Does%20USENIX%20Publish/">What Kinds Of Papers Does USENIX Publish?</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-09-01
-                            </span>
-                            
-                                
-                                    <span id="/2023/09/01/What Kinds Of Papers Does USENIX Publish/" class="leancloud_visitors" data-flag-title="What Kinds Of Papers Does USENIX Publish?">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/09/01/What Kinds Of Papers Does USENIX Publish/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
-                
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/08/31/Fuzzing101%E2%80%94%E2%80%94Exercise%2010/">Fuzzing101——Exercise 10</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-08-31
-                            </span>
-                            
-                                
-                                    <span id="/2023/08/31/Fuzzing101——Exercise 10/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 10">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/08/31/Fuzzing101——Exercise 10/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
-                
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/08/30/Fuzzing101%E2%80%94%E2%80%94Exercise%209/">Fuzzing101——Exercise 9</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-08-30
-                            </span>
-                            
-                                
-                                    <span id="/2023/08/30/Fuzzing101——Exercise 9/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 9">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/08/30/Fuzzing101——Exercise 9/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
-                
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/08/25/Fuzzing101%E2%80%94%E2%80%94Exercise%208/">Fuzzing101——Exercise 8</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-08-25
-                            </span>
-                            
-                                
-                                    <span id="/2023/08/25/Fuzzing101——Exercise 8/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 8">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/08/25/Fuzzing101——Exercise 8/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
-                
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/08/23/Fuzzing101%E2%80%94%E2%80%94Exercise%207/">Fuzzing101——Exercise 7</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-08-23
-                            </span>
-                            
-                                
-                                    <span id="/2023/08/23/Fuzzing101——Exercise 7/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 7">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/08/23/Fuzzing101——Exercise 7/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
-                
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/08/20/Fuzzing101%E2%80%94%E2%80%94Exercise%206/">Fuzzing101——Exercise 6</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-08-20
-                            </span>
-                            
-                                
-                                    <span id="/2023/08/20/Fuzzing101——Exercise 6/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 6">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/08/20/Fuzzing101——Exercise 6/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
-                
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/08/19/Fuzzing101%E2%80%94%E2%80%94Exercise%205/">Fuzzing101——Exercise 5</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-08-19
-                            </span>
-                            
-                                
-                                    <span id="/2023/08/19/Fuzzing101——Exercise 5/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 5">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/08/19/Fuzzing101——Exercise 5/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
-                
+                <div class="article-prev-next">
+                    
+                        <a href="/2023/09/04/Writing%20a%20good%20introduction/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/09/04/Writing%20a%20good%20introduction/" title="发布于 2023-09-04 09:26">Writing a good introduction</a>
+                        <br>
+                    
+                    
+                        <a href="/2023/09/01/What%20Kinds%20Of%20Papers%20Does%20USENIX%20Publish/" class="next-prefix">» </a> 下一篇：    <a href="/2023/09/01/What%20Kinds%20Of%20Papers%20Does%20USENIX%20Publish/" title="发布于 2023-09-01 10:07">What Kinds Of Papers Does USENIX Publish?</a>
+                    
+                </div>
             </div>
             
-            
+    <div class="article-comments">
         
-    <div class="pagination-bottom">
-        <div class="pagination">
-            
-                <a href="/page/2/">下一页</a>
-            
-        </div>
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
     </div>
-
+    
+ 
+        </div>
     
 </div>
     <div id="footer">
@@ -389,7 +467,7 @@
             <div class="menu-list">
                 <ul>
                     
-                        <li class=" active "><a href="/" class="" target="_self"><span class="iconfont icon-home-fill"></span>首页</a></li>
+                        <li class=""><a href="/" class="" target="_self"><span class="iconfont icon-home-fill"></span>首页</a></li>
                     
                         <li class=""><a href="/category" class="" target="_self"><span class="iconfont icon-folder-fill"></span>分类</a></li>
                     

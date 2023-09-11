@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            PWN 入手
+            How (and How Not) to Write a Good Design Paper
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -37,21 +37,21 @@
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">PWN 入手</h1>
+                <h1 class="header-subtitle">How (and How Not) to Write a Good Design Paper</h1>
                 <div class="header-subinfo">
                     <p class="article-info-text">
                         <span>
-                            <i class="iconfont icon-time"></i> 发表时间：2023-09-03
+                            <i class="iconfont icon-time"></i> 发表时间：2023-09-07
                         </span>
                         
                             
-                                <span id="/2023/09/03/PWN 入手/" class="leancloud_visitors" data-flag-title="PWN 入手">
+                                <span id="/2023/09/07/How (and How Not) to Write a Good Design Paper/" class="leancloud_visitors" data-flag-title="How (and How Not) to Write a Good Design Paper">
                                     <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
                                 </span>
                             
                             
                                 <span>
-                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/09/03/PWN 入手/"></span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/09/07/How (and How Not) to Write a Good Design Paper/"></span>
                                 </span>
                               
                         
@@ -70,325 +70,69 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="PWN-入手"><a href="#PWN-入手" class="headerlink" title="PWN 入手"></a>PWN 入手</h1><p>二进制漏洞挖掘与利用</p>
+                <h1 id="How-and-How-Not-to-Write-a-Good-Design-Paper"><a href="#How-and-How-Not-to-Write-a-Good-Design-Paper" class="headerlink" title="How (and How Not) to Write a Good Design Paper"></a>How (and How Not) to Write a Good Design Paper</h1><p>链接（系统论文写作）：<a target="_blank" rel="noopener" href="https://www.ida.liu.se/~matar63/designpaper.pdf">[《How (and How Not) to Write  a Good Design Paper》]</a></p>
 <hr>
-<h2 id="PWN-Tools"><a href="#PWN-Tools" class="headerlink" title="PWN Tools"></a>PWN Tools</h2><h4 id="IDA-Pro（静态分析工具）"><a href="#IDA-Pro（静态分析工具）" class="headerlink" title="IDA Pro（静态分析工具）"></a>IDA Pro（静态分析工具）</h4><blockquote>
-<p>链接1：<a target="_blank" rel="noopener" href="https://share.weiyun.com/9tPuUCCV">IDA7.7.zip</a></p>
-<p>链接2：<a target="_blank" rel="noopener" href="https://down.52pojie.cn/Tools/Disassemblers/">在线破解工具包</a></p>
-</blockquote>
-<h4 id="pwntools"><a href="#pwntools" class="headerlink" title="pwntools"></a>pwntools</h4><blockquote>
-<p>下载安装：</p>
-<pre><code>sudo pip3 install pwntools -i https://pypi.tuna.tsinghua.edu.cn/simple
-</code></pre>
-</blockquote>
-<h4 id="pwndbg（动态调试）"><a href="#pwndbg（动态调试）" class="headerlink" title="pwndbg（动态调试）"></a>pwndbg（动态调试）</h4><p>链接1：<a target="_blank" rel="noopener" href="https://github.com/pwndbg/pwndbg">https://github.com/pwndbg/pwndbg</a></p>
-<pre><code>sudo apt install gdb
-
-git clone https://github.com/pwndbg/pwndbg
-cd pwndbg
-./setup.sh
-</code></pre>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-02.png?raw=true" alt="9.2-02.png"></p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-03.png?raw=true" alt="9.2-03.png"></p>
-<p>链接2：<a target="_blank" rel="noopener" href="https://github.com/longld/peda">https://github.com/longld/peda</a></p>
-<pre><code>git clone https://github.com/longld/peda.git ~/peda
-echo &quot;source ~/peda/peda.py&quot; &gt;&gt; ~/.gdbinit
-echo &quot;DONE! debug your program with gdb and enjoy&quot;
-</code></pre>
-<p>链接3：<a target="_blank" rel="noopener" href="https://github.com/hugsy/gef">https://github.com/hugsy/gef</a></p>
-<pre><code># via the install script
-## using curl
-$ bash -c &quot;$(curl -fsSL https://gef.blah.cat/sh)&quot;
-
-## using wget
-$ bash -c &quot;$(wget https://gef.blah.cat/sh -O -)&quot;
-
-# or manually
-$ wget -O ~/.gdbinit-gef.py -q https://gef.blah.cat/py
-$ echo source ~/.gdbinit-gef.py &gt;&gt; ~/.gdbinit
-
-# or alternatively from inside gdb directly
-$ gdb -q
-(gdb) pi import urllib.request as u, tempfile as t; g=t.NamedTemporaryFile(suffix=&#39;-gef.py&#39;); open(g.name, &#39;wb+&#39;).write(u.urlopen(&#39;https://tinyurl.com/gef-main&#39;).read()); gdb.execute(&#39;source %s&#39; % g.name)
-</code></pre>
-<p>好用程度：pwndbg &gt; peda &gt; gef</p>
-<h4 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h4><p>在pwntools安装成功即有</p>
-<h4 id="ROPgadget"><a href="#ROPgadget" class="headerlink" title="ROPgadget"></a>ROPgadget</h4><p>在pwntools安装成功即有</p>
-<h4 id="one-gadget"><a href="#one-gadget" class="headerlink" title="one_gadget"></a>one_gadget</h4><blockquote>
-<p>下载安装：</p>
-<pre><code>sudo apt install ruby 
-sudo apt install gem 
-gem install one_gadget
-</code></pre>
-</blockquote>
-<h4 id="LibcSearcher"><a href="#LibcSearcher" class="headerlink" title="LibcSearcher"></a>LibcSearcher</h4><blockquote>
-<p>链接：<a target="_blank" rel="noopener" href="https://github.com/lieanu/LibcSearcher">https://github.com/lieanu/LibcSearcher</a></p>
-<p>安装：</p>
-<pre><code>git clone https://github.com/lieanu/LibcSearcher.git
-cd LibcSearcher
-python setup.py develop
-</code></pre>
-<p>使用eg：</p>
-<pre><code>from LibcSearcher import *
-
-#第二个参数，为已泄露的实际地址,或最后12位(比如：d90)，int类型
-obj = LibcSearcher(&quot;fgets&quot;, 0X7ff39014bd90)
-
-#system 偏移
-obj.dump(&quot;system&quot;)
-#/bin/sh 偏移
-obj.dump(&quot;str_bin_sh&quot;)
-obj.dump(&quot;__libc_start_main_ret&quot;)
-</code></pre>
-<p>可替代的好用工具：<a target="_blank" rel="noopener" href="https://libc.blukat.me/">https://libc.blukat.me/</a></p>
-</blockquote>
-<h4 id="main-arena-offset"><a href="#main-arena-offset" class="headerlink" title="main_arena_offset"></a>main_arena_offset</h4><blockquote>
-<p>链接1：<a target="_blank" rel="noopener" href="https://github.com/bash-c/main_arena_offset">https://github.com/bash-c/main_arena_offset</a></p>
-<p>安装：<code>git clone https://github.com/bash-c/main_arena_offset</code></p>
-<p>作用：一键输出 main_arena 偏移值</p>
-<p>用法eg：<code>main_arena *your_libc*</code></p>
-<pre><code> `main_arena /lib/x86_64-linux-gnu/libc.so.6`
-[+]libc version : glibc 2.27
-[+]build ID : BuildID[sha1]=8fd0a29758bf6615673836bb20ffdf11dcb531e6
-[+]main_arena_offset : 0x3b4c40
- `main_arena /lib/i386-linux-gnu/libc.so.6`
-[+]libc version : glibc 2.27
-[+]build ID : BuildID[sha1]=2e6f3ca2f94f25f84946f8277d7588a00a90791b
-[+]main_arena_offset : 0x1d57a0
-</code></pre>
-</blockquote>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-04.png?raw=true" alt="9.2-04.png"></p>
-<blockquote>
-<p>链接2：（脚本包装）<a target="_blank" rel="noopener" href="https://github.com/zarkivy/py_main_arena_offset">https://github.com/zarkivy/py_main_arena_offset</a></p>
-<p>安装：</p>
-<p> git clone <a target="_blank" rel="noopener" href="https://github.com/IZAY01/py_main_arena_offset">https://github.com/IZAY01/py_main_arena_offset</a><br> cd py_main_arena_offset<br> sudo python3 setup.py develop</p>
-<p>依赖于 objdump，需确保 Linux 中已安装 binutils 包</p>
-<p>eg：</p>
-<p> from pymao import *</p>
-<p> libc &#x3D; “.&#x2F;libc-2.27.so”<br> main_arena_offset &#x3D; gmao( libc )</p>
-<p>#or main_arena_offset &#x3D; get_main_arena_offset( libc ) </p>
-</blockquote>
-<h2 id="Hack"><a href="#Hack" class="headerlink" title="Hack"></a>Hack</h2><ul>
-<li>exploit：用于攻击的脚本与方案</li>
-<li>payload：攻击载荷，是的目标进程被劫持控制流的数据</li>
-<li>shellcode：调用攻击目标的shell的代码</li>
+<h2 id="论⽂类别"><a href="#论⽂类别" class="headerlink" title="论⽂类别"></a>论⽂类别</h2><ul>
+<li>It presents a real design project, either by a global survey of an entire  design project or by a selective examination of specific themes embodied in  the design.</li>
+<li>It presents concept design work which never realized or thoroughly  prototyped, but it utilizes ideas or techniques that you feel the design  community should know.</li>
+<li>It addresses a topic in the theoretical areas, for example, sustainability or  playfulness.</li>
 </ul>
-<h2 id="ELF-文件"><a href="#ELF-文件" class="headerlink" title="ELF 文件"></a>ELF 文件</h2><p>ELF 文件为 Linux 下可执行文件的格式！！！</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-06.png?raw=true" alt="9.2-06.png"></p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-05.png?raw=true" alt="9.2-05.png"></p>
-<h3 id="从C源代码到可执行文件的生成过程"><a href="#从C源代码到可执行文件的生成过程" class="headerlink" title="从C源代码到可执行文件的生成过程"></a>从C源代码到可执行文件的生成过程</h3><ul>
-<li>编译：由C语言代码生成汇编代码</li>
-<li>汇编：由汇编代码生成机器码</li>
-<li>链接：将多个机器码的目标文件链接成一个可执行文件</li>
+<h2 id="提交材料的评估标准"><a href="#提交材料的评估标准" class="headerlink" title="提交材料的评估标准"></a>提交材料的评估标准</h2><h4 id="原创想法"><a href="#原创想法" class="headerlink" title="原创想法"></a>原创想法</h4><ul>
+<li>它涉及理论领域的主题，例如可持续性或趣味性。 论⽂中的想法是否新颖？除⾮论⽂⾄少包含⼀个新想法，否则向与原创⼯作有关的会议或期刊提交论⽂是没有意义的。</li>
+<li>你怎么知道？您必须熟悉论⽂所涵盖领域的最新技术和当前研究，才能知道您的 作品是原创的。也许第⼀类（真正的设计项⽬）提交的作品中最常⻅的失败是缺乏新 想法；所描述的系统通常与⽂献中详细记录的少数开创性设计作品之⼀同构。</li>
+<li>你能简明地阐述⼀下这个新想法吗？如果您的论⽂要提升知识⽔平，您的读者必须能够 发现新想法并理解它们。尝试将每个想法写在⼀个通常精通相关领域的⼈可以理解的段落 中。如果你不能，请考虑你⾃⼰并没有真正理解这个想法的可能性。当你有了段落后，将它们⽤在论⽂的摘要中。</li>
+<li>到底要解决什么设计挑战？仅根据设计解决⽅案的描述，不能指望您的读者猜测您⾯临的挑战或问题。请明确点。请务必解释为什么以前发表的作品⽆法很好地解决您的设计挑战。</li>
+<li>这些想法是否⾜够重要以证明⼀篇论⽂的合理性？通常，描述实际设计⼯作的论⽂包含对现有技术的⼀两个⼩改进。新想法可以⽤⼏段⽂字来描述；⼆⼗⻚的论⽂是不必要的，⽽且常常会掩盖实际的创新。由于开发真正的设计需要⼤量⼯作，论⽂作者有时会⽆意识地将全部⼯作与实际上是新的⼯作混淆。 （“我的团队在这个设计项⽬上⼯作了两年，终于完成了。让我们告诉世界它 是多么美妙。”）如果创新很⼩，在合适的期刊或会议上发表⼀篇简短的论⽂或笔记更合适⽐提交完整的论⽂。</li>
+<li>所描述的⼯作与现有的相关⼯作有显着不同吗？对先前发布的⽅法、技术或设计解决⽅ 案的明显扩展通常不保证发布。当然，“显⽽易⻅”这个标签必须谨慎使⽤。 （记住哥伦布演⽰如何使鸡蛋⽴起来（通过轻轻地压碎它）的故事：“⼀旦我向你展⽰了如何做，它就很明显了”。）你必须表明你的⼯作代表了与当时状态的重⼤背离。艺术。如果你不能，你应该问⾃⼰为什么要写这篇论⽂，以及为什么除了你⺟亲之外的任何⼈都应该阅读它。</li>
+<li>是否引⽤了所有相关⼯作？您是否真正阅读了引⽤的材料？除⾮您特别将其与以前发表的作品区分开来，否则您将很难让持怀疑态度的读者相信您的努⼒的原创性。这需要引⽤。此外，如果你的读者读过引⽤的作品⽽你没有，你会发现很难让他或她相信你的⽅法的优越性。</li>
+<li>到底要解决什么设计挑战？仅根据设计解决⽅案的描述，不能指望您的读者猜测您⾯临 的挑战或问题。请明确点。请务必解释为什么以前发表的作品⽆法很好地解决您的设计挑战。 由于开发真正的设计需要⼤量⼯作，论⽂作者有时会⽆意识地将全部⼯作与实际上是新的⼯作混淆。 （“我的团队在这个设计项⽬上⼯作了两年，终于完成了。让我们告诉世界它是多么美妙。”）如果创新很⼩，在合适的期刊或会议上发表⼀篇简短的论⽂或笔记更合适⽐提交完整的论⽂。 与之前的⼯作的⽐较是否清晰明确？你不能简单地说：“我们的⽅法与 BagOfBits 设计中采⽤的⽅法有些不同。”具体来说：“我们的⽤⼾界⾯⽅法使⽤有形部件，⽽不是像  BagOfBits 设计中那样使⽤触摸屏，预计会改善多个⽤⼾的合作和参与。”</li>
+<li>这项⼯作是否包含对早期但未经证实的想法的重⼤扩展、验证或否定？⽀持或反驳先前发表的论⽂设计的评估经验⾮常有价值和值得出版的候选⼈。纸⾯设计很便宜，但实现（特别是基于不合理设计的实现）却很昂贵。</li>
+<li>您引⽤的最古⽼的论⽂是什么？最新的？您是否参考过其他机构的类似⼯作？ 您是否参考过技术报告、未发表的备忘录、未经审查的在线材料、个⼈通讯？这些问题的答案有助于提醒您注意知识或理解中的盲点。通常，只有受⼈尊敬的参考⽂献的论⽂会重复作者不知道的最近发表的作品，仅引⽤最近参考⽂献的论⽂经常（通过⽆知）“重新发现”旧的想法。仅引⽤未发 表或未经参考材料的论⽂往往会受到狭隘和狭隘的影响。请记住，引⽂不仅承认 对他⼈的帮助，⽽且还作为⼀种缩写机制，使读者能够从基本原则上获得完整的 发展。然⽽，如果读者需要获得⼀些进展，他或她必须能够将您的引⽂转换成他或 她可以阅读的源材料。个⼈通讯和内部备忘录未通过此测试。技术报告通常数量 有限、绝版且难以获得。因此，应尽可能避免将此类引⽤作为源材料。</li>
 </ul>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-08.png?raw=true" alt="9.2-08.png"></p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-07.png?raw=true" alt="9.2-07.png"></p>
-<h3 id="什么是可执行文件？"><a href="#什么是可执行文件？" class="headerlink" title="什么是可执行文件？"></a>什么是可执行文件？</h3><blockquote>
-<p>广义：文件中的数据是可执行代码的文件<br><code>.out、.exe、.sh、.py</code></p>
-<p>狭义：文件中的数据是机器码的文件 (二进制为狭义）<br><code>.out、.exe、.dll、.so</code></p>
-</blockquote>
-<h3 id="可执行文件的分类"><a href="#可执行文件的分类" class="headerlink" title="可执行文件的分类"></a>可执行文件的分类</h3><p>在 Windows 系统下：<strong>PE</strong>（Portable Executable）</p>
-<ul>
-<li>可执行程序 <code>.exe</code></li>
-<li>动态链接库 <code>.dll</code></li>
-<li>静态链接库 <code>.lib</code></li>
+<h4 id="现实"><a href="#现实" class="headerlink" title="现实"></a>现实</h4><ul>
+<li>这篇论⽂描述的是已经以某种⽅式实际实现的东西还是完全是概念性的？许多论⽂⽤现在时⻓达⼗五⻚，然后在结论部分（如果有的话）揭⽰上述描述是假 设的情况，只是考虑实现该情况。这是⽆法接受的。您的读者有权从⼀开始就知道 正在讨论的设计作品是真正的设计项⽬还是只是为了争论⽽制作的概念设计。</li>
+<li>如果设计已经实现（或⾄少原型化），它是如何使⽤的，这种使⽤表明了这些 想法的实际重要性？再次强调，多个⼈年的实现努⼒本⾝并不能证明发表论⽂是 合理的。如果实现的设计包含新的想法，那么解释它们在实践中是如何实现的很 重要。⼀个看似不错但没有成功的想法⾄少和成功的想法⼀样有趣。具体和精确很重要。 “我们的天⽓预报服务已启动并运⾏，没有⼈抱怨其偶尔出现的不准 确预报”⽐“每次我们未能预报降⾬时，⽤⼾将湿衬衫挂在磁带驱动器上晾⼲”的 说服⼒要差得多。在后⼀种情况下，⾄少我们知道⼈们正在使⽤并依赖该服务。</li>
+<li>如果设计作品是⼀个尚未实现或原型化的概念，那么这些想法现在是否值得发表？对于作者来说，这可能是⼀个很难冷静回答的问题，但论⽂的任何审稿⼈都会做出这样的判断。</li>
+<li>⼈们总是很想写⼀篇设计论⽂来描述⼀个没有原型评估的新系统，然后在⼀两年内写⼀篇“经验”论⽂。这⼀类型的成功论⽂⼏乎总是在设计论⽂的最后部分 包含初步经验。随后的经验论⽂通常以意想不到的⽅式讨论从设计的⻓期使⽤ 或更⼴泛的评估中吸取的教训。审稿⼈对未经任何评估的纯设计论⽂⾮常怀疑，除⾮有明显⾼质量的新想法。</li>
 </ul>
-<p>在 Linux 系统下：<strong>ELF</strong>（Executable and Linkable Format）</p>
-<ul>
-<li>可执行程序 <code>.out</code></li>
-<li>动态链接库 <code>.so</code></li>
-<li>静态链接库 <code>.a</code></li>
+<h4 id="教训"><a href="#教训" class="headerlink" title="教训"></a>教训</h4><ul>
+<li>你从⼯作中学到了什么？如果你没有学到任何东西，那么你的读者也不会学到任何东西，那么你发表论⽂只是浪费了他们的时间。</li>
+<li>读者应该从论⽂中学到什么？清楚地讲出课程内容。很多⼈因为不了解历史书⽽重复历史的错误。</li>
+<li>这些教训的普遍适⽤性如何？⼀定要清楚地说明你的结论所依据的假设。⼩⼼ 基于缺乏知识或经验的概括。 “实际设计⼯作”论⽂中⼀个特别常⻅的问题是 从单个⽰例进⾏概括，例如，假设全世界所有⻓途卡⻋都有电⼦⻋载记录器。在陈述你的结论时，再次陈述假设会有所帮助。读者可能已经看了⼗五⻚才看到它们， 并且可能已经忘记了它们。你可能也有。</li>
 </ul>
-<h3 id="Linux-下的可执行文件格式-ELF"><a href="#Linux-下的可执行文件格式-ELF" class="headerlink" title="Linux 下的可执行文件格式 ELF"></a>Linux 下的可执行文件格式 ELF</h3><p>放在<strong>磁盘</strong>中的是 <strong>ELF</strong>（定义的是文件的格式），放到<strong>内存</strong>中会创建虚拟内存映像，成为一个<strong>进程</strong>！</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-09.png?raw=true" alt="9.2-09.png"></p>
-<h3 id="ELF-文件结构"><a href="#ELF-文件结构" class="headerlink" title="ELF 文件结构"></a>ELF 文件结构</h3><p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-10.png?raw=true" alt="9.2-10.png"></p>
-<blockquote>
-<p><strong>ELF文件头表</strong>（ELF header）: </p>
-<ul>
-<li>记录了ELF文件的组织结构</li>
+<h4 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h4><ul>
+<li>在不同的时刻考虑了哪些替代⽅案？为什么会做出这样的选择？⼀篇好的论⽂不仅仅是描述，⽽是解释。告诉你的读者你做了什么并不能让他们知道你的选择是经过多么仔细的考虑。您希望避免未来的研究⼈员⾛上同样的死胡同。您还想记录您没有碰巧探索过的 潜在有趣的⼩巷。确保清楚地说明哪个是哪个。</li>
+<li>结果证明这些选择是正确的吗？如果是，那么最初的动机是什么？如果没有，您从这次经历中吸取了哪些教训？您是否经常发现⾃⼰说“这有效，但原因错误”？ 这样的声明代表了可能使您的读者受益的智慧（⾄少是少量）。许多论⽂提出 了从最初的假设⼀直到最终结果的理性论证，⽽事实上，结果是通过完全不同的 路径和后来形成的演绎论证获得的。这种“修正主义历史”近乎不诚实并妨碍读者理解研究的真正运作⽅式。</li>
 </ul>
-<p><strong>程序头表&#x2F;段表</strong>（Program header table）:</p>
-<ul>
-<li>告诉系统如何创建进程</li>
-<li>生成进程的可执行文件必须拥有此结构</li>
-<li>重定位文件不一定需要</li>
+<h4 id="语境"><a href="#语境" class="headerlink" title="语境"></a>语境</h4><ul>
+<li>这项⼯作基于什么假设？持怀疑态度的读者不太可能接受你的论点，除⾮他们的前提得到陈述。确保你得到了所有这些；⼈们很容易忽视隐含的假设。</li>
+<li>它们现实吗？对于概念设计论⽂来说，这相当于询问设计的假设是否能够⽀持成功实现。许多未经评估的论⽂设计对于他们抽象处理的组件的真实特征（例如，真实的使⽤模式或成本）很天真。对于理论研究，必须清楚假设如何反映现实，例如可持续性分析 的完整性、与游戏性相关的⽤⼾群体。</li>
+<li>这项⼯作对这些假设的扰动有多敏感？如果你的结果巧妙地建⽴在⼀座由脆弱假设组成的⾼塔上，那么它对读者来说的⽤处就不如建⽴在更⼴泛、更坚实基础上的结果有⽤。</li>
+<li>如果提出⼀个理论模型，它是否会提供新的信息和⻅解？仅仅为了模型本⾝⽽定义模型并不是很有⽤。</li>
 </ul>
-<p><strong>节头表</strong>（Section header table）:</p>
-<ul>
-<li>记录了ELF文件的节区信息</li>
-<li>用于链接的目标文件必须拥有此结构</li>
-<li>其它类型目标文件不一定需要</li>
+<h4 id="重点"><a href="#重点" class="headerlink" title="重点"></a>重点</h4><ul>
+<li>介绍性材料是否包含您的主要设计重点不需要的多余包袱？ “真正的设计作品” 论⽂尤其容易出现不相关的描述。如果您的主题是移动旅⾏服务的⽤⼾界⾯，则移动设 备外壳的物理特性可能并不密切。避免以相同深度描述设计的所有主要特征的诱惑。相反，应专注于新颖或不寻常的内容（⼤概）将成为论⽂原始设计内容的焦点。</li>
+<li>您是否包含了以前发表的作品中⾜够的材料，使您的读者能够理解您的论点？不要 假设读者已经在上周阅读了所有参考论⽂，并且触⼿可及以供即时参考。如果您希望读 者读完第三⻚，请避免使⽤以下形式的介绍性句⼦：“我们采⽤ Brown 的设计质量 定义，按照 Green 的描述进⾏操作，并引⼊语义和经验的概念由⿊⾊和⽩⾊，后来由格雷修改”。另⼀⽅⾯，不要⽤引⽤作品中的冗⻓摘录或释义给读者带来 不必要的负担。</li>
 </ul>
-</blockquote>
-<h2 id="程序装载与虚拟内存"><a href="#程序装载与虚拟内存" class="headerlink" title="程序装载与虚拟内存"></a>程序装载与虚拟内存</h2><h3 id="磁盘中的ELF（可执行文件）与内存中的ELF（进程内存映像）"><a href="#磁盘中的ELF（可执行文件）与内存中的ELF（进程内存映像）" class="headerlink" title="磁盘中的ELF（可执行文件）与内存中的ELF（进程内存映像）"></a>磁盘中的ELF（可执行文件）与内存中的ELF（进程内存映像）</h3><p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-2.png?raw=true" alt="9.3-2.png"></p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-15.png?raw=true" alt="9.3-15.png"></p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-1.png?raw=true" alt="9.3-1.png"></p>
-<p>节视图：在磁盘中的可执行文件，不同区域划分成不同节。不同功能区域对应的节，由于他们读写执行权限相同<br>会被合并成一个一个的段，然后在虚拟内存中发挥作用。</p>
-<p>如上图，左边对应右边内容，不同的节直接被合并到一个段并且到内存中所使用的。</p>
-<ul>
-<li>节视图是用来放在磁盘中划分功能的</li>
-<li>段视图是程序装载内存中用来划分不同的读写执行权限的</li>
+<h4 id="推介会"><a href="#推介会" class="headerlink" title="推介会"></a>推介会</h4><ul>
+<li>这些想法是否以清晰且合乎逻辑的⽅式组织和呈现？</li>
+<li>术语在使⽤之前是否已定义？</li>
+<li>前向引⽤是否保持在最低限度？当读者反复遇到“每个屏幕都由⼀系列项⽬组成，这将在后⾯的部分中详细描述”之类的陈述时，他们会感到恼⽕。读者必须记住技术术语“项⽬”，但该术语还没有语义。要求他或她这样做⼀两次是可以的，但只有在绝对必要的情况下才可以。即使此时您⽆法离题解释“屏幕”，也请为读者提供⾜够的信息来为该术语附加⼀些含义：“每个屏幕都由⽤⼾依次操作的⼀系列项⽬、对象组成” ，它们将在下⾯的“多 媒体屏幕”下详细讨论。”您的读者可能还没有完全理解您的屏幕概念，但⾄少他或她可以 瞥⻅您引导他或她的⽅向。</li>
+<li>是否考虑过替代组织？实验论⽂通常⽐描述设计的论⽂更容易组织。引⾔、⽅法、结果、讨 论和结论的预期顺序对于假设演绎研究很有效，但对于描述则效果不佳。在“真正的设计⼯作”论⽂中，很⼤程度上取决于意图：全球调查或选择性处理。通常，组织上的困难是由于 作者不愿意采⽤任何⼀种⽅法造成的。决定您是要调查您的设计还是专注于某个特定⽅⾯， 并相应地构建论⽂。</li>
+<li>是先写摘要吗？它是否传达了论⽂的重要思想？描述设计的论⽂中的摘要被严重滥⽤。 摘要通常是散⽂式的⽬录，⽽不是论⽂技术内容的概要。它往往会出现这样的结果：“基于  Keysworth 的⽤⼾交互概念的设计已经开发和测试。提出了⼀些初步结果并考虑了未来⼯作的⽅向。”浏览过⼀本⽇记的读者不可能在那之后继续阅读。</li>
+<li>避免使⽤被动语态（尽管有传统）并包括对假设和结果的简单陈述。 “我们按照  Keysworth 的想法设计和评估了⽤⼾界⾯，发现将个⼈计算机交互模型转换为全⾝交互模 型可以将导航速度和参与度提⾼ 15%。然⽽，当我们将摇滚⾳乐⽽不是 Muzak™ 引⼊办公 室时，准确性急剧下降。”</li>
+<li>留下论⽂的讨论和论证。在论⽂（尽管有传统）甚⾄⼤纲之前写摘要是有帮助的，因为它可 以将你的注意⼒集中在你想要传达的主要思想上。</li>
+<li>纸写完了吗？审稿⼈通常可以帮助你改进论⽂，但他们不能为你写论⽂。此外，不能指望 他们插值标记为“将包含在最终草案中”的部分。在数学论⽂中，审稿⼈会对未经证明的定理陈述表 ⽰怀疑，并且如果该定理旨在使先前的发展达到顶峰，则审稿⼈会持不宽容态度。同样，在描 述设计的论⽂中，审稿⼈不能容忍省略重要的解释或理由。省略某些部分并承诺稍后填写 它们通常是不可接受的。</li>
 </ul>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-3.png?raw=true" alt="9.3-3.png"></p>
-<ul>
-<li><p>在磁盘中的 elf 里具有<strong>读和写</strong>权限的节（.data节，.bss节，.got.plt节），在虚拟内存中变成了 <strong>data 段</strong>;</p>
-</li>
-<li><p>其他节具有<strong>可读可执行</strong>（不可写）权限，被划分到 <strong>code 段</strong>；</p>
-</li>
-<li><p>一个 elf 可执行程序对应的进程的虚拟内存映像，不仅包含 elf 程序内容；</p>
-</li>
-<li><p>elf 程序内容只是其对应的进程的虚拟内存映像中的一部分，仅仅占据 data 和 code，其虚拟内存映像还包含了大量其他的数据区域；</p>
-</li>
-<li><p>对于 elf 结构的查看，除了借助 IDA 静态分析工具，也可以直接借用 Linux 中的 GNU Binutils 包中的 objdump 工具；</p>
-</li>
+<h4 id="写作⻛格"><a href="#写作⻛格" class="headerlink" title="写作⻛格"></a>写作⻛格</h4><ul>
+<li>写作是否清晰、简洁？</li>
+<li>单词的拼写和使⽤是否正确？</li>
+<li>句⼦是否完整且语法正确？</li>
+<li>是否避免了歧义、俚语的说法？</li>
 </ul>
-<blockquote>
-<p> objdump -s elf</p>
-<p>   输出 elf 在磁盘中的结构</p>
-<p> cat &#x2F;proc&#x2F;pid&#x2F;maps</p>
-<p>   需找到对应的 elf 文件生成的进程号，将 proc 换成对应 elf 生成的进程号即可在终端看到对应进程的虚拟内存的结构</p>
-</blockquote>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-4.png?raw=true" alt="9.3-4.png"></p>
-<h3 id="进程虚拟地址空间"><a href="#进程虚拟地址空间" class="headerlink" title="进程虚拟地址空间"></a>进程虚拟地址空间</h3><blockquote>
-<p>地址以字节编码<br>1Byte &#x3D; 8bits</p>
-<p>常以16进制表示<br>0x3c &#x3D; 0011 1100</p>
-<ul>
-<li>虚拟内存用户空间每个进程一份</li>
-<li>虚拟内存内核空间所有进程共享一份</li>
-<li>虚拟内存 mmap 段中的动态链接库仅在物理内存中装载一份</li>
-</ul>
-</blockquote>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-5.png?raw=true" alt="9.3-5.png"></p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-6.png?raw=true" alt="9.3-6.png"></p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-7.png?raw=true" alt="9.3-7.png"></p>
-<h2 id="CPU-与进程的执行"><a href="#CPU-与进程的执行" class="headerlink" title="CPU 与进程的执行"></a>CPU 与进程的执行</h2><h3 id="段（segment）与节（section）"><a href="#段（segment）与节（section）" class="headerlink" title="段（segment）与节（section）"></a>段（segment）与节（section）</h3><blockquote>
-<p>代码段（Text segment）包含了代码与只读数据</p>
-<ul>
-<li>.text 节</li>
-<li>.rodata 节 </li>
-<li>.hash 节 </li>
-<li>.dynsym 节 </li>
-<li>.dynstr 节 </li>
-<li>.plt 节 </li>
-<li>.rel.got 节 </li>
-<li>……</li>
-</ul>
-<p>数据段（Data segment）包含了可读可写数据</p>
-<ul>
-<li>.data 节 </li>
-<li>.dynamic 节 </li>
-<li>.got 节 </li>
-<li>.got.plt 节</li>
-<li>.bss 节 </li>
-<li>……</li>
-</ul>
-<p>栈段（Stack segment）</p>
-</blockquote>
-<ul>
-<li>段视图用于<strong>进程</strong>的<strong>内存</strong>区域的 <strong>rwx 权限划分</strong>;</li>
-<li>节视图用于 <strong>ELF 文件</strong>编译链接时与在<strong>磁盘</strong>上存储时的<strong>文件结构</strong>的组织。</li>
-</ul>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-8.png?raw=true" alt="9.3-8.png"></p>
-<p>glb（全局变量）不需要占用磁盘空间，但需要占用内存空间，被划分到 Bss 区域；</p>
-<h3 id="大端序与小端序"><a href="#大端序与小端序" class="headerlink" title="大端序与小端序"></a>大端序与小端序</h3><p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-9.png?raw=true" alt="9.3-9.png"></p>
-<ul>
-<li><strong>小端序 LSB：低地址存放数据低位、高地址存放数据高位</strong></li>
-<li>大端序 MSB：低地址存放数据高位、高地址存放数据低位</li>
-</ul>
-<h3 id="进程的执行过程"><a href="#进程的执行过程" class="headerlink" title="进程的执行过程"></a>进程的执行过程</h3><p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-10.png?raw=true" alt="9.3-10.png"></p>
-<h3 id="寄存结构"><a href="#寄存结构" class="headerlink" title="寄存结构"></a>寄存结构</h3><p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-11.png?raw=true" alt="9.3-11.png"></p>
-<blockquote>
-<p>amd64寄存器结构：</p>
-<ul>
-<li>rax： 8Bytes</li>
-<li>eax：4Bytes</li>
-<li>ax：  2Bytes</li>
-<li>ah：  1Bytes</li>
-<li>al：   1Bytes</li>
-</ul>
-<p>部分寄存器的功能：</p>
-<ul>
-<li>RIP-pc(program counter)：存放下一条指令的偏移地址</li>
-<li>RSP：存放当前栈帧的栈顶偏移地址</li>
-<li>RBP：存放当前栈帧的栈底偏移地址</li>
-<li>RAX：通用寄存器。存放函数返回值</li>
-</ul>
-</blockquote>
-<h2 id="装载与汇编"><a href="#装载与汇编" class="headerlink" title="装载与汇编"></a>装载与汇编</h2><h3 id="静态链接的程序的执行过程"><a href="#静态链接的程序的执行过程" class="headerlink" title="静态链接的程序的执行过程"></a>静态链接的程序的执行过程</h3><p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-12.png?raw=true" alt="9.3-12.png"></p>
-<h3 id="动态链接的程序的执行过程"><a href="#动态链接的程序的执行过程" class="headerlink" title="动态链接的程序的执行过程"></a>动态链接的程序的执行过程</h3><p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-13.png?raw=true" alt="9.3-13.png"></p>
-<h3 id="常用汇编指令"><a href="#常用汇编指令" class="headerlink" title="常用汇编指令"></a>常用汇编指令</h3><blockquote>
-<ul>
-<li>MOV</li>
-<li>LEA</li>
-<li>ADD&#x2F;SUB</li>
-<li>PUSH</li>
-<li>POP</li>
-<li>CMP</li>
-<li>JMP</li>
-<li>J[Condition]</li>
-<li>CALL</li>
-<li>LEAVE</li>
-<li>RET</li>
-<li>……</li>
-</ul>
-</blockquote>
-<h3 id="汇编"><a href="#汇编" class="headerlink" title="汇编"></a>汇编</h3><p><strong>指令格式</strong></p>
-<table>
-<thead>
-<tr>
-<th>Base</th>
-<th>index</th>
-<th>scale</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>0</td>
-<td>2</td>
-<td>4</td>
-</tr>
-</tbody></table>
-<ul>
-<li>位移 Displacement</li>
-<li>偏移 offset</li>
-</ul>
-<blockquote>
-<p>已知偏移地址：0+2*4&#x3D;8。</p>
-<p>假设，位移为0x10。 0+2*4+0x10&#x3D;24。</p>
-</blockquote>
-<blockquote>
-<p><strong>MOV</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">MOV DEST, SRC; 把源操作数传送给目标</span><br><span class="line">MOV EAX,1234H 	 ; 执行结果（EAX） = 1234H</span><br><span class="line">MOV EBX, EAX </span><br><span class="line">MOV EAX, [00404011H]  ; [ ] 表示取地址内的值</span><br><span class="line">MOV EAX, [ESI]  </span><br></pre></td></tr></table></figure>
-
-<p><strong>LEA</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LEA REG, SRC; 把源操作数的有效地址送给指定的寄存器</span><br><span class="line">LEA EBX, ASC; 取 ASC 的地址存放至 EBX 寄存器中</span><br><span class="line">LEA EAX, 6[ESI] ; 把 ESI+6 单元的32位地址送给 EAX</span><br></pre></td></tr></table></figure>
-
-<p><strong>PUSH</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PUSH VALUE ; 把目标值压栈，同时SP指针-1字长</span><br><span class="line">PUSH 1234H </span><br><span class="line">PUSH EAX</span><br></pre></td></tr></table></figure>
-
-<p><strong>POP</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">POP DEST ; 将栈顶的值弹出至目的存储位置，同时SP指针+1字长</span><br><span class="line">POP EAX</span><br></pre></td></tr></table></figure>
-
-<p><strong>LEAVE</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">在函数返回时，恢复父函数栈帧的指令</span><br><span class="line">等效于：</span><br><span class="line">MOV ESP, EBP</span><br><span class="line">POP EBP</span><br></pre></td></tr></table></figure>
-
-<p><strong>RET</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">在函数返回时，控制程序执行流返回父函数的指令</span><br><span class="line">等效于： POP RIP（这条指令实际是不存在的，不能直接向RIP寄存器传送数据）</span><br></pre></td></tr></table></figure>
-
-
-<p><strong>Call 指令</strong></p>
-<p>push 调用函数后的下一条指令。然后，jmp过去。</p>
-</blockquote>
-<p><strong>溢出的问题</strong></p>
-<blockquote>
-<p>正数加正数，不可能等于一个负数，如果出现了，就是溢出。负数加负数，也不可能等于一个正数，如果出现了，就是溢出。溢出的概念，只发生在有符号数。无符号数，是没有溢出这个概念的。</p>
-<p>于是，这就涉及到了，有符号数的大小判断。因为 CMP，作的是目的操作数，减去源操作数的一个减法运算。试想一下，如果目的操作数，是一个正数，而源操作数，是一个负数。那么，正数减去负数，就相当于正数加正数。</p>
-<p>有符号数，正数的最高位，是0。但是，两个正数相加，最高位，可能溢出，变成了1。这不就出现了负数了吗。从，目的操作数，与源操作数的符号(正负)，可知，目的操作数为正数，肯定大于负数。结果为，”&gt;”，大于。</p>
-<p>发生了溢出之后，OF&#x3D;1。但SF&#x3D;1(负数)。此时，OF&#x3D;SF，所以是大于。</p>
-</blockquote>
-<p><strong>两种汇编格式总结</strong></p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-14.png?raw=true" alt="9.3-14.png"></p>
-<p><strong>Jmp 指令</strong></p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-16.png?raw=true" alt="9.3-16.png"></p>
+<p>如果您在提交发表之前没有充分关注您的材料以纠正语法、拼写和⽤法中的错误，那么您为什么要期望审稿⼈仔细阅读论⽂呢？⼀些审稿⼈认为，这种粗⼼不太可能仅限于演⽰⽂稿，并且⼀旦发现技术不连贯的迹象就会拒绝该论⽂。请记住，您是在请求审稿⼈帮忙： “请让我说服您，我做了有趣的、可发表的⼯作。”如果审稿⼈收到⼀份⼲净、清晰、经过仔 细修改的稿件，⽽不是没有考虑指定的格式模板（看起来像是由⼩学辍学⽣撰写的），那 么他或她会对您更有利。即使您并不特别关⼼精确的阐述，您的组织中也肯定有⼈会关⼼。 将你的⼿稿交给这个有责任⼼的灵魂，并听取由此产⽣的建议。</p>
+<h4 id="概括"><a href="#概括" class="headerlink" title="概括"></a>概括</h4><p>这三⼗多个问题可以帮助你写出更好的设计论⽂。</p>
+<p>当您组织演⽰⽂稿、撰写初稿以及将⼿稿完善为最终形式时，请日常自我提问。其中⼀些问题解决了”设计”论⽂中的具体问题；其他的则适⽤于⼀般研究论⽂。写⼀篇好的论⽂是⼀项艰苦的⼯作，但如果完成了，那么，你的想法在期刊和会议论⽂的读者群体中得到更⼴泛的传播和更好的理解。</p>
 
                 
                 <p class="end">__END__</p>
@@ -401,7 +145,7 @@ obj.dump(&quot;__libc_start_main_ret&quot;)
     <div class="suffix-box-right">
         <span class="suffix-box-title">文章作者：</span>AuRuier
         <br>
-        <span class="suffix-box-title">文章出处：</span><a href="/2023/09/03/PWN%20%E5%85%A5%E6%89%8B/" target="_blank">PWN 入手</a>
+        <span class="suffix-box-title">文章出处：</span><a href="/2023/09/07/How%20(and%20How%20Not)%20to%20Write%20a%20Good%20Design%20Paper/" target="_blank">How (and How Not) to Write a Good Design Paper</a>
         <br>
         <span class="suffix-box-title">作者签名：</span>有志者事竟成！
         <br>
@@ -416,11 +160,8 @@ obj.dump(&quot;__libc_start_main_ret&quot;)
                 
                 <div class="article-prev-next">
                     
-                        <a href="/2023/09/04/Writing%20a%20good%20introduction/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/09/04/Writing%20a%20good%20introduction/" title="发布于 2023-09-04 09:26">Writing a good introduction</a>
-                        <br>
                     
-                    
-                        <a href="/2023/09/01/What%20Kinds%20Of%20Papers%20Does%20USENIX%20Publish/" class="next-prefix">» </a> 下一篇：    <a href="/2023/09/01/What%20Kinds%20Of%20Papers%20Does%20USENIX%20Publish/" title="发布于 2023-09-01 10:07">What Kinds Of Papers Does USENIX Publish?</a>
+                        <a href="/2023/09/04/Writing%20a%20good%20introduction/" class="next-prefix">» </a> 下一篇：    <a href="/2023/09/04/Writing%20a%20good%20introduction/" title="发布于 2023-09-04 09:26">Writing a good introduction</a>
                     
                 </div>
             </div>
