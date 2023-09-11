@@ -132,7 +132,7 @@ make install
 <pre><code>$HOME/fuzzing_libexif/install/bin/exif
 </code></pre>
 <p>结果如图：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-2-0.PNG?raw=true" alt="101-2-0.PNG"></p>
+<p><img src="/image/comment/pic/101-2-0.PNG?raw=true" alt="101-2-0.PNG"></p>
 <h2 id="创建种子语料库"><a href="#创建种子语料库" class="headerlink" title="创建种子语料库"></a>创建种子语料库</h2><pre><code>cd $HOME/fuzzing_libexif
 wget https://github.com/ianare/exif-samples/archive/refs/heads/master.zip
 unzip master.zip
@@ -141,7 +141,7 @@ unzip master.zip
 <pre><code>$HOME/fuzzing_libexif/install/bin/exif $HOME/fuzzing_libexif/exif-samples-master/jpg/Canon_40D_photoshop_import.jpg
 </code></pre>
 <p>结果如图：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-2-0-1.PNG?raw=true" alt="101-2-0-1.PNG"></p>
+<p><img src="/image/comment/pic/101-2-0-1.PNG?raw=true" alt="101-2-0-1.PNG"></p>
 <h2 id="使用fuzz编译器编译（afl-clang-lto）"><a href="#使用fuzz编译器编译（afl-clang-lto）" class="headerlink" title="使用fuzz编译器编译（afl-clang-lto）"></a>使用fuzz编译器编译（afl-clang-lto）</h2><pre><code>rm -r $HOME/fuzzing_libexif/install
 cd $HOME/fuzzing_libexif/libexif-libexif-0_6_14-release/
 make clean
@@ -165,7 +165,7 @@ make install
 <h2 id="Fuzzing"><a href="#Fuzzing" class="headerlink" title="Fuzzing"></a>Fuzzing</h2><pre><code>AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 afl-fuzz -i $HOME/fuzzing_libexif/exif-samples-master/jpg/ -o $HOME/fuzzing_libexif/out/ -s 123 -- $HOME/fuzzing_libexif/install/bin/exif @@
 </code></pre>
 <p>结果如图：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-2-3.PNG?raw=true" alt="101-2-3.PNG"></p>
+<p><img src="/image/comment/pic/101-2-3.PNG?raw=true" alt="101-2-3.PNG"></p>
 <h2 id="分流"><a href="#分流" class="headerlink" title="分流"></a>分流</h2><h4 id="Eclipse-设置"><a href="#Eclipse-设置" class="headerlink" title="Eclipse 设置"></a>Eclipse 设置</h4><ul>
 <li>练习 1 : 在上次练习中，学会了如何使用 GDB 控制台来分流崩溃。</li>
 <li>练习 2 : 此次练习将学习如何使用 Eclipse-CDT 进行调试。</li>
@@ -179,13 +179,13 @@ make install
 <pre><code>tar -xzvf eclipse-cpp-2021-03-R-linux-gtk-x86_64.tar.gz
 </code></pre>
 <p>启动 Eclipse-CDT 后，将源代码导入 Project Explorer。然后，进入 File（文件）-&gt; Import（导入）-&gt; 然后选择 C&#x2F;C++ -&gt; “Existing code as makefile project”。然后选择 “Linux GCC “并选择 Exif 源代码文件夹。如下图：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-2-4.PNG?raw=true" alt="101-2-4.PNG"></p>
+<p><img src="/image/comment/pic/101-2-4.PNG?raw=true" alt="101-2-4.PNG"></p>
 <p>配置调试参数。 <code>Run -&gt; Debug Configurations</code>，然后选择 exif 项目并浏览 exif 二进制文件：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-2-5.PNG?raw=true" alt="101-2-5.PNG"></p>
+<p><img src="/image/comment/pic/101-2-5.PNG?raw=true" alt="101-2-5.PNG"></p>
 <p>然后设置输入参数。进入<code>&quot;Arguments&quot;</code> 选项卡，设置 AFL 崩溃的路径：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-2-6.PNG?raw=true" alt="101-2-6.PNG"></p>
+<p><img src="/image/comment/pic/101-2-6.PNG?raw=true" alt="101-2-6.PNG"></p>
 <p>最后，点击  <code>&quot;Debug&quot;</code> 开始调试，程序就会在主函数开始时停止。点击 <code>Run -&gt; Resume</code> ，程序就会在检测到分段故障时停止执行。</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-2-7.PNG?raw=true" alt="101-2-7.PNG"></p>
+<p><img src="/image/comment/pic/101-2-7.PNG?raw=true" alt="101-2-7.PNG"></p>
 <p>修复：</p>
 <p>  官方修复:</p>
 <ul>
@@ -207,19 +207,19 @@ make install
 </code></pre>
 <h2 id="crash1"><a href="#crash1" class="headerlink" title="crash1"></a>crash1</h2><pre><code>gdb --args $HOME/fuzzing_libexif/install/bin/exif $HOME/fuzzing_libexif/out/default/crashes/id:000002,sig:11,src:000337,time:81269,execs:109112,op:havoc,rep:16 $HOME/fuzzing_libexif/output
 </code></pre>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-2-8.PNG?raw=true" alt="101-2-8.PNG"></p>
+<p><img src="/image/comment/pic/101-2-8.PNG?raw=true" alt="101-2-8.PNG"></p>
 <ul>
 <li>报错信息Program received signal SIGSEGV, Segmentation fault，存在内存泄露</li>
 </ul>
 <h2 id="crash2"><a href="#crash2" class="headerlink" title="crash2"></a>crash2</h2><pre><code>gdb --args $HOME/fuzzing_libexif/install/bin/exif $HOME/fuzzing_libexif/out/default/crashes/id:000006,sig:11,src:000507+000485,time:258214,execs:316835,op:splice,rep:1 $HOME/fuzzing_libexif/output
 </code></pre>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-2-9.PNG?raw=true" alt="101-2-9.PNG"></p>
+<p><img src="/image/comment/pic/101-2-9.PNG?raw=true" alt="101-2-9.PNG"></p>
 <ul>
 <li>报错信息Program received signal SIGSEGV, Segmentation fault，存在内存泄露</li>
 </ul>
 <h2 id="crash3"><a href="#crash3" class="headerlink" title="crash3"></a>crash3</h2><pre><code>gdb --args $HOME/fuzzing_libexif/install/bin/exif $HOME/fuzzing_libexif/out/default/crashes/id:000000,sig:11,src:000160,time:19807,execs:21868,op:havoc,rep:5 $HOME/fuzzing_libexif/output
 </code></pre>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-2-10.PNG?raw=true" alt="101-2-10.PNG"></p>
+<p><img src="/image/comment/pic/101-2-10.PNG?raw=true" alt="101-2-10.PNG"></p>
 <ul>
 <li>报错信息Program received signal SIGSEGV, Segmentation fault.，存在内存泄露</li>
 <li>报错位置__memmove_avx_unaligned_erms () at ..&#x2F;sysdeps&#x2F;x86_64&#x2F;multiarch&#x2F;memmove-vec-unaligned-erms.S:440</li>
@@ -257,7 +257,7 @@ make install
                         <br>
                     
                     
-                        <a href="/2023/08/13/Fuzzing101%E2%80%94%E2%80%94Exercise%201/" class="next-prefix">» </a> 下一篇：    <a href="/2023/08/13/Fuzzing101%E2%80%94%E2%80%94Exercise%201/" title="发布于 2023-08-13 10:59">Fuzzing101——Exercise 1</a>
+                        <a href="/2023/08/14/Fuzzing101%E2%80%94%E2%80%94Exercise%201/" class="next-prefix">» </a> 下一篇：    <a href="/2023/08/14/Fuzzing101%E2%80%94%E2%80%94Exercise%201/" title="发布于 2023-08-13 11:59">Fuzzing101——Exercise 1</a>
                     
                 </div>
             </div>

@@ -125,11 +125,11 @@ make install
 <p><strong>测试功能：</strong></p>
 <pre><code>$HOME/fuzzing_tcpdump/install/sbin/tcpdump -h
 </code></pre>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-3-2.jpg?raw=true" alt="101-3-2.jpg"></p>
+<p><img src="/image/comment/pic/101-3-2.jpg?raw=true" alt="101-3-2.jpg"></p>
 <h3 id="创建语料库："><a href="#创建语料库：" class="headerlink" title="创建语料库："></a>创建语料库：</h3><p>在” tests “文件夹中存在大量 .pcacp 示例。以下命令行可以运行 .pcap 文件</p>
 <pre><code>$HOME/fuzzing_tcpdump/install/sbin/tcpdump -vvvvXX -ee -nn -r ./tests/ahcp.pcap 
 </code></pre>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-3-3.jpg?raw=true" alt="101-3-3.jpg"></p>
+<p><img src="/image/comment/pic/101-3-3.jpg?raw=true" alt="101-3-3.jpg"></p>
 <h2 id="使用ASAN编译"><a href="#使用ASAN编译" class="headerlink" title="使用ASAN编译"></a>使用ASAN编译</h2><p><strong>AddressSanitizer（ASan）</strong> 是一种用于 C 和 C++ 的快速内存错误检测器。它最初由 Google（Konstantin Serebryany、Derek Bruening、Alexander Potapenko 和 Dmitry Vyukov）开发，于 2011 年 5 月首次发布。</p>
 <p>它由一个编译器工具模块和一个运行时库组成。该工具能够发现对堆、堆栈和全局对象的越界访问，以及使用后释放、双重释放和内存泄露等错误。AddressSanitizer 是开源的，从 3.1 版开始与 LLVM 编译器工具链集成。它最初是作为 LLVM 的一个项目开发的，现已移植到 GCC，并包含在 GCC &gt;&#x3D; 4.8 版本中。有关 AddressSanitizer 的更多信息，请访问以下 <a target="_blank" rel="noopener" href="https://clang.llvm.org/docs/AddressSanitizer.html">链接</a>。</p>
 <h3 id="启用-ASan-进行编译"><a href="#启用-ASan-进行编译" class="headerlink" title="启用 ASan 进行编译"></a>启用 ASan 进行编译</h3><p>用 afl-clang-lto 在启用 ASan 的情况下，编译 tcpdump（和 libpcap） ：</p>
@@ -164,13 +164,13 @@ AFL_USE_ASAN=1 make install
 </code></pre>
 <p>Tips: ASAN 会消耗大量内存，使用 -m none 不限制内存使用。</p>
 <p>结果如图：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-3-1.PNG?raw=true" alt="101-3-1.PNG"></p>
+<p><img src="/image/comment/pic/101-3-1.PNG?raw=true" alt="101-3-1.PNG"></p>
 <h2 id="分流"><a href="#分流" class="headerlink" title="分流"></a>分流</h2><h3 id="动态调试"><a href="#动态调试" class="headerlink" title="动态调试"></a>动态调试</h3><p>这里调试用 ASan 构建的程序要更简单，仅需运行崩溃文件即可（通过 ASan 进行debug，不再需要重新对目标程序进行编译）：</p>
 <pre><code>$HOME/fuzzing_tcpdump/install/sbin/tcpdump -vvvvXX -ee -nn -r $HOME/fuzzing_tcpdump/out/default/crashes/id:000000,sig:06,src:005093,time:6442866,execs:983798,op:havoc,rep:5
 </code></pre>
 <p>Tips: 这里如果用普通编译来运行crash反而得不到报错信息，显然这里的内存泄露不会直接导致crash。</p>
 <p>The summary of the crash, including the execution trace:</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-3-4.PNG?raw=true" alt="101-3-4.PNG"></p>
+<p><img src="/image/comment/pic/101-3-4.PNG?raw=true" alt="101-3-4.PNG"></p>
 <p><strong>heap-buffer-overflow</strong> ！！! 堆溢出！！！</p>
 <h2 id="修复"><a href="#修复" class="headerlink" title="修复"></a>修复</h2><p> <a target="_blank" rel="noopener" href="https://github.com/the-tcpdump-group/tcpdump/commit/85078eeaf4bf8fcdc14a4e79b516f92b6ab520fc#diff-05f854a9033643de07f0d0059bc5b98f3b314eeb1e2499ea1057e925e6501ae8L381">官方修复</a></p>
 <hr>
@@ -202,7 +202,7 @@ AFL_USE_ASAN=1 make install
                 
                 <div class="article-prev-next">
                     
-                        <a href="/2023/08/18/Fuzzing101%E2%80%94%E2%80%94Exercise%204/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/08/18/Fuzzing101%E2%80%94%E2%80%94Exercise%204/" title="发布于 2023-08-18 07:33">Fuzzing101——Exercise 4</a>
+                        <a href="/2023/08/18/Fuzzing101%E2%80%94%E2%80%94Exercise%204/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/08/18/Fuzzing101%E2%80%94%E2%80%94Exercise%204/" title="发布于 2023-08-18 08:33">Fuzzing101——Exercise 4</a>
                         <br>
                     
                     

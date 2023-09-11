@@ -108,7 +108,7 @@ make install
 <h3 id="创建语料库："><a href="#创建语料库：" class="headerlink" title="创建语料库："></a>创建语料库：</h3><p>使用 <code>/test/images/</code> 文件夹中的样本图像作为种子输入语料，模糊位于 <code>/bin</code> 文件夹中的 <code>tiffinfo</code> 二进制文件。</p>
 <h3 id="测试功能："><a href="#测试功能：" class="headerlink" title="测试功能："></a>测试功能：</h3><pre><code>$HOME/fuzzing_tiff/install/bin/tiffinfo -D -j -c -r -s -w $HOME/fuzzing_tiff/tiff-4.0.4/test/images/palette-1c-1b.tiff
 </code></pre>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-4-1.PNG?raw=true" alt="101-4-1.PNG"></p>
+<p><img src="/image/comment/pic/101-4-1.PNG?raw=true" alt="101-4-1.PNG"></p>
 <p>Tips:<br>在命令中，启用了 “-j -c -r -s -w” 所有这些标志。这是为了提高<strong>代码覆盖率</strong>，增加发现漏洞的机会。</p>
 <h2 id="代码覆盖率"><a href="#代码覆盖率" class="headerlink" title="代码覆盖率"></a>代码覆盖率</h2><p>代码覆盖率是一个软件度量指标，显示每行代码被触发的次数。通过使用代码覆盖率，我们可以了解模糊器触发了代码的哪些部分，并将模糊过程可视化。</p>
 <p><strong>首先，安装 lcov</strong></p>
@@ -141,7 +141,7 @@ lcov --no-checksum --directory ./ --capture --output-file app2.info
 <pre><code>genhtml --highlight --legend -output-directory ./html-coverage/ ./app2.info
 </code></pre>
 <p>代码覆盖报告将在 html-coverage 文件夹中创建。打开 .&#x2F;html-coverage&#x2F;index.html 文件，即可看到如图：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-4-4.jpg?raw=true" alt="101-4-4.jpg"></p>
+<p><img src="/image/comment/pic/101-4-4.jpg?raw=true" alt="101-4-4.jpg"></p>
 <h2 id="Fuzzing"><a href="#Fuzzing" class="headerlink" title="Fuzzing"></a>Fuzzing</h2><p>###用 afl-clang-lto 在启用 ASAN 的情况下编译 libtiff:</p>
 <p><strong>首先，清理所有之前编译过的对象文件和可执行文件：</strong></p>
 <pre><code>rm -r $HOME/fuzzing_tiff/install
@@ -158,30 +158,30 @@ AFL_USE_ASAN=1 make install
 <pre><code>AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 afl-fuzz -m none -i $HOME/fuzzing_tiff/tiff-4.0.4/test/images/ -o $HOME/fuzzing_tiff/out/ -s 123 -- $HOME/fuzzing_tiff/install/bin/tiffinfo -D -j -c -r -s -w @@
 </code></pre>
 <p>首次测试出现如下错误：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-4-2.PNG?raw=true" alt="101-4-2.PNG"></p>
+<p><img src="/image/comment/pic/101-4-2.PNG?raw=true" alt="101-4-2.PNG"></p>
 <p>根据提示，执行以下操作：</p>
 <pre><code>sudo su
 echo core &gt;/proc/sys/kernel/core_pattern
 exit
 </code></pre>
 <p>再次运行：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-4-3.PNG?raw=true" alt="101-4-3.PNG"></p>
+<p><img src="/image/comment/pic/101-4-3.PNG?raw=true" alt="101-4-3.PNG"></p>
 <p>运行 8 小时的 crash：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-4-7.jpg?raw=true" alt="101-4-7.jpg"></p>
+<p><img src="/image/comment/pic/101-4-7.jpg?raw=true" alt="101-4-7.jpg"></p>
 <h2 id="动态调试"><a href="#动态调试" class="headerlink" title="动态调试"></a>动态调试</h2><blockquote>
 <p>假设跑出 crash：id:000000,sig:06,src:000016,time:556815,execs:377779,op:havoc,rep:4</p>
 </blockquote>
 <p>###查看报错</p>
 <pre><code>./install/bin/tiffinfo -D -j -c -r -s -w ./out/default/crashes/id\:000000\,sig\:06\,src\:000016\,time\:556815\,execs\:377779\,op\:havoc\,rep\:4
 </code></pre>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-4-4.PNG?raw=true" alt="101-4-4.PNG"></p>
+<p><img src="/image/comment/pic/101-4-4.PNG?raw=true" alt="101-4-4.PNG"></p>
 <ul>
 <li>报错信息：AddressSanitizer: heap-buffer-overflow (&#x2F;root&#x2F;fuzz_target&#x2F;fuzzing_tiff&#x2F;install&#x2F;bin&#x2F;tiffinfo+0x2aaf11) in fputs，堆溢出</li>
 </ul>
 <h2 id="代码覆盖率测量"><a href="#代码覆盖率测量" class="headerlink" title="代码覆盖率测量"></a>代码覆盖率测量</h2><p>尝试测量 PoC 的代码覆盖率，<strong>需要获取一份覆盖率 html 报告</strong>，与上面的示例类似。</p>
 <h2 id="修复"><a href="#修复" class="headerlink" title="修复"></a>修复</h2><p> <a target="_blank" rel="noopener" href="https://github.com/vadz/libtiff/commit/30c9234c7fd0dd5e8b1e83ad44370c875a0270ed">官方修复</a></p>
 <hr>
-<p>此次实验进行整体较为顺利，只是在动态调试时并没有查看到报错，如下图所示，后续再加以完善。<br><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-4-5.jpg?raw=true" alt="101-4-5.jpg"></p>
+<p>此次实验进行整体较为顺利，只是在动态调试时并没有查看到报错，如下图所示，后续再加以完善。<br><img src="/image/comment/pic/101-4-5.jpg?raw=true" alt="101-4-5.jpg"></p>
 
                 
                 <p class="end">__END__</p>
@@ -213,7 +213,7 @@ exit
                         <br>
                     
                     
-                        <a href="/2023/08/17/Fuzzing101%E2%80%94%E2%80%94Exercise%203/" class="next-prefix">» </a> 下一篇：    <a href="/2023/08/17/Fuzzing101%E2%80%94%E2%80%94Exercise%203/" title="发布于 2023-08-17 09:59">Fuzzing101——Exercise 3</a>
+                        <a href="/2023/08/17/Fuzzing101%E2%80%94%E2%80%94Exercise%203/" class="next-prefix">» </a> 下一篇：    <a href="/2023/08/17/Fuzzing101%E2%80%94%E2%80%94Exercise%203/" title="发布于 2023-08-17 10:59">Fuzzing101——Exercise 3</a>
                     
                 </div>
             </div>

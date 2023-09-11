@@ -157,7 +157,7 @@ obj.dump(&quot;__libc_start_main_ret&quot;)
 [+]main_arena_offset : 0x1d57a0
 </code></pre>
 </blockquote>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-04.png?raw=true" alt="9.2-04.png"></p>
+<p><img src="/image/comment/pic/9.2-04.png?raw=true" alt="9.2-04.png"></p>
 <blockquote>
 <p>链接2：（脚本包装）<a target="_blank" rel="noopener" href="https://github.com/zarkivy/py_main_arena_offset">https://github.com/zarkivy/py_main_arena_offset</a></p>
 <p>安装：</p>
@@ -174,15 +174,15 @@ obj.dump(&quot;__libc_start_main_ret&quot;)
 <li>shellcode：调用攻击目标的shell的代码</li>
 </ul>
 <h2 id="ELF-文件"><a href="#ELF-文件" class="headerlink" title="ELF 文件"></a>ELF 文件</h2><p>ELF 文件为 Linux 下可执行文件的格式！！！</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-06.png?raw=true" alt="9.2-06.png"></p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-05.png?raw=true" alt="9.2-05.png"></p>
+<p><img src="/image/comment/pic/9.2-06.png?raw=true" alt="9.2-06.png"></p>
+<p><img src="/image/comment/pic/9.2-05.png?raw=true" alt="9.2-05.png"></p>
 <h3 id="从C源代码到可执行文件的生成过程"><a href="#从C源代码到可执行文件的生成过程" class="headerlink" title="从C源代码到可执行文件的生成过程"></a>从C源代码到可执行文件的生成过程</h3><ul>
 <li>编译：由C语言代码生成汇编代码</li>
 <li>汇编：由汇编代码生成机器码</li>
 <li>链接：将多个机器码的目标文件链接成一个可执行文件</li>
 </ul>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-08.png?raw=true" alt="9.2-08.png"></p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-07.png?raw=true" alt="9.2-07.png"></p>
+<p><img src="/image/comment/pic/9.2-08.png?raw=true" alt="9.2-08.png"></p>
+<p><img src="/image/comment/pic/9.2-07.png?raw=true" alt="9.2-07.png"></p>
 <h3 id="什么是可执行文件？"><a href="#什么是可执行文件？" class="headerlink" title="什么是可执行文件？"></a>什么是可执行文件？</h3><blockquote>
 <p>广义：文件中的数据是可执行代码的文件<br><code>.out、.exe、.sh、.py</code></p>
 <p>狭义：文件中的数据是机器码的文件 (二进制为狭义）<br><code>.out、.exe、.dll、.so</code></p>
@@ -200,8 +200,8 @@ obj.dump(&quot;__libc_start_main_ret&quot;)
 <li>静态链接库 <code>.a</code></li>
 </ul>
 <h3 id="Linux-下的可执行文件格式-ELF"><a href="#Linux-下的可执行文件格式-ELF" class="headerlink" title="Linux 下的可执行文件格式 ELF"></a>Linux 下的可执行文件格式 ELF</h3><p>放在<strong>磁盘</strong>中的是 <strong>ELF</strong>（定义的是文件的格式），放到<strong>内存</strong>中会创建虚拟内存映像，成为一个<strong>进程</strong>！</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-09.png?raw=true" alt="9.2-09.png"></p>
-<h3 id="ELF-文件结构"><a href="#ELF-文件结构" class="headerlink" title="ELF 文件结构"></a>ELF 文件结构</h3><p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.2-10.png?raw=true" alt="9.2-10.png"></p>
+<p><img src="/image/comment/pic/9.2-09.png?raw=true" alt="9.2-09.png"></p>
+<h3 id="ELF-文件结构"><a href="#ELF-文件结构" class="headerlink" title="ELF 文件结构"></a>ELF 文件结构</h3><p><img src="/image/comment/pic/9.2-10.png?raw=true" alt="9.2-10.png"></p>
 <blockquote>
 <p><strong>ELF文件头表</strong>（ELF header）: </p>
 <ul>
@@ -220,16 +220,16 @@ obj.dump(&quot;__libc_start_main_ret&quot;)
 <li>其它类型目标文件不一定需要</li>
 </ul>
 </blockquote>
-<h2 id="程序装载与虚拟内存"><a href="#程序装载与虚拟内存" class="headerlink" title="程序装载与虚拟内存"></a>程序装载与虚拟内存</h2><h3 id="磁盘中的ELF（可执行文件）与内存中的ELF（进程内存映像）"><a href="#磁盘中的ELF（可执行文件）与内存中的ELF（进程内存映像）" class="headerlink" title="磁盘中的ELF（可执行文件）与内存中的ELF（进程内存映像）"></a>磁盘中的ELF（可执行文件）与内存中的ELF（进程内存映像）</h3><p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-2.png?raw=true" alt="9.3-2.png"></p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-15.png?raw=true" alt="9.3-15.png"></p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-1.png?raw=true" alt="9.3-1.png"></p>
+<h2 id="程序装载与虚拟内存"><a href="#程序装载与虚拟内存" class="headerlink" title="程序装载与虚拟内存"></a>程序装载与虚拟内存</h2><h3 id="磁盘中的ELF（可执行文件）与内存中的ELF（进程内存映像）"><a href="#磁盘中的ELF（可执行文件）与内存中的ELF（进程内存映像）" class="headerlink" title="磁盘中的ELF（可执行文件）与内存中的ELF（进程内存映像）"></a>磁盘中的ELF（可执行文件）与内存中的ELF（进程内存映像）</h3><p><img src="/image/comment/pic/9.3-2.png?raw=true" alt="9.3-2.png"></p>
+<p><img src="/image/comment/pic/9.3-15.png?raw=true" alt="9.3-15.png"></p>
+<p><img src="/image/comment/pic/9.3-1.png?raw=true" alt="9.3-1.png"></p>
 <p>节视图：在磁盘中的可执行文件，不同区域划分成不同节。不同功能区域对应的节，由于他们读写执行权限相同<br>会被合并成一个一个的段，然后在虚拟内存中发挥作用。</p>
 <p>如上图，左边对应右边内容，不同的节直接被合并到一个段并且到内存中所使用的。</p>
 <ul>
 <li>节视图是用来放在磁盘中划分功能的</li>
 <li>段视图是程序装载内存中用来划分不同的读写执行权限的</li>
 </ul>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-3.png?raw=true" alt="9.3-3.png"></p>
+<p><img src="/image/comment/pic/9.3-3.png?raw=true" alt="9.3-3.png"></p>
 <ul>
 <li><p>在磁盘中的 elf 里具有<strong>读和写</strong>权限的节（.data节，.bss节，.got.plt节），在虚拟内存中变成了 <strong>data 段</strong>;</p>
 </li>
@@ -248,7 +248,7 @@ obj.dump(&quot;__libc_start_main_ret&quot;)
 <p> cat &#x2F;proc&#x2F;pid&#x2F;maps</p>
 <p>   需找到对应的 elf 文件生成的进程号，将 proc 换成对应 elf 生成的进程号即可在终端看到对应进程的虚拟内存的结构</p>
 </blockquote>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-4.png?raw=true" alt="9.3-4.png"></p>
+<p><img src="/image/comment/pic/9.3-4.png?raw=true" alt="9.3-4.png"></p>
 <h3 id="进程虚拟地址空间"><a href="#进程虚拟地址空间" class="headerlink" title="进程虚拟地址空间"></a>进程虚拟地址空间</h3><blockquote>
 <p>地址以字节编码<br>1Byte &#x3D; 8bits</p>
 <p>常以16进制表示<br>0x3c &#x3D; 0011 1100</p>
@@ -258,9 +258,9 @@ obj.dump(&quot;__libc_start_main_ret&quot;)
 <li>虚拟内存 mmap 段中的动态链接库仅在物理内存中装载一份</li>
 </ul>
 </blockquote>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-5.png?raw=true" alt="9.3-5.png"></p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-6.png?raw=true" alt="9.3-6.png"></p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-7.png?raw=true" alt="9.3-7.png"></p>
+<p><img src="/image/comment/pic/9.3-5.png?raw=true" alt="9.3-5.png"></p>
+<p><img src="/image/comment/pic/9.3-6.png?raw=true" alt="9.3-6.png"></p>
+<p><img src="/image/comment/pic/9.3-7.png?raw=true" alt="9.3-7.png"></p>
 <h2 id="CPU-与进程的执行"><a href="#CPU-与进程的执行" class="headerlink" title="CPU 与进程的执行"></a>CPU 与进程的执行</h2><h3 id="段（segment）与节（section）"><a href="#段（segment）与节（section）" class="headerlink" title="段（segment）与节（section）"></a>段（segment）与节（section）</h3><blockquote>
 <p>代码段（Text segment）包含了代码与只读数据</p>
 <ul>
@@ -288,15 +288,15 @@ obj.dump(&quot;__libc_start_main_ret&quot;)
 <li>段视图用于<strong>进程</strong>的<strong>内存</strong>区域的 <strong>rwx 权限划分</strong>;</li>
 <li>节视图用于 <strong>ELF 文件</strong>编译链接时与在<strong>磁盘</strong>上存储时的<strong>文件结构</strong>的组织。</li>
 </ul>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-8.png?raw=true" alt="9.3-8.png"></p>
+<p><img src="/image/comment/pic/9.3-8.png?raw=true" alt="9.3-8.png"></p>
 <p>glb（全局变量）不需要占用磁盘空间，但需要占用内存空间，被划分到 Bss 区域；</p>
-<h3 id="大端序与小端序"><a href="#大端序与小端序" class="headerlink" title="大端序与小端序"></a>大端序与小端序</h3><p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-9.png?raw=true" alt="9.3-9.png"></p>
+<h3 id="大端序与小端序"><a href="#大端序与小端序" class="headerlink" title="大端序与小端序"></a>大端序与小端序</h3><p><img src="/image/comment/pic/9.3-9.png?raw=true" alt="9.3-9.png"></p>
 <ul>
 <li><strong>小端序 LSB：低地址存放数据低位、高地址存放数据高位</strong></li>
 <li>大端序 MSB：低地址存放数据高位、高地址存放数据低位</li>
 </ul>
-<h3 id="进程的执行过程"><a href="#进程的执行过程" class="headerlink" title="进程的执行过程"></a>进程的执行过程</h3><p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-10.png?raw=true" alt="9.3-10.png"></p>
-<h3 id="寄存结构"><a href="#寄存结构" class="headerlink" title="寄存结构"></a>寄存结构</h3><p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-11.png?raw=true" alt="9.3-11.png"></p>
+<h3 id="进程的执行过程"><a href="#进程的执行过程" class="headerlink" title="进程的执行过程"></a>进程的执行过程</h3><p><img src="/image/comment/pic/9.3-10.png?raw=true" alt="9.3-10.png"></p>
+<h3 id="寄存结构"><a href="#寄存结构" class="headerlink" title="寄存结构"></a>寄存结构</h3><p><img src="/image/comment/pic/9.3-11.png?raw=true" alt="9.3-11.png"></p>
 <blockquote>
 <p>amd64寄存器结构：</p>
 <ul>
@@ -314,8 +314,8 @@ obj.dump(&quot;__libc_start_main_ret&quot;)
 <li>RAX：通用寄存器。存放函数返回值</li>
 </ul>
 </blockquote>
-<h2 id="装载与汇编"><a href="#装载与汇编" class="headerlink" title="装载与汇编"></a>装载与汇编</h2><h3 id="静态链接的程序的执行过程"><a href="#静态链接的程序的执行过程" class="headerlink" title="静态链接的程序的执行过程"></a>静态链接的程序的执行过程</h3><p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-12.png?raw=true" alt="9.3-12.png"></p>
-<h3 id="动态链接的程序的执行过程"><a href="#动态链接的程序的执行过程" class="headerlink" title="动态链接的程序的执行过程"></a>动态链接的程序的执行过程</h3><p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-13.png?raw=true" alt="9.3-13.png"></p>
+<h2 id="装载与汇编"><a href="#装载与汇编" class="headerlink" title="装载与汇编"></a>装载与汇编</h2><h3 id="静态链接的程序的执行过程"><a href="#静态链接的程序的执行过程" class="headerlink" title="静态链接的程序的执行过程"></a>静态链接的程序的执行过程</h3><p><img src="/image/comment/pic/9.3-12.png?raw=true" alt="9.3-12.png"></p>
+<h3 id="动态链接的程序的执行过程"><a href="#动态链接的程序的执行过程" class="headerlink" title="动态链接的程序的执行过程"></a>动态链接的程序的执行过程</h3><p><img src="/image/comment/pic/9.3-13.png?raw=true" alt="9.3-13.png"></p>
 <h3 id="常用汇编指令"><a href="#常用汇编指令" class="headerlink" title="常用汇编指令"></a>常用汇编指令</h3><blockquote>
 <ul>
 <li>MOV</li>
@@ -386,9 +386,9 @@ obj.dump(&quot;__libc_start_main_ret&quot;)
 <p>发生了溢出之后，OF&#x3D;1。但SF&#x3D;1(负数)。此时，OF&#x3D;SF，所以是大于。</p>
 </blockquote>
 <p><strong>两种汇编格式总结</strong></p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-14.png?raw=true" alt="9.3-14.png"></p>
+<p><img src="/image/comment/pic/9.3-14.png?raw=true" alt="9.3-14.png"></p>
 <p><strong>Jmp 指令</strong></p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/9.3-16.png?raw=true" alt="9.3-16.png"></p>
+<p><img src="/image/comment/pic/9.3-16.png?raw=true" alt="9.3-16.png"></p>
 
                 
                 <p class="end">__END__</p>

@@ -45,13 +45,13 @@
                         </span>
                         
                             
-                                <span id="/2023/08/13/Fuzzing101——Exercise 1/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 1">
+                                <span id="/2023/08/14/Fuzzing101——Exercise 1/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 1">
                                     <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
                                 </span>
                             
                             
                                 <span>
-                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/08/13/Fuzzing101——Exercise 1/"></span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/08/14/Fuzzing101——Exercise 1/"></span>
                                 </span>
                               
                         
@@ -142,7 +142,7 @@ sudo apt install python3.10-dev
 <h2 id="测试-pdf-二进制文件"><a href="#测试-pdf-二进制文件" class="headerlink" title="测试 pdf 二进制文件:"></a>测试 pdf 二进制文件:</h2><pre><code>$HOME/fuzzing_xpdf/install/bin/pdfinfo -box -meta $HOME/fuzzing_xpdf/pdf_examples/helloworld.pdf
 </code></pre>
 <p>运行如下：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-1-0.PNG?raw=true" alt="101-1-0.PNG"></p>
+<p><img src="/image/comment/pic/101-1-0.PNG?raw=true" alt="101-1-0.PNG"></p>
 <h2 id="下载依赖"><a href="#下载依赖" class="headerlink" title="下载依赖"></a>下载依赖</h2><pre><code>sudo apt-get update
 sudo apt-get install -y build-essential python3-dev automake git flex bison libglib2.0-dev libpixman-1-dev python3-setuptools
 sudo apt-get install -y lld-11 llvm-11 llvm-11-dev clang-11 || sudo apt-get install -y lld llvm llvm-dev clang 
@@ -160,7 +160,7 @@ docker run -ti -v $HOME:/home aflplusplus/aflplusplus
 export $HOME=&quot;/home&quot;
 </code></pre>
 <p>运行 afl-fuzz 即可得：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/Image1.png?raw=true" alt="Image1.png"></p>
+<p><img src="/image/comment/pic/Image1.png?raw=true" alt="Image1.png"></p>
 <h2 id="使用AFL"><a href="#使用AFL" class="headerlink" title="使用AFL++"></a>使用AFL++</h2><pre><code>rm -r $HOME/fuzzing_xpdf/install
 cd $HOME/fuzzing_xpdf/xpdf-3.02/
 make clean
@@ -192,9 +192,9 @@ echo core &gt;/proc/sys/kernel/core_pattern
 exit
 </code></pre>
 <p>运行一段时间即可看到crash：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-1-2.PNG?raw=true" alt="101-1-2.PNG"></p>
+<p><img src="/image/comment/pic/101-1-2.PNG?raw=true" alt="101-1-2.PNG"></p>
 <p> 在<code>$HOME/fuzzing_xpdf/out/</code> 中即可看到这些崩溃文件：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-1-3.PNG?raw=true" alt="101-1-3.PNG"></p>
+<p><img src="/image/comment/pic/101-1-3.PNG?raw=true" alt="101-1-3.PNG"></p>
 <hr>
 <h2 id="再现崩溃"><a href="#再现崩溃" class="headerlink" title="再现崩溃"></a>再现崩溃</h2><p>将选中文件作为输入，将会引起崩溃</p>
 <pre><code>$HOME/fuzzing_xpdf/install/bin/pdftotext &quot;$HOME/fuzzing_xpdf/out/default/crashes/id:000000,sig:11,src:001157,time:190859,execs:150075,op:havoc,rep:14&quot; $HOME/fuzzing_xpdf/output
@@ -211,9 +211,9 @@ make install
 <h2 id="运行gdb"><a href="#运行gdb" class="headerlink" title="运行gdb"></a>运行gdb</h2><pre><code>gdb --args $HOME/fuzzing_xpdf/install/bin/pdftotext $HOME/fuzzing_xpdf/out/default/crashes/id:000000,sig:11,src:001157,time:190859,execs:150075,op:havoc,rep:14 $HOME/fuzzing_xpdf/output
 </code></pre>
 <p>###追踪crash路径</p>
-<p>在GDB中输入： run<br>具体如下图所示：<br><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-1-4.PNG?raw=true" alt="101-1-4.PNG"></p>
+<p>在GDB中输入： run<br>具体如下图所示：<br><img src="/image/comment/pic/101-1-4.PNG?raw=true" alt="101-1-4.PNG"></p>
 <p>通过bt来<a target="_blank" rel="noopener" href="https://www.cvedetails.com/cve/CVE-2019-13288/">回溯</a>:<br>发现有多条Parser::getObj，与CVE-2019-13288中无限递归的描述相符合</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-1-5.PNG?raw=true" alt="101-1-5.PNG"></p>
+<p><img src="/image/comment/pic/101-1-5.PNG?raw=true" alt="101-1-5.PNG"></p>
 <ul>
 <li>bt：跑出crash后查看调用路径</li>
 <li>报错信息Program received signal SIGSEGV, Segmentation fault，存在内存泄漏</li>
@@ -222,7 +222,7 @@ make install
 <li>根据函数调用找到漏洞位置</li>
 </ul>
 <h2 id="修复"><a href="#修复" class="headerlink" title="修复"></a>修复</h2><p>通过增加一个记录递归次数的变量，解决该漏洞:</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-1-6.PNG?raw=true" alt="101-1-6.PNG"></p>
+<p><img src="/image/comment/pic/101-1-6.PNG?raw=true" alt="101-1-6.PNG"></p>
 <p>可下载 xpdf-4.02，与之对比：</p>
 <pre><code>wget https://dl.xpdfreader.com/old/xpdf-4.02.tar.gz
 tar -xvzf xpdf-4.02.tar.gz
@@ -248,7 +248,7 @@ tar -xvzf xpdf-4.02.tar.gz
     <div class="suffix-box-right">
         <span class="suffix-box-title">文章作者：</span>AuRuier
         <br>
-        <span class="suffix-box-title">文章出处：</span><a href="/2023/08/13/Fuzzing101%E2%80%94%E2%80%94Exercise%201/" target="_blank">Fuzzing101——Exercise 1</a>
+        <span class="suffix-box-title">文章出处：</span><a href="/2023/08/14/Fuzzing101%E2%80%94%E2%80%94Exercise%201/" target="_blank">Fuzzing101——Exercise 1</a>
         <br>
         <span class="suffix-box-title">作者签名：</span>有志者事竟成！
         <br>
@@ -263,7 +263,7 @@ tar -xvzf xpdf-4.02.tar.gz
                 
                 <div class="article-prev-next">
                     
-                        <a href="/2023/08/14/Fuzzing101%E2%80%94%E2%80%94Exercise%202/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/08/14/Fuzzing101%E2%80%94%E2%80%94Exercise%202/" title="发布于 2023-08-14 12:43">Fuzzing101——Exercise 2</a>
+                        <a href="/2023/08/14/Fuzzing101%E2%80%94%E2%80%94Exercise%202/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/08/14/Fuzzing101%E2%80%94%E2%80%94Exercise%202/" title="发布于 2023-08-14 01:43">Fuzzing101——Exercise 2</a>
                         <br>
                     
                     
