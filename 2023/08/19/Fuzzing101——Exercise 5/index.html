@@ -155,7 +155,7 @@ make install
 <p><strong>测试：</strong></p>
 <pre><code>./xmllint --memory ./test/wml.xml
 </code></pre>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-5-1.PNG?raw=true" alt="101-5-1.PNG"></p>
+<p><img src="/image/comment/pic/101-5-1.PNG?raw=true" alt="101-5-1.PNG"></p>
 <h2 id="获取样本和字典"><a href="#获取样本和字典" class="headerlink" title="获取样本和字典"></a>获取样本和字典</h2><p>这里用的是fuzzing101提供的样本以及test中的dtd9（DTD，它们会定义 XML 文档的结构和合法元素&#x2F;属性，并用于确定 xml 文档是否有效）。</p>
 <pre><code>mkdir afl_in &amp;&amp; cd afl_in
 wget https://raw.githubusercontent.com/antonio-morales/Fuzzing101/main/Exercise%205/SampleInput.xml
@@ -179,7 +179,7 @@ afl-fuzz -m none -i ./afl_in -o afl_out -s 345 -S slave2 -- ./xmllint --memory -
 </ul>
 <p><a target="_blank" rel="noopener" href="https://securitylab.github.com/research/fuzzing-challenges-solutions-1/">模糊命令行参数 </a></p>
 <p>7 days，14 hrs，24 min，7 sec…… 的结果！！！</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-5-9.png?raw=true" alt="101-5-9.png"></p>
+<p><img src="/image/comment/pic/101-5-9.png?raw=true" alt="101-5-9.png"></p>
 <h2 id="动态调试"><a href="#动态调试" class="headerlink" title="动态调试"></a>动态调试</h2><blockquote>
 <p>已跑出 crash：id:000000,sig:06,src:012792,time:632879854,execs:20956521,op:havoc,rep:2</p>
 </blockquote>
@@ -189,37 +189,37 @@ afl-fuzz -m none -i ./afl_in -o afl_out -s 345 -S slave2 -- ./xmllint --memory -
 <ul>
 <li>报错信息*** stack-buffer-overflow ***: 判断为栈溢出漏洞</li>
 </ul>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-5-10.png?raw=true" alt="101-5-10.png"></p>
+<p><img src="/image/comment/pic/101-5-10.png?raw=true" alt="101-5-10.png"></p>
 <h3 id="法2：ASAN"><a href="#法2：ASAN" class="headerlink" title="法2：ASAN"></a>法2：ASAN</h3><p>调试使用 ASan 构建的程序要更简单，仅需向程序提供崩溃文件：</p>
 <pre><code>./xmllint --memory --noenc --nocdata --dtdattr --loaddtd --valid --xinclude ./afl_out/default/crashes/id:000000,sig:06,src:012792,time:632879854,execs:20956521,op:havoc,rep:2
 </code></pre>
 <p>如采用 ASAN，这里是崩溃的详细摘要，包括执行跟踪：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-5-4.png?raw=true" alt="101-5-4.png"></p>
+<p><img src="/image/comment/pic/101-5-4.png?raw=true" alt="101-5-4.png"></p>
 <h2 id="修复"><a href="#修复" class="headerlink" title="修复"></a>修复</h2><p> <a target="_blank" rel="noopener" href="https://github.com/GNOME/libxml2/commit/932cc9896ab41475d4aa429c27d9afd175959d74">官方修复</a></p>
 <hr>
 <p>此次实验进行已尝试多次，中途甚至放弃过……</p>
 <p>第一次是主模糊器测试了两天多，如下图所示：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-5-2.PNG?raw=true" alt="101-5-2.PNG"></p>
+<p><img src="/image/comment/pic/101-5-2.PNG?raw=true" alt="101-5-2.PNG"></p>
 <p>第二次是一个主从模糊器各一个进行测试，21个小时，如下图所示：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-5-3.PNG?raw=true" alt="101-5-3.PNG"></p>
+<p><img src="/image/comment/pic/101-5-3.PNG?raw=true" alt="101-5-3.PNG"></p>
 <p>第三次是一个主从模糊器各一个进行测试了6天多，如下图所示：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-5-6.png?raw=true" alt="101-5-6.png"></p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-5-7.png?raw=true" alt="101-5-7.png"></p>
+<p><img src="/image/comment/pic/101-5-6.png?raw=true" alt="101-5-6.png"></p>
+<p><img src="/image/comment/pic/101-5-7.png?raw=true" alt="101-5-7.png"></p>
 <p>第四次是一个主模糊器和三个从模糊器进行测试，目前仍在运行中，如下图所示：</p>
 <pre><code>afl-fuzz -m none -i ./afl_in -o afl_out -s 123 -x ./dictionaries/xml.dict -D -M master -- ./xmllint --memory --noenc --nocdata --dtdattr --loaddtd --valid --xinclude @@
 </code></pre>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-5-7.png?raw=true" alt="101-5-7.png"></p>
+<p><img src="/image/comment/pic/101-5-7.png?raw=true" alt="101-5-7.png"></p>
 <pre><code>afl-fuzz -m none -i ./afl_in -o afl_out -s 234 -S slave1 -- ./xmllint --memory --noenc --nocdata --dtdattr --loaddtd --valid --xinclude @@
 </code></pre>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-5-6.png?raw=true" alt="101-5-6.png"></p>
+<p><img src="/image/comment/pic/101-5-6.png?raw=true" alt="101-5-6.png"></p>
 <pre><code>afl-fuzz -m none -i ./afl_in -o afl_out -s 345 -S slave2 -- ./xmllint --memory --noenc --nocdata --dtdattr --loaddtd --valid --xinclude @@
 
 afl-fuzz -m none -i ./afl_in -o afl_out -s 456 -S slave3 -- ./xmllint --memory --noenc --nocdata --dtdattr --loaddtd --valid --xinclude @@
 </code></pre>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-5-8.png?raw=true" alt="101-5-8.png"></p>
+<p><img src="/image/comment/pic/101-5-8.png?raw=true" alt="101-5-8.png"></p>
 <p>终于！！！在2023年的8月30日早晨！！！在从模糊器 <strong>slave1</strong> 中，跑出来了！！！</p>
 <p>7 days，14 hrs，24 min，7 sec…… 看到啦！！！ 值得纪念！！！</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-5-9.png?raw=true" alt="101-5-9.png"></p>
+<p><img src="/image/comment/pic/101-5-9.png?raw=true" alt="101-5-9.png"></p>
 
                 
                 <p class="end">__END__</p>
@@ -247,7 +247,7 @@ afl-fuzz -m none -i ./afl_in -o afl_out -s 456 -S slave3 -- ./xmllint --memory -
                 
                 <div class="article-prev-next">
                     
-                        <a href="/2023/08/20/Fuzzing101%E2%80%94%E2%80%94Exercise%206/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/08/20/Fuzzing101%E2%80%94%E2%80%94Exercise%206/" title="发布于 2023-08-20 09:45">Fuzzing101——Exercise 6</a>
+                        <a href="/2023/08/20/Fuzzing101%E2%80%94%E2%80%94Exercise%206/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/08/20/Fuzzing101%E2%80%94%E2%80%94Exercise%206/" title="发布于 2023-08-20 10:45">Fuzzing101——Exercise 6</a>
                         <br>
                     
                     
@@ -270,7 +270,7 @@ afl-fuzz -m none -i ./afl_in -o afl_out -s 456 -S slave3 -- ./xmllint --memory -
     
 </div>
     <div id="footer">
-    <div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【海纳百川<span><i class='iconfont icon-like-fill'></i></span>有容乃大】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>
+    <div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【海纳百川<span><i class='iconfont icon-like-fill'></i></span>取则行远】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>
 </div>
     <div id="sidebar">
     <div class="menu-wrap" style="display:none;">
@@ -449,7 +449,7 @@ afl-fuzz -m none -i ./afl_in -o afl_out -s 456 -S slave3 -- ./xmllint --memory -
         WebsiteStartDate : "2023-09-07",
         Home             : "https://github.com/AuRuier",
 
-        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, Live For Code",
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, Ruier",
         WebsiteTitleBlurTimeOut  : 500,
         WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
         WebsiteTitleFocusTimeOut : 1000,
@@ -699,7 +699,7 @@ afl-fuzz -m none -i ./afl_in -o afl_out -s 456 -S slave3 -- ./xmllint --memory -
         ],
 
         FooterStyle : 2,
-        BottomText  : "<div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【海纳百川<span><i class='iconfont icon-like-fill'></i></span>有容乃大】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>",
+        BottomText  : "<div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【海纳百川<span><i class='iconfont icon-like-fill'></i></span>取则行远】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>",
 
         ConsoleList : [
             

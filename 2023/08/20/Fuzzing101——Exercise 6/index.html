@@ -106,19 +106,19 @@ make install
 <ul>
 <li>第一个方法是修改 <code>app.c</code> 文件，在 for 循环中加入 AFL_LOOP macro :</li>
 </ul>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-6-2-1.PNG?raw=true" alt="101-6-2-1.PNG"></p>
+<p><img src="/image/comment/pic/101-6-2-1.PNG?raw=true" alt="101-6-2-1.PNG"></p>
 <ul>
 <li>第二个方法是在 <code>xcf.c</code> 中的 <code>xcf_load_invoker</code> 函数中插入AFL_LOOP macro :</li>
 </ul>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-6-3.PNG?raw=true" alt="101-6-3.PNG"></p>
+<p><img src="/image/comment/pic/101-6-3.PNG?raw=true" alt="101-6-3.PNG"></p>
 <p>第一种方法允许针对不同的输入格式，而第二种方法更快，有更多机会捕捉到错误。</p>
 <p>通过 <a target="_blank" rel="noopener" href="https://github.com/antonio-morales/Fuzzing101/blob/main/Exercise%206/persistent.patch">patch</a> 测试：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-6-6.PNG?raw=true" alt="101-6-6.PNG"></p>
+<p><img src="/image/comment/pic/101-6-6.PNG?raw=true" alt="101-6-6.PNG"></p>
 <h3 id="创建-Seed-语料库"><a href="#创建-Seed-语料库" class="headerlink" title="创建 Seed 语料库"></a>创建 Seed 语料库</h3><ul>
 <li>方式1：创建多个 GIMP 项目并保存，以获得多个 .xcf 样本。</li>
 <li>方式2：直接将 <a target="_blank" rel="noopener" href="https://github.com/antonio-morales/Fuzzing101/blob/main/Exercise%206/SampleInput.xcf">SampleInput.xcf</a> 文件复制到 AFL 输入文件夹中。</li>
 </ul>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-6-7.PNG?raw=true" alt="101-6-7.PNG"></p>
+<p><img src="/image/comment/pic/101-6-7.PNG?raw=true" alt="101-6-7.PNG"></p>
 <h2 id="Fuzzing"><a href="#Fuzzing" class="headerlink" title="Fuzzing"></a>Fuzzing</h2><p>由于漏洞会影响 GIMP 核心，因此可以删除不需要的插件，从而节省一些启动时间：</p>
 <pre><code>rm ./install/lib/gimp/2.0/plug-ins/*
 </code></pre>
@@ -131,14 +131,14 @@ make install
 </ul>
 <hr>
 <p>测试结果如下:</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-6-8.PNG?raw=true" alt="101-6-8.PNG"></p>
+<p><img src="/image/comment/pic/101-6-8.PNG?raw=true" alt="101-6-8.PNG"></p>
 <p>显示超时，尝试解决，再次运行：</p>
 <pre><code>ASAN_OPTIONS=detect_leaks=0,abort_on_error=1,symbolize=0 afl-fuzz -i &#39;./afl_in&#39; -o &#39;./afl_out&#39; -D -t 100 -- ./install/bin/gimp-console-2.8 --verbose -d -f @@ -t
 </code></pre>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-6-11.PNG?raw=true" alt="101-6-11.PNG"></p>
+<p><img src="/image/comment/pic/101-6-11.PNG?raw=true" alt="101-6-11.PNG"></p>
 <p>目前还未跑出 crash……  5 days，17 hrs，42 min，3 sec……</p>
 <h3 id="Triage"><a href="#Triage" class="headerlink" title="Triage"></a>Triage</h3><p>假设已跑出 crash, ASan 跟踪结果可能如下：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-6-10.png?raw=true" alt="101-6-10.png"></p>
+<p><img src="/image/comment/pic/101-6-10.png?raw=true" alt="101-6-10.png"></p>
 <h3 id="修复问题"><a href="#修复问题" class="headerlink" title="修复问题"></a>修复问题</h3><p><a target="_blank" rel="noopener" href="https://gitlab.gnome.org/GNOME/gimp/-/commit/6d804bf9ae77bc86a0a97f9b944a129844df9395">官方修复</a>:</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://gitlab.gnome.org/GNOME/gimp/-/commit/6d804bf9ae77bc86a0a97f9b944a129844df9395">https://gitlab.gnome.org/GNOME/gimp/-/commit/6d804bf9ae77bc86a0a97f9b944a129844df9395</a></li>
@@ -182,7 +182,7 @@ make install
                         <br>
                     
                     
-                        <a href="/2023/08/19/Fuzzing101%E2%80%94%E2%80%94Exercise%205/" class="next-prefix">» </a> 下一篇：    <a href="/2023/08/19/Fuzzing101%E2%80%94%E2%80%94Exercise%205/" title="发布于 2023-08-19 12:56">Fuzzing101——Exercise 5</a>
+                        <a href="/2023/08/19/Fuzzing101%E2%80%94%E2%80%94Exercise%205/" class="next-prefix">» </a> 下一篇：    <a href="/2023/08/19/Fuzzing101%E2%80%94%E2%80%94Exercise%205/" title="发布于 2023-08-19 01:56">Fuzzing101——Exercise 5</a>
                     
                 </div>
             </div>
@@ -201,7 +201,7 @@ make install
     
 </div>
     <div id="footer">
-    <div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【海纳百川<span><i class='iconfont icon-like-fill'></i></span>有容乃大】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>
+    <div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【海纳百川<span><i class='iconfont icon-like-fill'></i></span>取则行远】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>
 </div>
     <div id="sidebar">
     <div class="menu-wrap" style="display:none;">
@@ -380,7 +380,7 @@ make install
         WebsiteStartDate : "2023-09-07",
         Home             : "https://github.com/AuRuier",
 
-        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, Live For Code",
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, Ruier",
         WebsiteTitleBlurTimeOut  : 500,
         WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
         WebsiteTitleFocusTimeOut : 1000,
@@ -630,7 +630,7 @@ make install
         ],
 
         FooterStyle : 2,
-        BottomText  : "<div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【海纳百川<span><i class='iconfont icon-like-fill'></i></span>有容乃大】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>",
+        BottomText  : "<div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【海纳百川<span><i class='iconfont icon-like-fill'></i></span>取则行远】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>",
 
         ConsoleList : [
             

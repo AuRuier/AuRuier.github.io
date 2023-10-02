@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            Fuzzing101——Exercise 9
+            Writing Technical Articles
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -37,21 +37,21 @@
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">Fuzzing101——Exercise 9</h1>
+                <h1 class="header-subtitle">Writing Technical Articles</h1>
                 <div class="header-subinfo">
                     <p class="article-info-text">
                         <span>
-                            <i class="iconfont icon-time"></i> 发表时间：2023-08-30
+                            <i class="iconfont icon-time"></i> 发表时间：2023-09-16
                         </span>
                         
                             
-                                <span id="/2023/08/30/Fuzzing101——Exercise 9/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 9">
+                                <span id="/2023/09/16/Writing Technical Articles/" class="leancloud_visitors" data-flag-title="Writing Technical Articles">
                                     <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
                                 </span>
                             
                             
                                 <span>
-                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/08/30/Fuzzing101——Exercise 9/"></span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/09/16/Writing Technical Articles/"></span>
                                 </span>
                               
                         
@@ -70,98 +70,223 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="Fuzzing101——Exercise-9"><a href="#Fuzzing101——Exercise-9" class="headerlink" title="Fuzzing101——Exercise 9"></a>Fuzzing101——Exercise 9</h1><p>在本练习对 <strong>7-Zip</strong> 文件归档器进行模糊测试，目标是在 7-Zip 15.05 中找到 <a target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2016-2334"><strong>CVE-2016-2334</strong></a> （一个基于堆的缓冲区溢出，可通过伪造的 HFS+ 映像触发）的崩溃&#x2F;PoC。</p>
-<p><strong>基于堆的缓冲区溢出</strong>是一种发生在堆数据区的缓冲区溢出，通常与显式动态内存管理（使用 malloc() 和 free() 函数进行分配&#x2F;去分配）有关。因此，远程攻击者可以利用这个问题，在使用受影响库的应用程序上下文中执行任意代码。<a target="_blank" rel="noopener" href="https://cwe.mitre.org/data/definitions/122.html">更多信息</a>。</p>
+                <h1 id="Writing-Technical-Articles"><a href="#Writing-Technical-Articles" class="headerlink" title="Writing Technical Articles"></a>Writing Technical Articles</h1><p>链接（系统论文写作）：<a target="_blank" rel="noopener" href="http://www.cs.columbia.edu/~hgs/etc/writing-style.html">《Writing Technical Articles》</a></p>
 <hr>
-<p>了解windows平台fuzzing工具WinAFl</p>
-<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li><ol>
-<li>下载并构建 WinAFL（以及所需的依赖项）</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>创建 HFS+ 样本的种子语料库</li>
-</ol>
-</li>
-<li><ol start="3">
-<li>可选： 为 HFS+ 文件格式创建模糊字典</li>
-</ol>
-</li>
-<li><ol start="4">
-<li>对 7-Zip 进行模糊处理，直到崩溃为止</li>
-</ol>
-</li>
-<li><ol start="5">
-<li>对崩溃进行分类，找到漏洞的 PoC</li>
-</ol>
-</li>
-<li><ol start="6">
-<li>可选： 找到更好的 <em>target_offset</em> 以加快模糊过程</li>
-</ol>
-</li>
-</ul>
-<h2 id="下载安装目标"><a href="#下载安装目标" class="headerlink" title="下载安装目标"></a>下载安装目标</h2><h3 id="Step1：Visual-Studio"><a href="#Step1：Visual-Studio" class="headerlink" title="Step1：Visual Studio"></a>Step1：Visual Studio</h3><p>安装 <strong>Visual Studio 编译器</strong> eg: <a target="_blank" rel="noopener" href="https://github.com/antonio-morales/Fuzzing101/blob/main/Exercise%209/Resources/vs_community.exe">vs_community.exe</a>。</p>
-<p>选择并安装 <strong>“Desktop development with C++”</strong> 软件包：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-9-1.png?raw=true" alt="101-9-1.png"></p>
-<h3 id="Step2：DynamoRIO-8-0-0"><a href="#Step2：DynamoRIO-8-0-0" class="headerlink" title="Step2：DynamoRIO 8.0.0"></a>Step2：DynamoRIO 8.0.0</h3><p><a target="_blank" rel="noopener" href="https://github.com/DynamoRIO/dynamorio/releases/download/release_8.0.0-1/DynamoRIO-Windows-8.0.0-1.zip">DynamoRIO Windows 二进制软件包</a> </p>
-<p>将 zip 内容解压到目标位置，如下所示：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-9-2.jpg?raw=true" alt="101-9-2.jpg"></p>
-<h3 id="Step3：下载并构建-WinAFL"><a href="#Step3：下载并构建-WinAFL" class="headerlink" title="Step3：下载并构建 WinAFL"></a>Step3：下载并构建 WinAFL</h3><p>从官方软件仓库下载 <a target="_blank" rel="noopener" href="https://github.com/googleprojectzero/winafl">WinAFL</a>：<a target="_blank" rel="noopener" href="https://github.com/googleprojectzero/winafl%E3%80%82">https://github.com/googleprojectzero/winafl。</a></p>
-<p>打开 VS2019 的 <strong>Developer Command Prompt</strong>，将工作目录更改为 WinAFL 目录。</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-9-0.png?raw=true" alt="101-9-0.png"></p>
-<pre><code>mkdir build32
-cd build32
-
-cmake -G&quot;Visual Studio 16 2019&quot; -A Win32 .. -DDynamoRIO_DIR=D:\winAFL\DynamoRIO-Windows-8.0.0-1\DynamoRIO-Windows-8.0.0-1\cmake
-</code></pre>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-9-3.jpg?raw=true" alt="101-9-3.jpg"></p>
-<pre><code>cmake --build . --config Release
-</code></pre>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-9-4.jpg?raw=true" alt="101-9-4.jpg"></p>
-<p>安装正常即可在 <code>winafl-master\build32\bin\Release</code> 下看到 <code>afl-fuzz.exe</code> 等文件（这里路径为:D:\winAFL\winafl-master\winafl-master\build32\bin\Release）：</p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-9-5.jpg?raw=true" alt="101-9-5.jpg"></p>
-<h3 id="Step4：下载-7-Zip"><a href="#Step4：下载-7-Zip" class="headerlink" title="Step4：下载 7-Zip"></a>Step4：下载 7-Zip</h3><p><a target="_blank" rel="noopener" href="https://github.com/antonio-morales/Fuzzing101/blob/main/Exercise%209/Resources/7z1505.exe">7-Zip 15.05</a> </p>
-<h3 id="Step5：创建种子语料库"><a href="#Step5：创建种子语料库" class="headerlink" title="Step5：创建种子语料库"></a>Step5：创建种子语料库</h3><p>通过 <strong>HFS+</strong> 镜像填充种子语料库：</p>
-<ul>
-<li>在 Linux 中，可以使用 <strong>hfsprogs</strong> 实用程序。</li>
-<li>在 Windows 中，可以使用 **Paragon HFS+**（免费试用的商业软件）。</li>
-<li>这里采用 <a target="_blank" rel="noopener" href="https://github.com/antonio-morales/Fuzzing101/blob/main/Exercise%209/Resources/example.img">HFS 示例文件 example.img</a> 。</li>
-</ul>
-<h2 id="Fuzzing"><a href="#Fuzzing" class="headerlink" title="Fuzzing"></a>Fuzzing</h2><p>WinAFL 命令行与 AFL++ 不同:</p>
-<ul>
-<li><em>-coverage_module</em> : 要记录覆盖范围的模块。支持多个模块标志</li>
-<li><em>-target_module</em> : 包含要模糊的目标函数的模块</li>
-<li><em>-target_offset</em> : 要模糊的方法从模块开始的偏移量</li>
-</ul>
-<p>如 <a target="_blank" rel="noopener" href="https://github.com/antonio-morales/Fuzzing101/blob/main/Exercise%208">exercise 8</a>，这里也需要找到一个合适的函数偏移量，模糊器将从该偏移量开始循环。 </p>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-9-6.png?raw=true" alt="101-9-6.png"></p>
-<p>这里需要函数从模块起点开始的偏移量。由于基地址是 <code>0x400000</code>，执行 <code>0x42F3B3 - 0x400000</code>，并得到 <code>0x02F3B3</code>作为 <strong>target_offset</strong> 参数。</p>
-<p>用 DynamoRIO 测试能否运行 fuzz 进程（这里测试路径为 D:\winAFL\winafl-master\winafl-master\build32\bin\Release）：</p>
-<pre><code>D:\winAFL\DynamoRIO-Windows-8.0.0-1\DynamoRIO-Windows-8.0.0-1\bin32\drrun.exe -c winafl.dll -debug -target_module 7z.exe -target_offset 0x02F3B3 -fuzz_iterations 10 -nargs 2 -- &quot;D:\winAFL\7\7-Zip\7z.exe&quot; l D:\winAFL\afl_in\example.img
-</code></pre>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-9-8.jpg?raw=true" alt="101-9-8.jpg"></p>
-<p>这里是目标函数运行 10 次后的相应输出，然后目标可执行文件将退出。</p>
 <blockquote>
-<p>DynamoRio 是一个全平台的动态插桩程序，winafl 基于这个工具写了动态插桩 winafl.c，编译后是 winafl.dll，里面实现了覆盖率插桩、基于文件的共享内存、基于管道的状态传递等功能。</p>
+<p>论文大致可分为两类，即原创 研究论文和调查论文。</p>
 </blockquote>
-<h3 id="fuzzing："><a href="#fuzzing：" class="headerlink" title="fuzzing："></a>fuzzing：</h3><pre><code>afl-fuzz.exe -i D:\winAFL\afl_in -o D:\winAFL\afl_out -t 2000 -D D:\winAFL\DynamoRIO-Windows-8.0.0-1\DynamoRIO-Windows-8.0.0-1\bin32 -- -coverage_module 7z.exe -coverage_module 7z.dll -target_module 7z.exe -target_offset 0x02F3B3 -nargs 2 -- &quot;D:\winAFL\7\7-Zip\7z.exe&quot; e -y @@ 
-</code></pre>
-<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/101-9-7.jpg?raw=true" alt="101-9-7.jpg"></p>
+<h2 id="研究论文"><a href="#研究论文" class="headerlink" title="研究论文"></a>研究论文</h2><p>一篇好的研究论文对论文的问题有明确的陈述，如 正在解决建议的解决方案和取得的成果。它 清楚地描述了以前对该问题所做的工作，以及新增了什么功能。</p>
+<p>论文的目标是描述新颖的<strong>技术成果</strong>。通常有以下四种类型的技术结果：</p>
+<ol>
+<li><p>一种算法;</p>
+</li>
+<li><p>系统结构：如硬件设计、软件系统、 协议等;</p>
+<blockquote>
+<p>论文的一个目标是确保下一个设计类似于你的系统的人不会犯同样的错误，并利用你的一些最佳解决方案。因此，请务必讨论棘手的问题，并讨论不明显的错误（以及如何避免这些错误）。</p>
+</blockquote>
+</li>
+<li><p>性能评估：通过分析、模拟或测量获得;</p>
+</li>
+<li><p>理论：由一系列定理组成。</p>
+</li>
+</ol>
+<p>一篇论文应该关注：</p>
 <ul>
-<li><em>-coverage_module</em>：指定覆盖率引导包含的文件，和上面 Execise7 里的 AFL_LLVM_ALLOWLIST 有点像</li>
-<li><em>-target_offset</em>：指定偏移，这里用了 fuzzing101 给的偏移量，需要减去基地址，而 AFL++ 是不用的</li>
-<li><em>-nargs</em>：用于指定测试文件的运行参数数量，似乎不包含最后的输入文件</li>
+<li>充分详细地描述结果，以确定其有效性；</li>
+<li>确定结果的新颖性，即报告了哪些新知识，哪些知识是不显而易见的；</li>
+<li>确定结果的意义：这些结果表明有哪些改进和影响。</li>
 </ul>
-<hr>
-<p>此次练习使得自己关于 Fuzz 的思维不再局限于 Linux 系统，整个过程的进行在自己深入理解后较为顺利，不过开始对工具的陌生也导致了下载安装目标这部分的进度较慢，不过整体还是收获挺多的！</p>
-<p>当然，还有部分工作后续要完成：</p>
+<h2 id="论文结构"><a href="#论文结构" class="headerlink" title="论文结构"></a>论文结构</h2><ul>
+<li><p>论文的典型大纲是：</p>
 <ul>
-<li>Create a fuzzing dictionary for the HFS+ file format</li>
-<li>继续对 7-Zip 进行模糊处理，目前还未跑出 crash</li>
-<li>对 crash 进行分类，找到漏洞的 PoC，目前还未尝试在 Win 系统下的 Triage</li>
-<li>找到更好的 <em>target_offset</em> 以加快模糊处理速度（7-Zip 是开源的，可以尝试在调试模式下进行编译，并在调试器中查看函数名称）</li>
+<li><p>摘要：通常不超过100-150字;</p>
+</li>
+<li><p>简介（简要说明）：介绍问题，概述解决方案；问题陈述中应明确说明问题为何重要（或有趣）。</p>
+</li>
+<li><p>相关工作（或摘要之前）：如果是会议，请务必引用 PC 联合主席和尽可能多的其他 PC 成员的工作，以及前两次会议记录中的相关内容。如果是期刊或杂志，则应引用过去 2-3 年左右的相关内容。</p>
+</li>
+<li><p>论文其余部分的大纲：”本文其余部分的结构如下。第 2 节介绍……第 3 节描述……”。最后，我们将在第 5 节介绍未来的工作”。注意，”节 “是大写的。另外，在 “第 2 节讨论…… “和 “在第 3 节，我们讨论…… “中，”节 “作为句子的主语时，表达方式要有所变化。</p>
+</li>
+<li><p>论文正文：</p>
+<ul>
+<li>问题</li>
+<li>方法， 体系结构</li>
+<li>结果</li>
 </ul>
+<p>正文应包含充分的动机，至少有一个示例场景，最好是两个，并附有插图，然后是一个 清晰的通用问题陈述模型，即功能，尤其要强调 “新 “功能。论文可以包含或不包含形式主义。对算法或架构的一般评估，例如证明算法为 O(log N)的材料，请放在这里，而不是评估部分。</p>
+<p>为实现这一模型而拟议系统的<em>体系结构</em>应比你自己的独特实现方式更通用。一定要包含至少一张图表。</p>
+<p>实现：当架构的实现并非完全直截了当时，应包含实际的实现细节。简要提及实现语言、平台、位置、对其他软件包的依赖性以及最低资源使用量（如果相关）。</p>
+<p>评估：实际运行情况如何？提供真实或模拟的性能指标、最终用户研究，提及外部技术采用者（如有）等。</p>
+</li>
+<li><p>相关工作，如果开始时没有涉及。</p>
+</li>
+<li><p>总结和今后的工作</p>
+<ul>
+<li>经常重复主要结果</li>
+</ul>
+</li>
+<li><p>确认</p>
+</li>
+<li><p>书目</p>
+</li>
+<li><p>附录（如迫不得已，可先删去）：</p>
+<ul>
+<li>详细的协议说明</li>
+<li>超过两行的证明</li>
+<li>其他低级但重要的细节</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>建议先写方法和结果部分，这两个部分放在一起。然后是问题部分（如果与引言分开）。然后是结论，最后是引言。最后写引言，因为它在最后一个段落中对结论进行了润色。最后写摘要。最后，给论文起一个标题。</p>
+<h2 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h2><ul>
+<li>除了最容易理解的缩写外，避免使用其他所有缩写。</li>
+<li>避免使用 “新颖”、”性能评估 “和 “架构 “等常见短语，因为几乎每篇论文都会对某些架构进行性能评估，而且最好是新颖的。除非有人想看到 10,000 条谷歌结果，否则没人会搜索这类词。<br>使用形容词来描述你的工作的显著特点，如可靠、可扩展、高性能、健壮、低复杂性或低成本。(显然也有例外，例如当性能评估是论文的核心内容时。即使在这种情况下，也最好使用更具体的措辞，如 “X 的延迟测量 “或 “联邦快递送货的服务质量”）。</li>
+<li>如果您需要论文标题的灵感，可以参考<a target="_blank" rel="noopener" href="https://cseweb.ucsd.edu//~braghava/systems-topic-generator.html">自动系统研究课题或论文标题生成器</a>。</li>
+</ul>
+<h2 id="作者"><a href="#作者" class="headerlink" title="作者"></a>作者</h2><p>IEEE 政策（第 6.4.1 节）用于说明以下有关作者身份的信息：</p>
+<blockquote>
+<p>IEEE 申明，作者署名必须保留给满足以下各项条件的个人：1) 对稿件中的理论发展、系统或实验设计、原型开发和&#x2F;或与工作相关的数据分析和解释做出了重要的智力贡献；2) 参与了文章的起草，或对文章的智力内容进行了审阅和&#x2F;或修改；3) 批准了稿件的最终版本，包括参考文献。</p>
+</blockquote>
+<p>现在这已经移动到了 <a target="_blank" rel="noopener" href="http://www.ieee.org/portal/cms_docs_iportals/iportals/publications/PSPB/opsmanual.pdf">IEEE PSPB Operations Manual</a> 中，第 8.2.1 节。</p>
+<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><ul>
+<li>摘要<strong>不得</strong>包含参考文献，因为它可以在没有正文的情况下使用。用作者、缩写或 RFC 编号来标识作品是可以接受的，尽管并不常见。(例如，”我们的算法基于 Smith 和 Wesson 的工作”）。</li>
+<li>避免在摘要中使用 “本文”。你还会在这里谈论哪篇论文？</li>
+<li>避免在摘要中使用一般动机。您不必证明互联网的重要性或解释什么是 QoS。</li>
+<li>不仅要突出问题，还要突出主要结果。很多人在阅读摘要后会决定是否继续阅读论文的其他部分。</li>
+<li>由于摘要会被搜索引擎使用，因此要确保能在摘要中找到识别您工作的术语。特别是，摘要中应包含所开发的任何协议或系统的名称以及一般领域（”服务质量”、”协议验证”、”服务创建环境”）。</li>
+<li>避免方程和数学。 例外情况：您的论文提出<em>E &#x3D; m c 2</em>。</li>
+</ul>
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><ul>
+<li><p>避免使用 “XYZ 的最新进展 “等陈词滥调或任何暗指互联网发展的词语。</p>
+</li>
+<li><p>确保引言让读者知道这篇论文是关于什么的，而不仅仅是你的一般研究领域有多重要。读者不会花三页纸来了解你在说什么。</p>
+</li>
+<li><p>引言必须通过准确指出您要解决的问题来激发您的工作动机，然后概述您的方法和&#x2F;或贡献（甚至可能对您的结果进行一般性描述）。这样，引言就为论文的其余部分设定了期望——它提供了背景和预览。</p>
+</li>
+<li><p>在引言中重复摘要只会浪费篇幅。</p>
+</li>
+<li><p>错误案例：</p>
+<blockquote>
+<p>Here at the institute for computer research, me and my colleagues have created the SUPERGP system and have applied it to several toy problems. We had previously fumbled with earlier versions of SUPERGPSYSTEM for a while. This system allows the programmer to easily try lots of parameters, and problems, but incorporates a special constraint system for parameter settings and LISP S-expression parenthesis counting.</p>
+<p>The search space of GP is large and many things we are thinking about putting into the supergpsystem will make this space much more colorful.</p>
+</blockquote>
+</li>
+<li><p>一个很好的介绍，来自埃里克·西格尔的课堂：</p>
+<blockquote>
+<p>Many new domains for genetic programming require evolved programs to be executed for longer amounts of time. For example, it is beneficial to give evolved programs direct access to low-level data arrays, as in some approaches to signal processing \cite{teller5}, and protein segment classification \cite{handley,koza6}. This type of system automatically performs more problem-specific engineering than a system that accesses highly preprocessed data. However, evolved programs may require more time to execute, since they are solving a harder task.</p>
+<ul>
+<li><p><strong>先前或明显的方法</strong>：</p>
+<p>(Note that you can also have a related work section that gives more details about previous work.)) One way to control the execution time of evolved programs is to impose an absolute time limit. However, this is too constraining if some test cases require more processing time than others. To use computation time efficiently, evolved programs must take extra time when it is necessary to perform well, but also spend less time whenever possible.</p>
+</li>
+<li><p><strong>方法&#x2F;解决方案&#x2F;贡献</strong>：</p>
+<p>The first sentence of a paragraph like this should say what the contribution is. Also gloss the results.</p>
+<p>In this chapter, we introduce a method that gives evolved programs the incentive to strategically allocate computation time among fitness cases. Specifically, with an <em>aggregate computation time ceiling</em> imposed over a series of fitness cases, evolved programs dynamically choose when to stop processing each fitness case. We present experiments that show that programs evolved using this form of fitness take less time per test case on average, with minimal damage to domain performance. We also discuss the implications of such a time constraint, as well as its differences from other approaches to {\it multiobjective problems}. The dynamic use of resources other than computation time, e.g., memory or fuel, may also result from placing an aggregate limit over a series of fitness cases.</p>
+</li>
+<li><p><strong>概述：</strong></p>
+<p>The following section surveys related work in both optimizing the execution time of evolved programs and evolution over Turing-complete representations. Next we introduce the game Tetris as a test problem. This is followed by a description of the aggregate computation time ceiling, and its application to Tetris in particular. We then present experimental results, discuss other current efforts with Tetris, and end with conclusions and future work.</p>
+</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<h2 id="参考书目"><a href="#参考书目" class="headerlink" title="参考书目"></a>参考书目</h2><ul>
+<li><p>避免在参考书目中使用*et al.*除非列表很长 （五位或更多作者）。</p>
+</li>
+<li><p>互联网草稿必须标注为 “进行中的工作”。确保它们已被更新版本或 RFC 取代。任何超过六个月的互联网草案参考文献都应自动被怀疑，因为互联网草案在六个月后就会过期。</p>
+</li>
+<li><p>图书引文包括出版年份，但不包括 ISBN 编号。</p>
+</li>
+<li><p>现在可以接受包含材料的 <a target="_blank" rel="noopener" href="http://www.cs.columbia.edu/~hgs/etc/urls.html">URL</a> ，但考虑到版权问题，对于在 IEEE 和 ACM 出版物上发表的论文，包含指向作者网页的 URL 可能是不好的形式。对于软件和其他非图书馆资料，请使用URL。避免使用过长的 URL；只需指向普通页面，让读者找到材料即可。一般的 URL 也不太可能更改。</p>
+</li>
+<li><p>在名字和姓氏之间留一个空格，即“J. P. Doe”， 不是“J.P.Doe”。</p>
+</li>
+<li><p>诸如此类的引用是无用的。引用资料来源（如大学）、日期和其他识别信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">John Doe, &quot;Some paper on something&quot;, technical report.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>对于会议论文，必须注明会议地点、月份和会议全称，而不仅仅是缩写。页码是可以接受的，但对于电子出版物已经没有什么帮助了。所有这些信息都可以在 IEEE 或 ACM 数字图书馆中找到。</p>
+</li>
+<li><p>检查互联网草案是否已作为 RFC 发布，或者是否有更新的版本。</p>
+</li>
+<li><p>如下引文是没有用的，因为该论文现在应该已经发表了。谷歌、ACM 或 IEEE 数字图书馆会帮您找到它。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Jane Doe, &quot;Some random paper&quot;, to be published, 2003.</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="致谢"><a href="#致谢" class="headerlink" title="致谢"></a>致谢</h2><ul>
+<li>鸣谢资金来源。有些资助来源有特定的措辞要求，可能更希望列出资助编号。 NSF要求这样的文字：“这项工作得到了在 EIA NN-NNNNN 国家科学基金会的资助下。</li>
+<li>一般来说，匿名审稿人不会得到认可，除非他们真的提供了卓越的反馈或见解。与其说 “我们感谢 X 在 Y 方面对我们的帮助”，不如改成 “X 在 Y 方面提供了帮助”。</li>
+</ul>
+<h2 id="报告数值结果和模拟"><a href="#报告数值结果和模拟" class="headerlink" title="报告数值结果和模拟"></a>报告数值结果和模拟</h2><ul>
+<li>除扩展摘要外，其他所有摘要都应详细报告数值结果和模拟结果，以便读者能够复制这些结果。其中应包括所使用的所有参数、有助于分析的样本数量说明以及任何相关的初始条件。</li>
+<li>在介绍模拟结果时，应深入说明统计置信度。如果可能，应提供置信区间。如果图表中出现 “奇怪 “的行为（例如，凹陷、峰值或斜率变化），则需要对这种行为进行解释，或者说明这仅仅是统计畸变造成的。在后一种情况下，建议收集更多的样本。</li>
+<li>数字的选择要明智。你永远不可能列出整个参数空间，因此应深入说明哪些参数在什么范围内重要，哪些参数不那么重要。展示大量平直或线性的线条并不有趣。</li>
+<li>图和表的标题应包含足够的上下文，以便读者无需参阅正文就能理解图或表的内容。任何标签或不常用的缩写都需要在图或表的说明中加以解释。</li>
+<li>图表说明不应只是重复 “延迟随负载增加而增加 “等显而易见的图形，而应解释这种增加与负载增加的关系。它是线性的吗？它是否遵循一些众所周知的其他系统行为，如标准队列系统？</li>
+</ul>
+<h2 id="LaTeX-注意事项"><a href="#LaTeX-注意事项" class="headerlink" title="LaTeX 注意事项"></a>LaTeX 注意事项</h2><ul>
+<li><p>无需将数字括在 $$（数学模式）中。</p>
+</li>
+<li><p>使用  <code>\cite&#123;a,b,c&#125;</code>, 而不是 <code>\cite&#123;a&#125; \cite&#123;b&#125; \cite&#123;c&#125;</code>.</p>
+</li>
+<li><p>使用 LaTeX2e 的 <code>\usepackage&#123;times&#125;</code> 选项，在不同分辨率的打印机上更好。另外，相较于 CMR，它可能会从会议中挤出额外的 10% 的文本分配。</p>
+</li>
+<li><p>非索引（或描述性）下标以罗马字母设置， 不是斜体。例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x_i</span><br><span class="line">x_&#123;\mathit index&#125;</span><br><span class="line">x_&#123;\mathrm max&#125;</span><br><span class="line">x_&#123;\mathrm f&#125;</span><br></pre></td></tr></table></figure>
 
+<p>在上面的示例中，索引 <em>i</em> 或索引 <em>is</em> 替换为或实例化为数字，例如 <em>x 1、x 2</em>。</p>
+</li>
+<li><p>多字母变量名称应该用括起来，而不是 $$，否则间距会出错。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\mathit</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>为了统一起见，请使用 LaTeX2e 图形集，而不是早期的图形集 标杆集：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">\usepackage&#123;graphics&#125;</span><br><span class="line">...</span><br><span class="line">\begin&#123;figure&#125;</span><br><span class="line">\resizebox&#123;!&#125;&#123;0.5\textheight&#125;&#123;\includegraphics&#123;foo.eps&#125;&#125;</span><br><span class="line">\caption&#123;Some figure&#125;</span><br><span class="line">\label&#123;fig:figure&#125;</span><br><span class="line">\end&#123;figure&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="应避免的事项"><a href="#应避免的事项" class="headerlink" title="应避免的事项"></a>应避免的事项</h2><p><strong>太多的激励材料</strong>：三个原因就足够了——它们应该被描述得非常清楚、 简要。</p>
+<p><strong>描述结果的明显部分</strong>：”明显 “的定义是，如果你提出该结果所要解决的问题，我们课程的毕业生会建议将其作为解决方案的任何结果。</p>
+<p><strong>描述不必要的细节</strong>：如果省略某个细节不会影响读者理解结果的重要新颖之处，那么该细节就是不必要的。</p>
+<p><strong>拼写错误</strong>：有了拼写检查程序，就没有理由在手稿中出现拼写错误。如果作为作者的你没有花时间对论文进行拼写检查，编辑或审稿人为什么要花时间阅读它，或者相信你在技术问题上的勤奋程度会高于你在表达上的勤奋程度呢？不过请注意，拼写检查程序并不能检查出所有常见错误，尤其是单词重复（”the”）。如有疑问，请查阅字典，例如 [ <a target="_blank" rel="noopener" href="http://www.m-w.com/">Merriam Webster</a>.]。</p>
+<p><strong>使用 Arial 字体</strong>：Arial 字体和其他无衬线字体适合幻灯片和海报，但较难阅读连续文本。使用 Times Roman 或类似的衬线字体。收件人不太可能有不常见的字体，可能会造成打印或显示问题。主要用于在线阅读的材料通常使用无衬线字体。</p>
+<h2 id="实验论文指南"><a href="#实验论文指南" class="headerlink" title="实验论文指南"></a>实验论文指南</h2><p>“Guidelines for Experimental Papers” set forth for researchers submitting articles to the journal, <em>Machine Learning</em>。</p>
+<ol>
+<li>介绍新的学习 “环境 “或应用类型的论文应证明这种环境的相关性和重要性，例如，基于其在应用中的实用性、作为人类或动物学习模型的适当性，或其在解决机器学习中的基本问题方面的重要性。</li>
+<li>描述新算法的论文应清晰、准确，并能让读者将该算法与其他算法进行比较。例如，大多数学习算法都可以被视为在优化（至少近似地优化）某种性能指标。描述一种新算法的好方法就是明确说明这种性能指标。另一种描述算法的有用方法是定义算法在优化性能指标时所搜索的假设空间。</li>
+<li>介绍新算法的论文应进行实验，将其与针对相同或类似问题的最先进算法进行比较。在可能的情况下，还应将性能与理想性能的绝对标准进行比较。还应将性能与幼稚标准（如随机猜测、猜测最常见的类别等）进行比较。不寻常的性能标准应仔细界定并说明理由。</li>
+<li>所有实验都必须包括对结论不确定性的测量。其形式通常为置信区间、统计检验或标准误差估计。应采用适当的实验方法。例如，如果使用 “测试集 “来衡量泛化性能，那么学习过程中就不能使用来自测试集的任何信息。</li>
+<li>论文中必须包含足以复制实验的软件和数据说明。一旦论文发表在《机器学习》上，我们强烈要求作者将实验中使用的数据提供给希望重复实验的其他科学家。实现这一目标的绝佳方法是将数据集存放在欧文机器学习数据库存储库（Irvine Repository of Machine Learning Databases）。另一个好方法是将您的数据集添加到多伦多大学的 DELVE 基准集。对于专有数据集，我们鼓励作者开发具有相同统计属性的合成数据集。这些合成数据集可以免费提供。</li>
+<li>应明确说明从一系列实验运行中得出的结论。用图表显示实验数据会非常有效。应在附录中提供实验精确数值结果的辅助表格。</li>
+<li>应详细说明算法的局限性。算法失败的有趣案例对于澄清算法的适用范围非常重要。</li>
+</ol>
+<h2 id="其他提示和注释"><a href="#其他提示和注释" class="headerlink" title="其他提示和注释"></a>其他提示和注释</h2><p>From Bill Stewart (Slashdot, May 7, 2006), edited</p>
+<blockquote>
+<ul>
+<li>像报纸记者一样写作，而不是学生。</li>
+<li>你的目标是与读者进行清晰的沟通，而不是美或 博学或叙述你的发现和推理过程。 不要浪费他们的时间，或者至少不要浪费时间。</li>
+<li>为了使读者更好地阅读，需要在前几句话中表明重要结论。</li>
+<li>可以通过简化写作来表达一些复杂的东西。</li>
+<li>换位思考，考虑读者知道什么，不知道什么，以及他们想要什么和不想要什么。需要用他们知道和想要的东西来表达事物。</li>
+</ul>
+</blockquote>
+<p>From MarkusQ, Slashdot, May 7, 2006</p>
+<blockquote>
+<ul>
+<li><strong>自上而下的设计</strong>：从大纲开始，制定细节是解决工程问题的常规方法。</li>
+<li><strong>检查您的事实</strong>：工程师应该习惯于检查是否还存在有可疑的事情。</li>
+<li><strong>故障模式分析</strong>：对于每一句话都问问自己，是否会被误解？修复它的最佳方法是什么？</li>
+<li><strong>依赖关系分析</strong>：想法是否按顺序呈现？确保每一点都能在读者理解、文中假设和前面提供信息的基础上。</li>
+<li><strong>优化</strong>：是否有任何不必要的部分？结构直接的连接是否要求读者一次记住太多细节？</li>
+<li><strong>结构化测试</strong>：假设只有期望中读者拥有的知识，那么在阅读自己写的东西时，每部分工作是否按预期进行？</li>
+</ul>
+</blockquote>
+<h2 id="会议审查进程"><a href="#会议审查进程" class="headerlink" title="会议审查进程"></a>会议审查进程</h2><p>很难概括会议的审查过程，但是 大多数信誉良好的会议都遵循以下基本规则：</p>
+<ol>
+<li>论文将提交给技术项目主席。当前会议大部分需要以 PDF 格式的电子提交，偶尔也会以 word 形式。</li>
+<li>技术项目主席将论文分配给一个或多个 技术程序委员会成员——各自领域的专家。 该 TPC 成员的身份是保密的。</li>
+<li>TPC 成员通常会提供评价，但也可能会被要求 找到一到三个不是 TPC 成员的审稿人来评价——提供更详细的批评，而不是一刀切地否决。一般会议将提供至少三次审查。</li>
+<li>在一些会议上，特定论文的审稿人进行在线讨论论文 。通常，一个 TPC 成员会驱动讨论，然后对论文接受，拒绝 或在 TPC 会议上进行讨论。</li>
+<li>然后，技术程序主席收集评论并对根据其对论文评分。</li>
+<li>TPC 会议（或者更确切地说，可以举行会议的子集），之后会亲自或通过电话会议会面。通常，最后三分之一和前三分之一分别被拒绝和接受，没有（很多） 进一步的讨论。讨论的论文通常是在那两者之内范围的，或者 TPC 成员强烈认为论文评判错误的，或者评论分数差异很大的论文。论文只收到两个评价也会经常被讨论，也许由一个 TPC 成员对其进行审查以作为补充。严格 TPC 会议的召开取决于会议的规模和声誉。在某些研讨会和会议中，TPC 主席很可能会自己决定进入终审，不涉及整个 TPC 会议。</li>
+</ol>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2>
                 
                 <p class="end">__END__</p>
             </div>
@@ -173,7 +298,7 @@ cmake -G&quot;Visual Studio 16 2019&quot; -A Win32 .. -DDynamoRIO_DIR=D:\winAFL\
     <div class="suffix-box-right">
         <span class="suffix-box-title">文章作者：</span>AuRuier
         <br>
-        <span class="suffix-box-title">文章出处：</span><a href="/2023/08/30/Fuzzing101%E2%80%94%E2%80%94Exercise%209/" target="_blank">Fuzzing101——Exercise 9</a>
+        <span class="suffix-box-title">文章出处：</span><a href="/2023/09/16/Writing%20Technical%20Articles/" target="_blank">Writing Technical Articles</a>
         <br>
         <span class="suffix-box-title">作者签名：</span>有志者事竟成！
         <br>
@@ -188,11 +313,8 @@ cmake -G&quot;Visual Studio 16 2019&quot; -A Win32 .. -DDynamoRIO_DIR=D:\winAFL\
                 
                 <div class="article-prev-next">
                     
-                        <a href="/2023/08/31/Fuzzing101%E2%80%94%E2%80%94Exercise%2010/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/08/31/Fuzzing101%E2%80%94%E2%80%94Exercise%2010/" title="发布于 2023-08-31 10:47">Fuzzing101——Exercise 10</a>
-                        <br>
                     
-                    
-                        <a href="/2023/08/25/Fuzzing101%E2%80%94%E2%80%94Exercise%208/" class="next-prefix">» </a> 下一篇：    <a href="/2023/08/25/Fuzzing101%E2%80%94%E2%80%94Exercise%208/" title="发布于 2023-08-25 07:43">Fuzzing101——Exercise 8</a>
+                        <a href="/2023/09/07/How%20(and%20How%20Not)%20to%20Write%20a%20Good%20Design%20Paper/" class="next-prefix">» </a> 下一篇：    <a href="/2023/09/07/How%20(and%20How%20Not)%20to%20Write%20a%20Good%20Design%20Paper/" title="发布于 2023-09-07 11:27">How (and How Not) to Write a Good Design Paper</a>
                     
                 </div>
             </div>
@@ -211,7 +333,7 @@ cmake -G&quot;Visual Studio 16 2019&quot; -A Win32 .. -DDynamoRIO_DIR=D:\winAFL\
     
 </div>
     <div id="footer">
-    <div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【海纳百川<span><i class='iconfont icon-like-fill'></i></span>有容乃大】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>
+    <div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【海纳百川<span><i class='iconfont icon-like-fill'></i></span>取则行远】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>
 </div>
     <div id="sidebar">
     <div class="menu-wrap" style="display:none;">
@@ -390,7 +512,7 @@ cmake -G&quot;Visual Studio 16 2019&quot; -A Win32 .. -DDynamoRIO_DIR=D:\winAFL\
         WebsiteStartDate : "2023-09-07",
         Home             : "https://github.com/AuRuier",
 
-        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, Live For Code",
+        WebsiteTitleBlur         : "(◍´꒳`◍) Hi, Ruier",
         WebsiteTitleBlurTimeOut  : 500,
         WebsiteTitleFocus        : "(*´∇｀*) 欢迎回来!",
         WebsiteTitleFocusTimeOut : 1000,
@@ -640,7 +762,7 @@ cmake -G&quot;Visual Studio 16 2019&quot; -A Win32 .. -DDynamoRIO_DIR=D:\winAFL\
         ],
 
         FooterStyle : 2,
-        BottomText  : "<div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【海纳百川<span><i class='iconfont icon-like-fill'></i></span>有容乃大】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>",
+        BottomText  : "<div><span class='face'>ღゝ◡╹)ノ♡</span></div><div>【海纳百川<span><i class='iconfont icon-like-fill'></i></span>取则行远】</div><div>&copy; 2020-2023 WorstOne. All Rights Reserved.</div>",
 
         ConsoleList : [
             
