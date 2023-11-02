@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            归档
+            Fuzzing101——Exercise 9
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -32,15 +32,32 @@
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body>
     <a id="cover"></a>
-    <link type="text/css" rel="stylesheet" href="/css/archive.css">
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
 <div id="header" class="header">
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">归档</h1>
+                <h1 class="header-subtitle">Fuzzing101——Exercise 9</h1>
                 <div class="header-subinfo">
-                    <p class="article-info-text Chinese"></p>
-                    <p class="article-info-text English"></p>                  
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2023-08-30
+                        </span>
+                        
+                            
+                                <span id="/2023/08/30/Fuzzing101——Exercise 9/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 9">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/08/30/Fuzzing101——Exercise 9/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                    
                 </div>
             
         </div>
@@ -49,135 +66,148 @@
 </div>
 <div id="container">
     
-        
-            <!-- 归档页面、分类归档页面、标签归档页面 -->
-            <div class="articles">
-                <div class="articles-wrap">
-                    <span class="archive-move-on"></span>
-                    <span class="archive-counter">
-                        
-                            目前共计 26 篇日志，继续加油！
-                        
-                    </span>
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h1 id="Fuzzing101——Exercise-9"><a href="#Fuzzing101——Exercise-9" class="headerlink" title="Fuzzing101——Exercise 9"></a>Fuzzing101——Exercise 9</h1><p>在本练习对 <strong>7-Zip</strong> 文件归档器进行模糊测试，目标是在 7-Zip 15.05 中找到 <a target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2016-2334"><strong>CVE-2016-2334</strong></a> （一个基于堆的缓冲区溢出，可通过伪造的 HFS+ 映像触发）的崩溃&#x2F;PoC。</p>
+<p><strong>基于堆的缓冲区溢出</strong>是一种发生在堆数据区的缓冲区溢出，通常与显式动态内存管理（使用 malloc() 和 free() 函数进行分配&#x2F;去分配）有关。因此，远程攻击者可以利用这个问题，在使用受影响库的应用程序上下文中执行任意代码。<a target="_blank" rel="noopener" href="https://cwe.mitre.org/data/definitions/122.html">更多信息</a>。</p>
+<hr>
+<p>了解windows平台fuzzing工具WinAFl</p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li><ol>
+<li>下载并构建 WinAFL（以及所需的依赖项）</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>创建 HFS+ 样本的种子语料库</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>可选： 为 HFS+ 文件格式创建模糊字典</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>对 7-Zip 进行模糊处理，直到崩溃为止</li>
+</ol>
+</li>
+<li><ol start="5">
+<li>对崩溃进行分类，找到漏洞的 PoC</li>
+</ol>
+</li>
+<li><ol start="6">
+<li>可选： 找到更好的 <em>target_offset</em> 以加快模糊过程</li>
+</ol>
+</li>
+</ul>
+<h2 id="下载安装目标"><a href="#下载安装目标" class="headerlink" title="下载安装目标"></a>下载安装目标</h2><h3 id="Step1：Visual-Studio"><a href="#Step1：Visual-Studio" class="headerlink" title="Step1：Visual Studio"></a>Step1：Visual Studio</h3><p>安装 <strong>Visual Studio 编译器</strong> eg: <a target="_blank" rel="noopener" href="https://github.com/antonio-morales/Fuzzing101/blob/main/Exercise%209/Resources/vs_community.exe">vs_community.exe</a>。</p>
+<p>选择并安装 <strong>“Desktop development with C++”</strong> 软件包：</p>
+<p><img src="/image/comment/pic/101-9-1.png?raw=true" alt="101-9-1.png"></p>
+<h3 id="Step2：DynamoRIO-8-0-0"><a href="#Step2：DynamoRIO-8-0-0" class="headerlink" title="Step2：DynamoRIO 8.0.0"></a>Step2：DynamoRIO 8.0.0</h3><p><a target="_blank" rel="noopener" href="https://github.com/DynamoRIO/dynamorio/releases/download/release_8.0.0-1/DynamoRIO-Windows-8.0.0-1.zip">DynamoRIO Windows 二进制软件包</a> </p>
+<p>将 zip 内容解压到目标位置，如下所示：</p>
+<p><img src="/image/comment/pic/101-9-2.jpg?raw=true" alt="101-9-2.jpg"></p>
+<h3 id="Step3：下载并构建-WinAFL"><a href="#Step3：下载并构建-WinAFL" class="headerlink" title="Step3：下载并构建 WinAFL"></a>Step3：下载并构建 WinAFL</h3><p>从官方软件仓库下载 <a target="_blank" rel="noopener" href="https://github.com/googleprojectzero/winafl">WinAFL</a>：<a target="_blank" rel="noopener" href="https://github.com/googleprojectzero/winafl%E3%80%82">https://github.com/googleprojectzero/winafl。</a></p>
+<p>打开 VS2019 的 <strong>Developer Command Prompt</strong>，将工作目录更改为 WinAFL 目录。</p>
+<p><img src="/image/comment/pic/101-9-0.png?raw=true" alt="101-9-0.png"></p>
+<pre><code>mkdir build32
+cd build32
+  
+cmake -G&quot;Visual Studio 16 2019&quot; -A Win32 .. -DDynamoRIO_DIR=D:\winAFL\DynamoRIO-Windows-8.0.0-1\DynamoRIO-Windows-8.0.0-1\cmake
+</code></pre>
+<p><img src="/image/comment/pic/101-9-3.jpg?raw=true" alt="101-9-3.jpg"></p>
+<pre><code>cmake --build . --config Release
+</code></pre>
+<p><img src="/image/comment/pic/101-9-4.jpg?raw=true" alt="101-9-4.jpg"></p>
+<p>安装正常即可在 <code>winafl-master\build32\bin\Release</code> 下看到 <code>afl-fuzz.exe</code> 等文件（这里路径为:D:\winAFL\winafl-master\winafl-master\build32\bin\Release）：</p>
+<p><img src="/image/comment/pic/101-9-5.jpg?raw=true" alt="101-9-5.jpg"></p>
+<h3 id="Step4：下载-7-Zip"><a href="#Step4：下载-7-Zip" class="headerlink" title="Step4：下载 7-Zip"></a>Step4：下载 7-Zip</h3><p><a target="_blank" rel="noopener" href="https://github.com/antonio-morales/Fuzzing101/blob/main/Exercise%209/Resources/7z1505.exe">7-Zip 15.05</a> </p>
+<h3 id="Step5：创建种子语料库"><a href="#Step5：创建种子语料库" class="headerlink" title="Step5：创建种子语料库"></a>Step5：创建种子语料库</h3><p>通过 <strong>HFS+</strong> 镜像填充种子语料库：</p>
+<ul>
+<li>在 Linux 中，可以使用 <strong>hfsprogs</strong> 实用程序。</li>
+<li>在 Windows 中，可以使用 **Paragon HFS+**（免费试用的商业软件）。</li>
+<li>这里采用 <a target="_blank" rel="noopener" href="https://github.com/antonio-morales/Fuzzing101/blob/main/Exercise%209/Resources/example.img">HFS 示例文件 example.img</a> 。</li>
+</ul>
+<h2 id="Fuzzing"><a href="#Fuzzing" class="headerlink" title="Fuzzing"></a>Fuzzing</h2><p>WinAFL 命令行与 AFL++ 不同:</p>
+<ul>
+<li><em>-coverage_module</em> : 要记录覆盖范围的模块。支持多个模块标志</li>
+<li><em>-target_module</em> : 包含要模糊的目标函数的模块</li>
+<li><em>-target_offset</em> : 要模糊的方法从模块开始的偏移量</li>
+</ul>
+<p>如 <a target="_blank" rel="noopener" href="https://github.com/antonio-morales/Fuzzing101/blob/main/Exercise%208">exercise 8</a>，这里也需要找到一个合适的函数偏移量，模糊器将从该偏移量开始循环。 </p>
+<p><img src="/image/comment/pic/101-9-6.png?raw=true" alt="101-9-6.png"></p>
+<p>这里需要函数从模块起点开始的偏移量。由于基地址是 <code>0x400000</code>，执行 <code>0x42F3B3 - 0x400000</code>，并得到 <code>0x02F3B3</code>作为 <strong>target_offset</strong> 参数。</p>
+<p>用 DynamoRIO 测试能否运行 fuzz 进程（这里测试路径为 D:\winAFL\winafl-master\winafl-master\build32\bin\Release）：</p>
+<pre><code>D:\winAFL\DynamoRIO-Windows-8.0.0-1\DynamoRIO-Windows-8.0.0-1\bin32\drrun.exe -c winafl.dll -debug -target_module 7z.exe -target_offset 0x02F3B3 -fuzz_iterations 10 -nargs 2 -- &quot;D:\winAFL\7\7-Zip\7z.exe&quot; l D:\winAFL\afl_in\example.img
+</code></pre>
+<p><img src="/image/comment/pic/101-9-8.jpg?raw=true" alt="101-9-8.jpg"></p>
+<p>这里是目标函数运行 10 次后的相应输出，然后目标可执行文件将退出。</p>
+<blockquote>
+<p>DynamoRio 是一个全平台的动态插桩程序，winafl 基于这个工具写了动态插桩 winafl.c，编译后是 winafl.dll，里面实现了覆盖率插桩、基于文件的共享内存、基于管道的状态传递等功能。</p>
+</blockquote>
+<h3 id="fuzzing："><a href="#fuzzing：" class="headerlink" title="fuzzing："></a>fuzzing：</h3><pre><code>afl-fuzz.exe -i D:\winAFL\afl_in -o D:\winAFL\afl_out -t 2000 -D D:\winAFL\DynamoRIO-Windows-8.0.0-1\DynamoRIO-Windows-8.0.0-1\bin32 -- -coverage_module 7z.exe -coverage_module 7z.dll -target_module 7z.exe -target_offset 0x02F3B3 -nargs 2 -- &quot;D:\winAFL\7\7-Zip\7z.exe&quot; e -y @@ 
+</code></pre>
+<p><img src="/image/comment/pic/101-9-7.jpg?raw=true" alt="101-9-7.jpg"></p>
+<ul>
+<li><em>-coverage_module</em>：指定覆盖率引导包含的文件，和上面 Execise7 里的 AFL_LLVM_ALLOWLIST 有点像</li>
+<li><em>-target_offset</em>：指定偏移，这里用了 fuzzing101 给的偏移量，需要减去基地址，而 AFL++ 是不用的</li>
+<li><em>-nargs</em>：用于指定测试文件的运行参数数量，似乎不包含最后的输入文件</li>
+</ul>
+<hr>
+<p>此次练习使得自己关于 Fuzz 的思维不再局限于 Linux 系统，整个过程的进行在自己深入理解后较为顺利，不过开始对工具的陌生也导致了下载安装目标这部分的进度较慢，不过整体还是收获挺多的！</p>
+<p>当然，还有部分工作后续要完成：</p>
+<ul>
+<li>Create a fuzzing dictionary for the HFS+ file format</li>
+<li>继续对 7-Zip 进行模糊处理，目前还未跑出 crash</li>
+<li>对 crash 进行分类，找到漏洞的 PoC，目前还未尝试在 Win 系统下的 Triage</li>
+<li>找到更好的 <em>target_offset</em> 以加快模糊处理速度（7-Zip 是开源的，可以尝试在调试模式下进行编译，并在调试器中查看函数名称）</li>
+</ul>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="AuRuier">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>AuRuier
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="/2023/08/30/Fuzzing101%E2%80%94%E2%80%94Exercise%209/" target="_blank">Fuzzing101——Exercise 9</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>有志者事竟成！
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                
+                <div class="article-prev-next">
+                    
+                        <a href="/2023/08/31/Fuzzing101%E2%80%94%E2%80%94Exercise%2010/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/08/31/Fuzzing101%E2%80%94%E2%80%94Exercise%2010/" title="发布于 2023-08-31 10:47">Fuzzing101——Exercise 10</a>
+                        <br>
                     
                     
-                        
-                            <div class="archive-title">
-                                <h2 class="archive-year">2023</h2>
-                            </div>
-                            
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/23/Fuzzing101%E2%80%94%E2%80%94Exercise%207/"><span>Fuzzing101——Exercise 7</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-23</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/20/Fuzzing101%E2%80%94%E2%80%94Exercise%206/"><span>Fuzzing101——Exercise 6</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-20</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/19/Fuzzing101%E2%80%94%E2%80%94Exercise%205/"><span>Fuzzing101——Exercise 5</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-19</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/18/Fuzzing101%E2%80%94%E2%80%94Exercise%204/"><span>Fuzzing101——Exercise 4</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-18</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/17/Fuzzing101%E2%80%94%E2%80%94Exercise%203/"><span>Fuzzing101——Exercise 3</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-17</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/15/Detecting%20Logical%20Bugs%20of%20DBMS%20with%20Coverage-based%20Guidance/"><span>Detecting Logical Bugs of DBMS with Coverage-based Guidance</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-15</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/14/Fuzzing101%E2%80%94%E2%80%94Exercise%202/"><span>Fuzzing101——Exercise 2</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-14</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/13/Fuzzing101%E2%80%94%E2%80%94Exercise%201/"><span>Fuzzing101——Exercise 1</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-13</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/06/A%20Large-scale%20and%20Longitudinal%20MeasurementStudy%20of%20DKIM%20Deployment/"><span>A Large-scale and Longitudinal MeasurementStudy of DKIM Deployment</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-06</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/07/30/The%20structure%20of%20paper&report%20in%20Systems/"><span>The structure of paper/report in Systems</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">07-30</span>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="/2023/08/25/Fuzzing101%E2%80%94%E2%80%94Exercise%208/" class="next-prefix">» </a> 下一篇：    <a href="/2023/08/25/Fuzzing101%E2%80%94%E2%80%94Exercise%208/" title="发布于 2023-08-25 07:43">Fuzzing101——Exercise 8</a>
                     
                 </div>
             </div>
             
+    <div class="article-comments">
         
-    <div class="pagination-bottom">
-        <div class="pagination">
-            
-                <a class="extend prev" rel="prev" href="/archive/">上一页</a><a class="page-number" href="/archive/">1</a><span class="page-number current">2</span><a class="page-number" href="/archive/page/3/">3</a><a class="extend next" rel="next" href="/archive/page/3/">下一页</a>
-            
-        </div>
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
     </div>
-
+    
+ 
+        </div>
     
 </div>
     <div id="footer">
@@ -215,7 +245,7 @@
                     
                         <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
                     
-                        <li class=" active "><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
                         <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
                     

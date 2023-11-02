@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            Fuzzing101——Exercise 9
+            Intermediate Representation（IR）
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -37,21 +37,21 @@
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">Fuzzing101——Exercise 9</h1>
+                <h1 class="header-subtitle">Intermediate Representation（IR）</h1>
                 <div class="header-subinfo">
                     <p class="article-info-text">
                         <span>
-                            <i class="iconfont icon-time"></i> 发表时间：2023-08-30
+                            <i class="iconfont icon-time"></i> 发表时间：2023-10-18
                         </span>
                         
                             
-                                <span id="/2023/08/31/Fuzzing101——Exercise 9/" class="leancloud_visitors" data-flag-title="Fuzzing101——Exercise 9">
+                                <span id="/2023/10/18/Intermediate Representation（IR）/" class="leancloud_visitors" data-flag-title="Intermediate Representation（IR）">
                                     <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
                                 </span>
                             
                             
                                 <span>
-                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/08/31/Fuzzing101——Exercise 9/"></span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/10/18/Intermediate Representation（IR）/"></span>
                                 </span>
                               
                         
@@ -70,96 +70,151 @@
         <div id="article">
             <div class="toc"></div>
             <div class="article-body">
-                <h1 id="Fuzzing101——Exercise-9"><a href="#Fuzzing101——Exercise-9" class="headerlink" title="Fuzzing101——Exercise 9"></a>Fuzzing101——Exercise 9</h1><p>在本练习对 <strong>7-Zip</strong> 文件归档器进行模糊测试，目标是在 7-Zip 15.05 中找到 <a target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2016-2334"><strong>CVE-2016-2334</strong></a> （一个基于堆的缓冲区溢出，可通过伪造的 HFS+ 映像触发）的崩溃&#x2F;PoC。</p>
-<p><strong>基于堆的缓冲区溢出</strong>是一种发生在堆数据区的缓冲区溢出，通常与显式动态内存管理（使用 malloc() 和 free() 函数进行分配&#x2F;去分配）有关。因此，远程攻击者可以利用这个问题，在使用受影响库的应用程序上下文中执行任意代码。<a target="_blank" rel="noopener" href="https://cwe.mitre.org/data/definitions/122.html">更多信息</a>。</p>
-<hr>
-<p>了解windows平台fuzzing工具WinAFl</p>
-<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
-<li><ol>
-<li>下载并构建 WinAFL（以及所需的依赖项）</li>
-</ol>
+                <h1 id="Intermediate-Representation（IR）"><a href="#Intermediate-Representation（IR）" class="headerlink" title="Intermediate Representation（IR）"></a>Intermediate Representation（IR）</h1><h2 id="1-Compilers-and-Static-Analyzers"><a href="#1-Compilers-and-Static-Analyzers" class="headerlink" title="1. Compilers and Static Analyzers"></a>1. Compilers and Static Analyzers</h2><p>编译器将源代码（Source code） 转换为机器代码（Machine Code）（在转换过程中也要报错）。其中的流程框架是：</p>
+<p><img src="/image/comment/pic/10.18-1.png?raw=true" alt="10.18-1.png"></p>
+<ul>
+<li><p>词法分析器（Scanner），结合（Regular Expression）正则表达式，通过词法分析（Lexical Analysis）将 source code 生成 Tokens，继续分析；没有通过词法分析要报错；</p>
 </li>
-<li><ol start="2">
-<li>创建 HFS+ 样本的种子语料库</li>
-</ol>
+<li><p>语法分析器（Parser），结合上下文无关文法（Context-Free Grammar），通过语法分析（Syntax Analysis），将 token 解析为抽象语法树（Abstract Syntax Tree, AST）；</p>
 </li>
-<li><ol start="3">
-<li>可选： 为 HFS+ 文件格式创建模糊字典</li>
-</ol>
+<li><p>语义分析器（Type Checker），结合属性文法（Attribute Grammar），通过语义分析（Semantic Analysis），将 AST 解析为 Decorated AST；</p>
 </li>
-<li><ol start="4">
-<li>对 7-Zip 进行模糊处理，直到崩溃为止</li>
-</ol>
+<li><p>Translator，将 Decorated AST 翻译为生成三地址码这样的中间表示形式（Intermediate Representation, IR），并<strong>基于 IR 做静态分析</strong>（例如代码优化这样的工作）；Translator转化器生成IR，<strong>静态分析器</strong>来分析<strong>IR</strong>；</p>
+<p>经过以上步骤（前端），静态分析器会分析IR，为什么需要以上步骤，为什么不直接拿 source code 做静态分析？</p>
+<p>这是因为我们得先确保这是一份合格的代码，然后再进行分析。分析代码合不合格，这是 trivial 的事情，由前面的各种分析器去做就行了，静态分析器分析的是 non-trival properties（与程序运行时行为相关的性质）。</p>
 </li>
-<li><ol start="5">
-<li>对崩溃进行分类，找到漏洞的 PoC</li>
-</ol>
-</li>
-<li><ol start="6">
-<li>可选： 找到更好的 <em>target_offset</em> 以加快模糊过程</li>
-</ol>
+<li><p>Code Generator，将 IR 转换为机器代码。</p>
 </li>
 </ul>
-<h2 id="下载安装目标"><a href="#下载安装目标" class="headerlink" title="下载安装目标"></a>下载安装目标</h2><h3 id="Step1：Visual-Studio"><a href="#Step1：Visual-Studio" class="headerlink" title="Step1：Visual Studio"></a>Step1：Visual Studio</h3><p>安装 <strong>Visual Studio 编译器</strong> eg: <a target="_blank" rel="noopener" href="https://github.com/antonio-morales/Fuzzing101/blob/main/Exercise%209/Resources/vs_community.exe">vs_community.exe</a>。</p>
-<p>选择并安装 <strong>“Desktop development with C++”</strong> 软件包：</p>
-<p><img src="/image/comment/pic/101-9-1.png?raw=true" alt="101-9-1.png"></p>
-<h3 id="Step2：DynamoRIO-8-0-0"><a href="#Step2：DynamoRIO-8-0-0" class="headerlink" title="Step2：DynamoRIO 8.0.0"></a>Step2：DynamoRIO 8.0.0</h3><p><a target="_blank" rel="noopener" href="https://github.com/DynamoRIO/dynamorio/releases/download/release_8.0.0-1/DynamoRIO-Windows-8.0.0-1.zip">DynamoRIO Windows 二进制软件包</a> </p>
-<p>将 zip 内容解压到目标位置，如下所示：</p>
-<p><img src="/image/comment/pic/101-9-2.jpg?raw=true" alt="101-9-2.jpg"></p>
-<h3 id="Step3：下载并构建-WinAFL"><a href="#Step3：下载并构建-WinAFL" class="headerlink" title="Step3：下载并构建 WinAFL"></a>Step3：下载并构建 WinAFL</h3><p>从官方软件仓库下载 <a target="_blank" rel="noopener" href="https://github.com/googleprojectzero/winafl">WinAFL</a>：<a target="_blank" rel="noopener" href="https://github.com/googleprojectzero/winafl%E3%80%82">https://github.com/googleprojectzero/winafl。</a></p>
-<p>打开 VS2019 的 <strong>Developer Command Prompt</strong>，将工作目录更改为 WinAFL 目录。</p>
-<p><img src="/image/comment/pic/101-9-0.png?raw=true" alt="101-9-0.png"></p>
-<pre><code>mkdir build32
-cd build32
-  
-cmake -G&quot;Visual Studio 16 2019&quot; -A Win32 .. -DDynamoRIO_DIR=D:\winAFL\DynamoRIO-Windows-8.0.0-1\DynamoRIO-Windows-8.0.0-1\cmake
-</code></pre>
-<p><img src="/image/comment/pic/101-9-3.jpg?raw=true" alt="101-9-3.jpg"></p>
-<pre><code>cmake --build . --config Release
-</code></pre>
-<p><img src="/image/comment/pic/101-9-4.jpg?raw=true" alt="101-9-4.jpg"></p>
-<p>安装正常即可在 <code>winafl-master\build32\bin\Release</code> 下看到 <code>afl-fuzz.exe</code> 等文件（这里路径为:D:\winAFL\winafl-master\winafl-master\build32\bin\Release）：</p>
-<p><img src="/image/comment/pic/101-9-5.jpg?raw=true" alt="101-9-5.jpg"></p>
-<h3 id="Step4：下载-7-Zip"><a href="#Step4：下载-7-Zip" class="headerlink" title="Step4：下载 7-Zip"></a>Step4：下载 7-Zip</h3><p><a target="_blank" rel="noopener" href="https://github.com/antonio-morales/Fuzzing101/blob/main/Exercise%209/Resources/7z1505.exe">7-Zip 15.05</a> </p>
-<h3 id="Step5：创建种子语料库"><a href="#Step5：创建种子语料库" class="headerlink" title="Step5：创建种子语料库"></a>Step5：创建种子语料库</h3><p>通过 <strong>HFS+</strong> 镜像填充种子语料库：</p>
+<h2 id="2-AST-vs-IR"><a href="#2-AST-vs-IR" class="headerlink" title="2. AST vs IR"></a>2. AST vs IR</h2><p>AST和IR的不同，如下图，其中IR的compact and uniform指没有了AST的冗余信息，更简洁；IR很重要的特点是包含控制流信息。</p>
+<p><img src="/image/comment/pic/10.18-2.png?raw=true" alt="10.18-2.png"></p>
+<p>为什么在静态分析的时候，使用 IR 而非 AST 呢？</p>
+<p>这是因为：</p>
 <ul>
-<li>在 Linux 中，可以使用 <strong>hfsprogs</strong> 实用程序。</li>
-<li>在 Windows 中，可以使用 **Paragon HFS+**（免费试用的商业软件）。</li>
-<li>这里采用 <a target="_blank" rel="noopener" href="https://github.com/antonio-morales/Fuzzing101/blob/main/Exercise%209/Resources/example.img">HFS 示例文件 example.img</a> 。</li>
+<li>AST 是 high-level 且接近语法结构的，而 IR 是 low-level 且接近机器代码的。</li>
+<li>AST 是依赖于语言的，IR 通常是独立于语言的：三地址码会被分析器重点关注，因为可以将各种前端语言统一翻译成同一种 IR（具有语言无关的性质）（翻译成的一种统一的中间表示格式） 再加以优化。</li>
+<li>AST 适合快速类型检查，IR 的结构更加紧凑和统一：在 AST 中包含了很多非终结符所占用的结点（body, assign 等），而 IR 中不会需要到这些信息。</li>
+<li>AST 缺少控制流信息（看不出循环信息），IR 包含了<strong>控制流信息</strong>：AST 中只是有结点表明了这是一个 do-while 结构，但是无法看出控制流信息；而 IR 中的 goto 等信息可以轻易看出控制流。</li>
+<li>因此 IR 更适合作为静态分析的基础。</li>
 </ul>
-<h2 id="Fuzzing"><a href="#Fuzzing" class="headerlink" title="Fuzzing"></a>Fuzzing</h2><p>WinAFL 命令行与 AFL++ 不同:</p>
+<h2 id="3-IR-Three-Address-Code-3AC"><a href="#3-IR-Three-Address-Code-3AC" class="headerlink" title="3. IR: Three-Address Code(3AC)"></a>3. IR: Three-Address Code(3AC)</h2><p>三地址码（3-Address Code）通常没有<strong>统一的格式</strong>。在每个指令右侧最多只有1个operator操作符（一般引入临时变量）。</p>
+<p><img src="/image/comment/pic/10.18-3.png?raw=true" alt="10.18-3.png"></p>
+<p>IR：一种中间表示格式，一种形式！！！</p>
+<p>三地址码为什么叫做三地址码呢？因为每条 3AC 至多有三个地址。而一个「地址」可以是（address有三个形式）：</p>
 <ul>
-<li><em>-coverage_module</em> : 要记录覆盖范围的模块。支持多个模块标志</li>
-<li><em>-target_module</em> : 包含要模糊的目标函数的模块</li>
-<li><em>-target_offset</em> : 要模糊的方法从模块开始的偏移量</li>
+<li>变量名 Name: a, b</li>
+<li>常量值 Constant: 3</li>
+<li>编译器生成的临时变量 Compiler-generated Temporary: t1, c</li>
 </ul>
-<p>如 <a target="_blank" rel="noopener" href="https://github.com/antonio-morales/Fuzzing101/blob/main/Exercise%208">exercise 8</a>，这里也需要找到一个合适的函数偏移量，模糊器将从该偏移量开始循环。 </p>
-<p><img src="/image/comment/pic/101-9-6.png?raw=true" alt="101-9-6.png"></p>
-<p>这里需要函数从模块起点开始的偏移量。由于基地址是 <code>0x400000</code>，执行 <code>0x42F3B3 - 0x400000</code>，并得到 <code>0x02F3B3</code>作为 <strong>target_offset</strong> 参数。</p>
-<p>用 DynamoRIO 测试能否运行 fuzz 进程（这里测试路径为 D:\winAFL\winafl-master\winafl-master\build32\bin\Release）：</p>
-<pre><code>D:\winAFL\DynamoRIO-Windows-8.0.0-1\DynamoRIO-Windows-8.0.0-1\bin32\drrun.exe -c winafl.dll -debug -target_module 7z.exe -target_offset 0x02F3B3 -fuzz_iterations 10 -nargs 2 -- &quot;D:\winAFL\7\7-Zip\7z.exe&quot; l D:\winAFL\afl_in\example.img
-</code></pre>
-<p><img src="/image/comment/pic/101-9-8.jpg?raw=true" alt="101-9-8.jpg"></p>
-<p>这里是目标函数运行 10 次后的相应输出，然后目标可执行文件将退出。</p>
-<blockquote>
-<p>DynamoRio 是一个全平台的动态插桩程序，winafl 基于这个工具写了动态插桩 winafl.c，编译后是 winafl.dll，里面实现了覆盖率插桩、基于文件的共享内存、基于管道的状态传递等功能。</p>
-</blockquote>
-<h3 id="fuzzing："><a href="#fuzzing：" class="headerlink" title="fuzzing："></a>fuzzing：</h3><pre><code>afl-fuzz.exe -i D:\winAFL\afl_in -o D:\winAFL\afl_out -t 2000 -D D:\winAFL\DynamoRIO-Windows-8.0.0-1\DynamoRIO-Windows-8.0.0-1\bin32 -- -coverage_module 7z.exe -coverage_module 7z.dll -target_module 7z.exe -target_offset 0x02F3B3 -nargs 2 -- &quot;D:\winAFL\7\7-Zip\7z.exe&quot; e -y @@ 
-</code></pre>
-<p><img src="/image/comment/pic/101-9-7.jpg?raw=true" alt="101-9-7.jpg"></p>
+<p>常见的 3AC 包括：</p>
 <ul>
-<li><em>-coverage_module</em>：指定覆盖率引导包含的文件，和上面 Execise7 里的 AFL_LLVM_ALLOWLIST 有点像</li>
-<li><em>-target_offset</em>：指定偏移，这里用了 fuzzing101 给的偏移量，需要减去基地址，而 AFL++ 是不用的</li>
-<li><em>-nargs</em>：用于指定测试文件的运行参数数量，似乎不包含最后的输入文件</li>
+<li>x &#x3D; y <em>bop</em> z：双目运算并赋值，bop &#x3D; binary operator 二元操作符</li>
+<li>x &#x3D; <em>uop</em> z：单目运算并赋值，uop &#x3D; unary operator 一元（负、取反、类型转换）</li>
+<li>x &#x3D; y：直接赋值</li>
+<li>goto <em>L</em>：无条件跳转，L &#x3D; label</li>
+<li>if x goto <em>L</em>：条件跳转</li>
+<li>if x <em>rop</em> y goto <em>L</em>：包含了关系运算的条件跳转，rop &#x3D; relational operator（&gt;, &lt;, &#x3D;&#x3D;, &gt;&#x3D;, &lt;&#x3D;, etc.)</li>
 </ul>
-<hr>
-<p>此次练习使得自己关于 Fuzz 的思维不再局限于 Linux 系统，整个过程的进行在自己深入理解后较为顺利，不过开始对工具的陌生也导致了下载安装目标这部分的进度较慢，不过整体还是收获挺多的！</p>
-<p>当然，还有部分工作后续要完成：</p>
+<h2 id="4-3AC-in-Real-Static-Analyzer-Soot"><a href="#4-3AC-in-Real-Static-Analyzer-Soot" class="headerlink" title="4. 3AC in Real Static Analyzer: Soot"></a>4. 3AC in Real Static Analyzer: Soot</h2><p>以上的 3AC 比较抽象，来看看现实中的 3AC。</p>
+<p>Soot 是 Java 流行的静态分析器。</p>
+<p>Soot 的 IR 是 Jimple:  <strong>typed</strong> 3-address code。</p>
+<p><strong>Jvm 中的四种主要方法调用：</strong></p>
 <ul>
-<li>Create a fuzzing dictionary for the HFS+ file format</li>
-<li>继续对 7-Zip 进行模糊处理，目前还未跑出 crash</li>
-<li>对 crash 进行分类，找到漏洞的 PoC，目前还未尝试在 Win 系统下的 Triage</li>
-<li>找到更好的 <em>target_offset</em> 以加快模糊处理速度（7-Zip 是开源的，可以尝试在调试模式下进行编译，并在调试器中查看函数名称）</li>
+<li>invokespecial: call constructor(调用构造函数), call superclass methods(调用父类方法), call private methods (私有方法)</li>
+<li>invokevirtual: instance methods call (virtual dispatch) (派生)</li>
+<li>invokerinterface: cannot optimization(不能优化&lt;与invokevirtual相比&gt;), checking implementation </li>
+<li>invokestatic: call static methods (调用静态方法)</li>
+<li>另外：Java 7: invokedynamic –&gt; Java static typing, dynamic language runs on JVM (动态解析出需要调用的方法，然后执行)</li>
+</ul>
+<p><img src="/image/comment/pic/10.18-4.png?raw=true" alt="10.18-4.png"></p>
+<p>尖括号中：&#x3D;&#x3D;&gt; <strong>Method signature</strong>: class name: return type method name(parameter1 type, parameter2 type, ……)</p>
+<p>默认构造函数函数没有名字 统一叫<init>。</p>
+<h2 id="5-Static-Single-Assignment-SSA"><a href="#5-Static-Single-Assignment-SSA" class="headerlink" title="5. Static Single Assignment(SSA)"></a>5. Static Single Assignment(SSA)</h2><p>SSA：经典IR转换格式。</p>
+<p>SSA比较古老，就是给每个定义一个新的名字。</p>
+<p>所谓静态单赋值（SSA），就是让每次对变量x赋值都重新使用一个新的变量xi，并在后续使用中选择最新的变量。</p>
+<pre><code>3AC        |  SSA
+
+p = a + b  |  p1 = a + b
+
+q = p - c  |  q1 = p1 - c
+
+p = q * d  |  p2 = q1 * d
+
+q = p + q  |  q2 = p2 + q1
+</code></pre>
+<p>但是这样一来，肯定会因为不同控制流汇入到一个块，导致多个变量备选的问题：</p>
+<p><img src="/image/comment/pic/10.18-5.png?raw=true" alt="10.18-5.png"></p>
+<p>这里解决的办法就是使用一个合并操作符$\phi$（phi-function），根据控制流的信息确定使用哪个变量。</p>
+<p><strong>tips（两个特征）：</strong></p>
+<p>每个variable都有自己的一个定义；</p>
+<p>多重即引入（phi-function）；</p>
+<p><strong>为什么要用 SSA 呢？</strong></p>
+<ul>
+<li>控制流信息间接地集成到了独特变量名中<ul>
+<li>如果有些对控制流不敏感的简化分析，就可以借助于 SSA</li>
+</ul>
+</li>
+<li>定义与使用是显式的<ul>
+<li>更有效率的数据存取与传播，有些优化在基于 SSA 时效果更好（例如条件常量传播，全局变量编号等）</li>
+</ul>
+</li>
+</ul>
+<p><strong>为什么不用 SSA 呢？</strong></p>
+<ul>
+<li>SSA 会引入过多的变量和 phi 函数</li>
+<li>在转换成机器代码时会引入低效率的问题</li>
+</ul>
+<h2 id="6-Basic-Blocks-BB"><a href="#6-Basic-Blocks-BB" class="headerlink" title="6. Basic Blocks(BB)"></a>6. Basic Blocks(BB)</h2><p>将3地址码转为CFG后进行静态分析。</p>
+<p>BB是CFG的结点。</p>
+<p>CFG 的一个结点可以是一条单独的 3AC，但是更常见的是一个<strong>基本块（Basic Block）</strong>。</p>
+<p>BB是满足下列性质的 最多 的连续3地址指令：</p>
+<p>只有一个入口，这个入口是BB的第一条指令；<br>只有一个出口，这个出口是BB的最后一条指令；</p>
+<p><strong>建立BB的方法：</strong></p>
+<p>输入：程序 P 的一系列 3AC</p>
+<p>输出：程序 P 的基本块</p>
+<p><strong>（1）决定leader（入口）：</strong></p>
+<ul>
+<li>第一条指令是一个leader ;</li>
+<li>是条件&#x2F;无条件跳转指令的target指令的，是leader;</li>
+<li>在条件&#x2F;无条件跳转指令之后的指令，是leader;</li>
+</ul>
+<p><strong>（2）构建BB：</strong></p>
+<ul>
+<li>一个基本块就是一个 leader 及其后续直到下一个 leader 前的所有指令。</li>
+</ul>
+<h2 id="7-Control-Flow-Graphs-CFG"><a href="#7-Control-Flow-Graphs-CFG" class="headerlink" title="7. Control Flow Graphs(CFG)"></a>7. Control Flow Graphs(CFG)</h2><p><strong>BB是结点，除了基本块，CFG 中还会有块到块的边，怎么添加边？</strong></p>
+<ul>
+<li><p><strong>blockA和blockB之间有边当且仅当：</strong></p>
+<ul>
+<li><p>A的出口是条件&#x2F;无条件跳转指令，这个跳转指令是B的入口；</p>
+</li>
+<li><p>在原指令顺序中B紧跟着A，并且A的出口不是无条件跳转指令；</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/image/comment/pic/10.18-6.png?raw=true" alt="10.18-6.png"></p>
+<ul>
+<li><p><strong>一般地，将BB中的跳转指令的label要替换成BB，</strong></p>
+<p>eg:  goto (i) 替换成 goto B</p>
+</li>
+<li><p><strong>如果A、B之间有边，则称A是B的predecessor前驱，B是A的successor后继。（前驱与后继都可以有多个）</strong></p>
+</li>
+<li><p>除了构建好的基本块，<strong>一般会额外加2个结点，「入口（Entry）」和「出口（Exit）」：</strong></p>
+<ul>
+<li>这两个结点不对应任何 IR（并不是程序可执行的IR，引入只是为了设计算法时方便后面静态分析算法的设计初始化等等）；</li>
+<li>入口有一条边指向 IR 中的第一条指令（An edge from Entry to the BB containing the first instruction of IR）；</li>
+<li>如果一个基本块的最后一条指令会让程序离开这段 IR，那么这个基本块就会有一条边指向出口（An edge to Exit from any BB containing an instruction that could be the last instruction of IR）；</li>
+</ul>
+</li>
+</ul>
+<p><strong>控制流分析（Control Flow Analysis）</strong>通常指的是构建控制流图（Control Flow Graph, CFG），并以 <strong>CFG</strong> 作为<strong>基础</strong>结构进行<strong>静态分析</strong>的过程。</p>
+<p><img src="/image/comment/pic/10.18-7.png?raw=true" alt="10.18-7.png"></p>
+<h2 id="划重点"><a href="#划重点" class="headerlink" title="划重点"></a>划重点</h2><ul>
+<li>编译器与静态分析器的关系</li>
+<li>了解 3AC 和其通常形式</li>
+<li>如何基于 IR 构建基本块</li>
+<li>如何基于基本块构建控制流图</li>
 </ul>
 
                 
@@ -173,7 +228,7 @@ cmake -G&quot;Visual Studio 16 2019&quot; -A Win32 .. -DDynamoRIO_DIR=D:\winAFL\
     <div class="suffix-box-right">
         <span class="suffix-box-title">文章作者：</span>AuRuier
         <br>
-        <span class="suffix-box-title">文章出处：</span><a href="/2023/08/31/Fuzzing101%E2%80%94%E2%80%94Exercise%209/" target="_blank">Fuzzing101——Exercise 9</a>
+        <span class="suffix-box-title">文章出处：</span><a href="/2023/10/18/Intermediate%20Representation%EF%BC%88IR%EF%BC%89/" target="_blank">Intermediate Representation（IR）</a>
         <br>
         <span class="suffix-box-title">作者签名：</span>有志者事竟成！
         <br>
@@ -188,11 +243,8 @@ cmake -G&quot;Visual Studio 16 2019&quot; -A Win32 .. -DDynamoRIO_DIR=D:\winAFL\
                 
                 <div class="article-prev-next">
                     
-                        <a href="/2023/08/31/Fuzzing101%E2%80%94%E2%80%94Exercise%2010/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/08/31/Fuzzing101%E2%80%94%E2%80%94Exercise%2010/" title="发布于 2023-08-31 10:47">Fuzzing101——Exercise 10</a>
-                        <br>
                     
-                    
-                        <a href="/2023/08/25/Fuzzing101%E2%80%94%E2%80%94Exercise%208/" class="next-prefix">» </a> 下一篇：    <a href="/2023/08/25/Fuzzing101%E2%80%94%E2%80%94Exercise%208/" title="发布于 2023-08-25 07:43">Fuzzing101——Exercise 8</a>
+                        <a href="/2023/10/17/Static%20Program%20Analysis%20%20(introduction)/" class="next-prefix">» </a> 下一篇：    <a href="/2023/10/17/Static%20Program%20Analysis%20%20(introduction)/" title="发布于 2023-10-17 09:39">Static Program Analysis  (introduction)</a>
                     
                 </div>
             </div>
