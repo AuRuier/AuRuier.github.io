@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            归档
+            Data Flow Analysis（Applications)
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -32,15 +32,32 @@
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body>
     <a id="cover"></a>
-    <link type="text/css" rel="stylesheet" href="/css/archive.css">
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
 <div id="header" class="header">
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">归档</h1>
+                <h1 class="header-subtitle">Data Flow Analysis（Applications)</h1>
                 <div class="header-subinfo">
-                    <p class="article-info-text Chinese"></p>
-                    <p class="article-info-text English"></p>                  
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2023-10-25
+                        </span>
+                        
+                            
+                                <span id="/2023/10/25/Data Flow Analysis（Applications)/" class="leancloud_visitors" data-flag-title="Data Flow Analysis（Applications)">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/10/25/Data Flow Analysis（Applications)/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                    
                 </div>
             
         </div>
@@ -49,77 +66,229 @@
 </div>
 <div id="container">
     
-        
-            <!-- 归档页面、分类归档页面、标签归档页面 -->
-            <div class="articles">
-                <div class="articles-wrap">
-                    <span class="archive-move-on"></span>
-                    <span class="archive-counter">
-                        
-                            目前共计 29 篇日志，继续加油！
-                        
-                    </span>
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h1 id="Data-Flow-Analysis（Applications"><a href="#Data-Flow-Analysis（Applications" class="headerlink" title="Data Flow Analysis（Applications)"></a>Data Flow Analysis（Applications)</h1><h2 id="Overview-of-Data-Flow-Analysis"><a href="#Overview-of-Data-Flow-Analysis" class="headerlink" title="Overview of Data Flow Analysis"></a>Overview of Data Flow Analysis</h2><p>数据流分析的核心：How <strong>Data Flows</strong> on <strong>CFG</strong>?</p>
+<p>将这句话展开来，所谓数据流分析就是：</p>
+<p>How <strong>application-specific Data</strong> (对数据的<strong>抽象</strong>：+, -, 0 等……)</p>
+<p> <strong>Flows</strong> (根据分析的类型，做出合适的<strong>估算</strong>) through the</p>
+<p> <strong>Nodes</strong> (BBs&#x2F;statements) (数据如何 transfer, 如 + op + &#x3D; +) and</p>
+<p> <strong>Edges</strong> (control flows) (<strong>控制流</strong>如何处理，类似于并的操作，如两个控制流汇入一个BB) of</p>
+<p> <strong>CFG</strong> (a program)(整个程序) ?</p>
+<p><strong>不同的数据流分析</strong>，有着不同的 <strong>data abstraction</strong>, <strong>flow safe-approximation</strong> 策略，<strong>transfer functions</strong>&amp;<strong>control-flow handlings</strong>。</p>
+<p><strong>tips：</strong></p>
+<p><strong>Flows</strong> (根据分析的类型，做出合适的<strong>估算</strong>–approximation)：</p>
+<ul>
+<li><strong>may analysis</strong>: outputs information that may be true (<strong>over-approximation</strong>) (对于绝大多数的静态分析来说都是 over-approximation)；</li>
+<li><strong>must analysis</strong>: outputs information that must be true (<strong>under-approximation</strong>) ；</li>
+<li>Over- and under-approximations are <strong>both for safety of analysis</strong>；</li>
+<li>因此对于 <strong>Flows</strong> 的 approximation 来说，可以改为Safe-approximation；<strong>may analysis: safe&#x3D;over</strong>；<strong>must analysis: safe&#x3D;under</strong>；</li>
+</ul>
+<h2 id="Preliminaries-of-Data-Flow-Analysis"><a href="#Preliminaries-of-Data-Flow-Analysis" class="headerlink" title="Preliminaries of Data Flow Analysis"></a>Preliminaries of Data Flow Analysis</h2><h3 id="Input-and-Output-States-输入输出状态"><a href="#Input-and-Output-States-输入输出状态" class="headerlink" title="Input and Output States 输入输出状态"></a>Input and Output States 输入输出状态</h3><ul>
+<li>每一条IR的执行，都会使状态从<strong>输入状态</strong>变成新的<strong>输出状态</strong>；</li>
+<li>输入&#x2F;输出状态与语句前&#x2F;后的 <strong>program point</strong> 相关联；</li>
+</ul>
+<p><img src="/image/comment/pic/11-12-1.png?raw=true" alt="11-12-1.png"></p>
+<p>在数据流分析中，我们会把每一个PP关联一个<strong>数据流值</strong>，代表在该点中可观察到的<strong>程序状态</strong>的<strong>抽象</strong>。</p>
+<blockquote>
+<p>In each data-flow analysis application, we associate with every program point a <strong>data-flow value</strong> that represents an <strong>abstraction</strong> of the set of all possible <strong>program states</strong> that can be observed for that point.</p>
+</blockquote>
+<blockquote>
+<p>Data-flow analysis is to <strong>find a solution</strong> to a set of <strong>safe-approximationdirected constraints</strong> on the IN[<strong>s</strong>]’s and OUT[<strong>s</strong>]’s, for <strong>all statements s</strong>. </p>
+<ul>
+<li>constraints based on semantics of statements (<strong>transfer functions</strong>) </li>
+<li>constraints based on the <strong>flows of control</strong></li>
+</ul>
+</blockquote>
+<h3 id="关于Transfer-Function’s-Constraints-转移方程约束-的概念"><a href="#关于Transfer-Function’s-Constraints-转移方程约束-的概念" class="headerlink" title="关于Transfer Function’s Constraints(转移方程约束)的概念"></a>关于Transfer Function’s Constraints(转移方程约束)的概念</h3><p>分析数据流有前向(<strong>forward</strong> analysis)和后向(<strong>backward</strong> analysis)两种 (transfer function—fs( ))：</p>
+<p><img src="/image/comment/pic/11-12-2.png?raw=true" alt="11-12-2.png"></p>
+<h3 id="关于Control-Flow’s-Constraints-控制流约束-的概念"><a href="#关于Control-Flow’s-Constraints-控制流约束-的概念" class="headerlink" title="关于Control Flow’s Constraints(控制流约束)的概念"></a>关于Control Flow’s Constraints(控制流约束)的概念</h3><p>每条语句 s(statement) 都会使程序状态发生改变；</p>
+<p><strong>B(Basic Block) 的输出</strong>是在经过每条 s(statement) 输入输出转换后得到的状态；</p>
+<p><strong>B(Basic Block) 的输入</strong>要根据数据流分析的需求，对其前驱应用合适的 meet operator 进行处理；</p>
+<p>后向分析时同理。</p>
+<p><img src="/image/comment/pic/11-12-3.png?raw=true" alt="11-12-3.png"></p>
+<p><img src="/image/comment/pic/11-12-4.png?raw=true" alt="11-12-4.png"></p>
+<h3 id="数据流分析不会覆盖的概念"><a href="#数据流分析不会覆盖的概念" class="headerlink" title="数据流分析不会覆盖的概念"></a>数据流分析不会覆盖的概念</h3><ul>
+<li><p>函数调用 Method Calls</p>
+<p>现在分析的是过程本身中的事情，即 Intra-procedural；函数间的调用，即过程之间的分析，将在 Inter-procedural Analysis 中介绍。</p>
+</li>
+<li><p>变量别名 Aliases</p>
+<p>变量不能有别名；有关问题将在指针分析中介绍。</p>
+</li>
+</ul>
+<h2 id="Reaching-Definitions-Analysis-到达定值分析"><a href="#Reaching-Definitions-Analysis-到达定值分析" class="headerlink" title="Reaching Definitions Analysis 到达定值分析"></a>Reaching Definitions Analysis 到达定值分析</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><ul>
+<li><p>假定 x 有定值 d (<strong>definition</strong>)，如果存在一个路径，从紧随 d 的点到达某点 p，并且此路径上面没有 x 的其他定值点，则称 x 的定值 d 到达 (<strong>reaching</strong>) p。</p>
+</li>
+<li><p>如果在这条路径上有对 x 的其它定值，我们说变量 x 的这个定值 d 被杀死 (<strong>killed</strong>) 了。</p>
+</li>
+<li><p>不仅可以在编译优化中使用，还可以做一些简单的错误检测。</p>
+<p><img src="/image/comment/pic/11-12-5.png?raw=true" alt="11-12-5.png"></p>
+</li>
+<li><p>到达定值可以用来分析未定义的变量。例如，我们在程序入口为各变量引入一个 dummy 定值。当程序出口的某变量定值依然为 dummy，则我们可以认为该变量未被定义。</p>
+</li>
+<li><p>对于一条赋值语句 D: v &#x3D; x op y，该语句生成了 v 的一个定值 D，并杀死程序中其它对变量 v 定义的定值。</p>
+</li>
+</ul>
+<h3 id="到达定值中的数据流值"><a href="#到达定值中的数据流值" class="headerlink" title="到达定值中的数据流值"></a>到达定值中的数据流值</h3><ul>
+<li>程序中所有变量的定值(关注所有 <strong>definition</strong> )。</li>
+<li>可以用一个 bit vector 来定义，有多少个赋值语句(definition)，就有多少个位(bit)。</li>
+<li>definition 能否 reach 到这一点，不能表示为 0；能则表示为1。</li>
+</ul>
+<p><img src="/image/comment/pic/11-12-6.png?raw=true" alt="11-12-6.png"></p>
+<h3 id="到达定值的转移方程"><a href="#到达定值的转移方程" class="headerlink" title="到达定值的转移方程"></a>到达定值的转移方程</h3><p><img src="/image/comment/pic/11-12-7.png?raw=true" alt="11-12-7.png"></p>
+<ul>
+<li>从入口状态删除 kill 掉的定值，并加入(gen)新生成的定值；</li>
+<li>Basic Block 中只有一条 statement：<em>D: v &#x3D; x op y</em> ；即 v &#x3D; x op y，gen v,  kill 其它所有的 v；</li>
+<li>取并，即为 may analysis。</li>
+</ul>
+<h3 id="到达定值的数据流处理"><a href="#到达定值的数据流处理" class="headerlink" title="到达定值的数据流处理"></a>到达定值的数据流处理</h3><p><img src="/image/comment/pic/11-12-8.png?raw=true" alt="11-12-8.png"></p>
+<ul>
+<li>任何一个前驱的变量定值都表明，该变量得到了定义。</li>
+</ul>
+<h3 id="到达定值的算法"><a href="#到达定值的算法" class="headerlink" title="到达定值的算法"></a>到达定值的算法</h3><p><img src="/image/comment/pic/11-12-9.png?raw=true" alt="11-12-9.png"></p>
+<p>这是一个经典的<strong>迭代算法</strong>。</p>
+<ul>
+<li>首先让所有BB和入口的OUT为空；entry 没有statement，所以没有definition (OUT表示在这一点有没有definition可以留到它)。</li>
+<li>may analysis 一般 OUT[B] 为空；must analysis 一般 OUT[B] 为 all。</li>
+</ul>
+<blockquote>
+<ul>
+<li>genS and killS remain unchanged </li>
+<li>When more facts flow in IN[S], the “more facts” either </li>
+<li>is killed, or </li>
+<li>flows to OUT[S] (survivorS) </li>
+<li>When a fact is added to OUT[S], through either genS, or survivorS , it stays there forever </li>
+<li>Thus OUT[S] never shrinks (e.g., 0-&gt;1, or 1-&gt;1) </li>
+<li>As the set of facts is finite (e.g., all definitions in the program), there must exist a pass of iteration during which nothing is added to any OUT, and then the algorithm terminates</li>
+</ul>
+</blockquote>
+<ul>
+<li>当任意 OUT 发生变化，则分析出的定值可能需要继续往下流动，所需要修改各 BB 的 IN 和 OUT。</li>
+<li>先处理 IN，然后再根据转移完成更新 OUT。</li>
+<li>在 gen U (IN - kill) 中，kill 与 gen 相关的 bit 不会因为 IN 的改变而发生改变，而其它 bit 又是通过对前驱 OUT 取并得到的，因此其它 bit 不会发生 1 -&gt; 0 的情况。所以，OUT 是不断增长的，而且有上界，因此算法最后必然会停止。</li>
+<li>因为 OUT 没有变化，不会导致任何的 IN 发生变化，因此 OUT 不变可以作为终止条件。我们称之为程序到达了不动点（Fixed Point）。</li>
+</ul>
+<h3 id="举个例子"><a href="#举个例子" class="headerlink" title="举个例子"></a>举个例子</h3><p><img src="/image/comment/pic/11-12-10.png?raw=true" alt="11-12-10.png"></p>
+<h2 id="Live-Variables-Analysis-活跃变量分析"><a href="#Live-Variables-Analysis-活跃变量分析" class="headerlink" title="Live Variables Analysis 活跃变量分析"></a>Live Variables Analysis 活跃变量分析</h2><h3 id="基本概念-1"><a href="#基本概念-1" class="headerlink" title="基本概念"></a>基本概念</h3><ul>
+<li>变量 v 在程序点 p 上的值是否会在某条从 p 出发的路径中使用；</li>
+<li>有仅存在一条从 p 开始的路径，该路径中用到了变量 v 且路径上没有对 v 进行覆盖，即变量 v 在 p 上活跃；</li>
+<li>需要注意⚠️：在被使用前，v 没有被重新定义过，即没有被 kill 过；</li>
+<li>此算法可用于寄存器分配，当一个变量不会再被使用，那么此变量就可以从寄存器中腾空，用于新值的存储。</li>
+</ul>
+<p><img src="/image/comment/pic/11-12-11.png?raw=true" alt="11-12-11.png"></p>
+<h3 id="活跃变量中的数据流值"><a href="#活跃变量中的数据流值" class="headerlink" title="活跃变量中的数据流值"></a>活跃变量中的数据流值</h3><ul>
+<li>数据流分析(离不开静态分析经典框架，对数据进行 <strong>abstraction</strong> &amp; 对数据流进行 <strong>safe-approximation</strong>，涉及到 <strong>transfer functions</strong> &amp; <strong>control-flow</strong> 的设计)；</li>
+<li>程序中的所有变量(关注所有 <strong>variables</strong> )；</li>
+<li>依然可以用 bit vector 来表示，每个 bit 代表一个变量；</li>
+<li>每个 <strong>program point</strong>，哪些 <strong>variable</strong> 是 <strong>live</strong>，表示为<strong>1</strong>；哪些 <strong>variable</strong> 是 <strong>dead</strong>，表示为<strong>0</strong>。</li>
+</ul>
+<p><img src="/image/comment/pic/11-12-12.png?raw=true" alt="11-12-12.png"></p>
+<p>怎样设计 <strong>transfer functions</strong> &amp; <strong>control-flow</strong> 保证  <strong>safe-approximation</strong>？</p>
+<p>数据流分析中 <strong>forward</strong> analysis 和 <strong>backward</strong> analysis 哪个<strong>方便</strong>用哪个，此处更宜采用 <strong>backward</strong> analysis。</p>
+<h3 id="理解活跃变量分析"><a href="#理解活跃变量分析" class="headerlink" title="理解活跃变量分析"></a>理解活跃变量分析</h3><p><img src="/image/comment/pic/11-12-13.png?raw=true" alt="11-12-13.png"><br><img src="/image/comment/pic/11-12-14.png?raw=true" alt="11-12-14.png"></p>
+<h3 id="活跃变量的转移方程和控制流处理"><a href="#活跃变量的转移方程和控制流处理" class="headerlink" title="活跃变量的转移方程和控制流处理"></a>活跃变量的转移方程和控制流处理</h3><p><img src="/image/comment/pic/11-12-15.png?raw=true" alt="11-12-15.png"></p>
+<ul>
+<li>取并，即为 may analysis。</li>
+<li>一个基本块内，若 v &#x3D; exp, 则 def v。若 exp &#x3D; exp op v，那么 use v。一个变量要么是 use，要么是 def，根据 def 和 use 的先后顺序来决定。</li>
+<li>考虑基本块 B 及其后继 S。若 S 中，变量 v 被使用，那么我们就把 v 放到 S 的 IN 中，交给 B 来分析。</li>
+<li>因此对于活跃变量分析，其控制流处理是 OUT[B] &#x3D; IN[S]。</li>
+<li>在一个块中，若变量 v 被使用，那么需要添加到 IN 里。而如果 v 被定义，那么在其之上的语句中，v 都是一个非活跃变量，因为没有语句再需要使用它。</li>
+<li>因此对于转移方程，IN 是从 OUT 中删去重新定值的变量，然后并上使用过的变量。需要注意，如果同一个块中，变量 v 的 def 先于 use ，那么实际上效果和没有 use 是一样的。</li>
+</ul>
+<h3 id="活跃变量的算法"><a href="#活跃变量的算法" class="headerlink" title="活跃变量的算法"></a>活跃变量的算法</h3><p><img src="/image/comment/pic/11-12-16.png?raw=true" alt="11-12-16.png"></p>
+<ul>
+<li>一般情况下，may analysis 初始化为空(00000)，must analysis 初始化是all(11111)。</li>
+<li>如果换成 lattice，may analysis 初始化为 bottom，must analysis 初始化是 top。</li>
+<li>不知道块中有哪些活跃变量，而且目标是知道在一个块开始时哪些变量活跃，因此把 IN 初始化为空。</li>
+</ul>
+<h3 id="举个例子-1"><a href="#举个例子-1" class="headerlink" title="举个例子"></a>举个例子</h3><p><img src="/image/comment/pic/11-12-17.png?raw=true" alt="11-12-17.png"></p>
+<h2 id="Available-Expression-Analysis-可用表达式分析"><a href="#Available-Expression-Analysis-可用表达式分析" class="headerlink" title="Available Expression Analysis 可用表达式分析"></a>Available Expression Analysis 可用表达式分析</h2><h3 id="基本概念-2"><a href="#基本概念-2" class="headerlink" title="基本概念"></a>基本概念</h3><ul>
+<li>x + y 在 p 点可用的条件：从流图入口结点到达 p 的每条路径都对 x + y 求了值，且在最后一次求值之后再没有对 x 或 y 赋值(路径中最后一次求过值且没有被再赋值，而不是一开始就不改变)。</li>
+</ul>
+<p>可用表达式可以用于全局公共子表达式的计算。也就是说，如果一个表达式上次计算的值到这次仍然可用，我们就能直接利用其中值，而不用进行再次的计算。</p>
+<h3 id="可用表达式分析中的数据流值"><a href="#可用表达式分析中的数据流值" class="headerlink" title="可用表达式分析中的数据流值"></a>可用表达式分析中的数据流值</h3><ul>
+<li>程序中的所有表达式；</li>
+<li>bit vector 中，一个 bit 就是一个表达式；</li>
+<li>每个 <strong>program point</strong>，是 <strong>available</strong>，表示为<strong>1</strong>；不是 <strong>available</strong>，表示为<strong>0</strong>。</li>
+</ul>
+<p><img src="/image/comment/pic/11-12-18.png?raw=true" alt="11-12-18.png"></p>
+<h3 id="可用表达式的转移方程和控制流处理"><a href="#可用表达式的转移方程和控制流处理" class="headerlink" title="可用表达式的转移方程和控制流处理"></a>可用表达式的转移方程和控制流处理</h3><p><img src="/image/comment/pic/11-12-19.png?raw=true" alt="11-12-19.png"></p>
+<ul>
+<li>我们要求无论从哪条路径到达 B，表达式都应该已经计算，才能将其视为可用表达式，因此这是一个 <strong>must analysis</strong>。</li>
+<li>注意到图中，两条不同的路径可能会导致表达式的结果最终不一致。但是我们只关心它的值能不能够再被重复利用，因此可以认为表达式可用。</li>
+<li>v &#x3D; x op y，则 gen x op y。当 x &#x3D; a op b，则任何包含 x 的表达式都被 kill 掉。若 gen 和 kill 同时存在，那么以最后一个操作为准。</li>
+<li>转移方程很好理解，和到达定值差不多。但是，由于我们是 must analysis，因此控制流处理是取交集，而非到达定值那样取并集。</li>
+</ul>
+<h3 id="可用表达式的算法"><a href="#可用表达式的算法" class="headerlink" title="可用表达式的算法"></a>可用表达式的算法</h3><p><img src="/image/comment/pic/11-12-20.png?raw=true" alt="11-12-20.png"></p>
+<ul>
+<li>注意此时的初始化：一开始确实无任何表达式可用，因此OUT[entry]被初始化为空集是自然的。但是，其它基本块的 OUT 被初始化为全集，这是因为当 CFG 存在环时，一个空的初始化值，会让取交集阶段直接把第一次迭代的 IN 设置成 0，无法进行正确的判定了。</li>
+<li>如果一个表达式从来都不可用，那么OUT[entry]的全 0 值会通过交操作将其置为 0，因此不用担心初始化为全 1 会否导致算法不正确。</li>
+</ul>
+<h3 id="举个例子-2"><a href="#举个例子-2" class="headerlink" title="举个例子"></a>举个例子</h3><p><img src="/image/comment/pic/11-12-21.png?raw=true" alt="11-12-21.png"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><img src="/image/comment/pic/11-12-22.png?raw=true" alt="11-12-22.png"></p>
+<p>从分析含义角度出发：Boundary；May&#x2F;Must</p>
+<p>OUT[entry] 为空：OUT 前面没有 definition，就不能 reach 到这一点。</p>
+<h2 id="划重点"><a href="#划重点" class="headerlink" title="划重点"></a>划重点</h2><ul>
+<li>三种数据流分析<ul>
+<li>到达定值</li>
+<li>活跃变量</li>
+<li>可用表达式</li>
+</ul>
+</li>
+<li>三种数据流分析的区别和联系</li>
+<li>知道迭代算法，以及算法能终止的原因（单调性，只会增长不会减小）</li>
+<li>Tip：注意主观能动性和创新思维的训练—-&gt;创新性的产生—-&gt;能力的提升</li>
+<li>Tip：主观坚持✊，不要浮躁</li>
+</ul>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="AuRuier">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>AuRuier
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="/2023/10/25/Data%20Flow%20Analysis%EF%BC%88Applications)/" target="_blank">Data Flow Analysis（Applications)</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>有志者事竟成！
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                
+                <div class="article-prev-next">
+                    
+                        <a href="/2023/11/05/Exceptional%20Control%20Flow%20Exceptions%20and%20Processes/" class="prev-prefix">« </a> 上一篇：    <a href="/2023/11/05/Exceptional%20Control%20Flow%20Exceptions%20and%20Processes/" title="发布于 2023-11-05 09:39">Exceptional Control Flow (异常控制流)</a>
+                        <br>
                     
                     
-                        
-                            <div class="archive-title">
-                                <h2 class="archive-year">2023</h2>
-                            </div>
-                            
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/09/16/Writing%20Technical%20Articles/"><span>Writing Technical Articles</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">09-16</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/09/07/How%20(and%20How%20Not)%20to%20Write%20a%20Good%20Design%20Paper/"><span>How (and How Not) to Write a Good Design Paper</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">09-07</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/09/04/Writing%20a%20good%20introduction/"><span>Writing a good introduction</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">09-04</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/09/03/PWN%20%E5%85%A5%E6%89%8B/"><span>PWN 入手</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">09-03</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/09/01/What%20Kinds%20Of%20Papers%20Does%20USENIX%20Publish/"><span>What Kinds Of Papers Does USENIX Publish?</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">09-01</span>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="/2023/10/18/Intermediate%20Representation%EF%BC%88IR%EF%BC%89/" class="next-prefix">» </a> 下一篇：    <a href="/2023/10/18/Intermediate%20Representation%EF%BC%88IR%EF%BC%89/" title="发布于 2023-10-18 09:39">Intermediate Representation（IR）</a>
                     
                 </div>
             </div>
             
+    <div class="article-comments">
         
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
+    </div>
+    
+ 
+        </div>
     
 </div>
     <div id="footer">
@@ -157,7 +326,7 @@
                     
                         <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
                     
-                        <li class=" active "><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
                         <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
                     
