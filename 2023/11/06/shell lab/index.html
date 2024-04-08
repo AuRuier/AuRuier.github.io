@@ -532,6 +532,13 @@
 <p> <strong>eval</strong> - Evaluate the command line that the user has just typed in If the user has requested a built-in command (quit, jobs, bg or fg) then execute it immediately. Otherwise, fork a child process and run the job in the context of the child. If the job is running in the foreground, wait for it to terminate and then return. </p>
 <p>Note:each child process must have a unique process group ID so that our background children don’t receive SIGINT (SIGTSTP) from the kernel when we type ctrl-c (ctrl-z) at the keyboard.</p>
 </blockquote>
+<h2 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h2><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/7f5e78e83a0e">笔记1</a></p>
+<p><a target="_blank" rel="noopener" href="https://wdxtub.com/csapp/thick-csapp-lab-5/2016/04/16/">笔记2</a></p>
+<p><a target="_blank" rel="noopener" href="http://csapp.cs.cmu.edu/3e/code.html">CSAPP 官网</a></p>
+<p><a target="_blank" rel="noopener" href="http://csapp.cs.cmu.edu/3e/ics3/code/src/csapp.c">csapp.c</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1EF411h791/?spm_id_from=333.337.search-card.all.click&vd_source=a1b7e8e982d18a36a0285b2e8e87025b">视频</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/zhoudiqiu/Shell-lab/blob/master/lab5/tsh.c">源码</a></p>
+<p><a target="_blank" rel="noopener" href="https://auruier.github.io/2023/11/05/Exceptional%20Control%20Flow%20Exceptions%20and%20Processes/">相关知识</a></p>
 
                 
                 <p class="end">__END__</p>
