@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            归档
+            Hexo+Github博客迁移至Mac
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -32,15 +32,32 @@
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body>
     <a id="cover"></a>
-    <link type="text/css" rel="stylesheet" href="/css/archive.css">
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
 <div id="header" class="header">
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">归档</h1>
+                <h1 class="header-subtitle">Hexo+Github博客迁移至Mac</h1>
                 <div class="header-subinfo">
-                    <p class="article-info-text Chinese"></p>
-                    <p class="article-info-text English"></p>                  
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2024-04-09
+                        </span>
+                        
+                            
+                                <span id="/2024/04/09/Hexo+Github博客迁移至Mac/" class="leancloud_visitors" data-flag-title="Hexo+Github博客迁移至Mac">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2024/04/09/Hexo+Github博客迁移至Mac/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                    
                 </div>
             
         </div>
@@ -49,135 +66,88 @@
 </div>
 <div id="container">
     
-        
-            <!-- 归档页面、分类归档页面、标签归档页面 -->
-            <div class="articles">
-                <div class="articles-wrap">
-                    <span class="archive-move-on"></span>
-                    <span class="archive-counter">
-                        
-                            目前共计 32 篇日志，继续加油！
-                        
-                    </span>
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h1 id="Hexo-Github博客迁移至Mac"><a href="#Hexo-Github博客迁移至Mac" class="headerlink" title="Hexo+Github博客迁移至Mac"></a>Hexo+Github博客迁移至Mac</h1><p>怎么说呢，就是这么个小事，今天还捣鼓了蛮久的；</p>
+<p>不，准确地说，貌似从昨天晚上就开始捣鼓了；</p>
+<p>之所以捣鼓这么久，貌似是进入了一个循环的误区；</p>
+<p>说来话长emm……</p>
+<p><strong>就是关于博客迁移，我把整个目录文件夹挪过来之后，hexo g与hexo d都不起任何作用！！！</strong></p>
+<p>一开始的思路就是初始化文件夹，但：</p>
+<p><img src="/image/comment/pic/4-9-1.png?raw=true" alt="4-9-1.png"></p>
+<p>然后就去下载依赖，然后再初始化，但：</p>
+<p><img src="/image/comment/pic/4-9-2.png?raw=true" alt="4-9-2.png"></p>
+<p>然后删除改文件夹，再初始化，就又会显示下载依赖，emm…….</p>
+<p><img src="/image/comment/pic/4-9-3.png?raw=true" alt="4-9-3.png"></p>
+<p>还有中途下载依赖的时候，还会😅这样：</p>
+<p><img src="/image/comment/pic/4-9-4.png?raw=true" alt="4-9-4.png"></p>
+<p>所以不得不<code>npm init -y</code>，但整完后又得重新初始化文件夹，然后删除文件夹，然后又初始化，一个无脑循环中…….</p>
+<p>好吧，自己今天确实无脑了，关键是初始化速度还很慢，得等啊等，真是不带脑子不行啊，浪费太多时间了……</p>
+<p>还好最后脑子终于带出来了，其根本问题是：</p>
+<p><strong>当时的hexo中根本就没有<code>hexo g</code>与<code>hexo d</code>命令…….</strong></p>
+<p>当时是这样的：</p>
+<p><img src="/image/comment/pic/4-9-5.png?raw=true" alt="4-9-5.png"></p>
+<p>但事实应该是这样的：</p>
+<p><img src="/image/comment/pic/4-9-7.png?raw=true" alt="4-9-7.png"></p>
+<p>差挺多的呵呵呵</p>
+<p><u><strong>那么，正确做法是什么呢？</strong></u></p>
+<h2 id="第一步：环境"><a href="#第一步：环境" class="headerlink" title="第一步：环境"></a>第一步：环境</h2><p>安装Node.js与Git的环境（最基本的，先不说了）</p>
+<h2 id="第二步：安装"><a href="#第二步：安装" class="headerlink" title="第二步：安装"></a>第二步：安装</h2><p>执行<code>sudo npm install -g hexo-cli</code>安装Hexo</p>
+<h2 id="第三步：初始化"><a href="#第三步：初始化" class="headerlink" title="第三步：初始化"></a>第三步：初始化</h2><p>还是初始化博客，执行<code>hexo init blog</code></p>
+<p><img src="/image/comment/pic/4-9-8.png?raw=true" alt="4-9-8.png"></p>
+<h2 id="第四步：博客迁移"><a href="#第四步：博客迁移" class="headerlink" title="第四步：博客迁移"></a>第四步：博客迁移</h2><p>博客迁移：将之前的文件，全部替换到刚才创建的blog文件夹中</p>
+<h2 id="第五步：依赖下载"><a href="#第五步：依赖下载" class="headerlink" title="第五步：依赖下载"></a>第五步：依赖下载</h2><p>执行<code>npm install</code>，这里是加了sudo才破局的</p>
+<p><img src="/image/comment/pic/4-9-9.png?raw=true" alt="4-9-9.png"></p>
+<h2 id="第六步：完美"><a href="#第六步：完美" class="headerlink" title="第六步：完美"></a>第六步：完美</h2><p>正常了，可以执行了</p>
+<p><img src="/image/comment/pic/4-9-10.png?raw=true" alt="4-9-10.png"></p>
+<p>OK，结束！</p>
+<p>这篇作为这台Mac第一次测试上传！</p>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="AuRuier">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>AuRuier
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="/2024/04/09/Hexo+Github%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E8%87%B3Mac/" target="_blank">Hexo+Github博客迁移至Mac</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>有志者事竟成！
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                
+                <div class="article-prev-next">
                     
                     
-                        
-                            <div class="archive-title">
-                                <h2 class="archive-year">2023</h2>
-                            </div>
-                            
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/31/Fuzzing101%E2%80%94%E2%80%94Exercise%2010/"><span>Fuzzing101——Exercise 10</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-31</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/30/Fuzzing101%E2%80%94%E2%80%94Exercise%209/"><span>Fuzzing101——Exercise 9</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-30</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/25/Fuzzing101%E2%80%94%E2%80%94Exercise%208/"><span>Fuzzing101——Exercise 8</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-25</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/23/Fuzzing101%E2%80%94%E2%80%94Exercise%207/"><span>Fuzzing101——Exercise 7</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-23</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/20/Fuzzing101%E2%80%94%E2%80%94Exercise%206/"><span>Fuzzing101——Exercise 6</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-20</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/19/Fuzzing101%E2%80%94%E2%80%94Exercise%205/"><span>Fuzzing101——Exercise 5</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-19</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/18/Fuzzing101%E2%80%94%E2%80%94Exercise%204/"><span>Fuzzing101——Exercise 4</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-18</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/17/Fuzzing101%E2%80%94%E2%80%94Exercise%203/"><span>Fuzzing101——Exercise 3</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-17</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/15/Detecting%20Logical%20Bugs%20of%20DBMS%20with%20Coverage-based%20Guidance/"><span>Detecting Logical Bugs of DBMS with Coverage-based Guidance</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-15</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/14/Fuzzing101%E2%80%94%E2%80%94Exercise%202/"><span>Fuzzing101——Exercise 2</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-14</span>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="/2024/04/08/%E5%86%8D%E9%A1%B6%E4%B8%80%E4%B8%AA/" class="next-prefix">» </a> 下一篇：    <a href="/2024/04/08/%E5%86%8D%E9%A1%B6%E4%B8%80%E4%B8%AA/" title="发布于 2024-04-08 08:09">2024的太空了，再顶一个</a>
                     
                 </div>
             </div>
             
+    <div class="article-comments">
         
-    <div class="pagination-bottom">
-        <div class="pagination">
-            
-                <a href="/archive/2023/08/page/2/">下一页</a>
-            
-        </div>
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
     </div>
-
+    
+ 
+        </div>
     
 </div>
     <div id="footer">
@@ -215,7 +185,7 @@
                     
                         <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
                     
-                        <li class=" active "><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
                         <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
                     
