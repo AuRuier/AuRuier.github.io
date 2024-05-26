@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            归档
+            Preference Profiling Attack Against Federated Learning
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -32,15 +32,32 @@
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body>
     <a id="cover"></a>
-    <link type="text/css" rel="stylesheet" href="/css/archive.css">
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
 <div id="header" class="header">
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-subtitle">归档</h1>
+                <h1 class="header-subtitle">Preference Profiling Attack Against Federated Learning</h1>
                 <div class="header-subinfo">
-                    <p class="article-info-text Chinese"></p>
-                    <p class="article-info-text English"></p>                  
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2024-05-16
+                        </span>
+                        
+                            
+                                <span id="/2024/05/16/Preference Profiling Attack Against Federated Learning/" class="leancloud_visitors" data-flag-title="Preference Profiling Attack Against Federated Learning">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2024/05/16/Preference Profiling Attack Against Federated Learning/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                    
                 </div>
             
         </div>
@@ -49,135 +66,146 @@
 </div>
 <div id="container">
     
-        
-            <!-- 归档页面、分类归档页面、标签归档页面 -->
-            <div class="articles">
-                <div class="articles-wrap">
-                    <span class="archive-move-on"></span>
-                    <span class="archive-counter">
-                        
-                            目前共计 33 篇日志，继续加油！
-                        
-                    </span>
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h1 id="PPA-Preference-Profiling-Attack-Against-Federated-Learning"><a href="#PPA-Preference-Profiling-Attack-Against-Federated-Learning" class="headerlink" title="PPA: Preference Profiling Attack Against Federated Learning"></a><strong>PPA: Preference Profiling Attack Against Federated Learning</strong></h1><p>既然接触了隐私计算，那就简单总结一下吧！</p>
+<h2 id="Privacy-Computing"><a href="#Privacy-Computing" class="headerlink" title="Privacy Computing"></a>Privacy Computing</h2><p><strong>隐私计算（Privacy Computing）</strong>是一种由两个或多个参与方联合计算的技术和系统，参与方在不泄露各自数据的前提下通过协作对他们的数据进行联合机器学习和联合分析。常见的实现隐私计算的技术路径包括<strong>联邦学习、安全多方计算、同态加密，零知识证明，差分隐私，可信计算</strong>等，此外区块链也是隐私计算的重要补充。</p>
+<p><img src="/image/comment/pic/5-26-1.png" alt="5-26-1.png"></p>
+<p>预计在未来5～10年内，隐私计算技术会被大规模商业化应用。预计到2025年，60％以上的大型组织将在数据分析、商业智能或云计算中使用一种或多种隐私计算技术。</p>
+<p><img src="/image/comment/pic/5-26-2.png" alt="5-26-2.png"></p>
+<p><strong>隐私计算主要分为三大技术路线</strong>：</p>
+<ul>
+<li><p>安全多方计算（密码学）</p>
+</li>
+<li><p>联邦学习</p>
+</li>
+<li><p>机密计算</p>
+</li>
+<li><p>有的会把侧重算法也单列一类，比如差分隐私等隐私相关的技术</p>
+</li>
+</ul>
+<h2 id="Federated-Learning"><a href="#Federated-Learning" class="headerlink" title="Federated Learning"></a><strong>Federated Learning</strong></h2><p>这里重点介绍下<strong>联邦学习（Federated Learning）</strong>。</p>
+<p><strong>联邦学习</strong>的本质是一种机器学习框架，即分布式机器学习技术。联邦学习以一个中央服务器为中心节点，通过与多个参与训练的本地服务器（以下简称“参与方”）交换网络信息来实现人工智能模型的更新迭代。即中央服务器首先生成一个通用神经网络模型，各个参与方将这个通用模型下载至本地并利用本地数据训练模型，将训练后的模型所更新的内容上传至中央服务器，通过将多个参与方的更新内容进行融合均分来优化初始通用模型，再由各个参与方下载更新后的通用模型进行上述处理，这个过程不断重复直至达到某一个既定的标准。在整个联邦学习的过程中，各参与方的数据始终保存在其本地服务器，降低了数据泄露的风险。</p>
+<p><img src="/image/comment/pic/5-26-3.png" alt="5-26-3.png"></p>
+<p><strong>优点：联邦学习由于其具有分布式训练和联合训练的特点。</strong></p>
+<ul>
+<li>一方面能够解决训练阶段数据特征单一的问题，从而获得一个性能更好的、优于利用自己本身数据集所训练出的模型。</li>
+<li>另一方面，各参与方只需在本地利用各自数据集进行训练，数据体量未增加，算力成本压力小。因为整个训练过程中各参与方的数据都不会离开本地，只将模型的梯度及权重等信息上传至中心服务器进行聚合分割，对于各参与方来说这样既不会直接泄露隐私数据，也不会额外增加参训数据量，从而完成训练任务。</li>
+</ul>
+<p><strong>缺点：联邦学习存在着安全问题和通信效率问题。</strong></p>
+<ul>
+<li>一是就目前业内应用较大的神经网络模型来看，因为从底层编码开始构建一个基础的神经网络模型通常耗时耗力，多数企业从开源平台获取或第三方平台上购买基础模型，这样的基础模型本身就有植入病毒的可能。</li>
+<li>二是学术界对于联邦学习的安全保障效果尚无严格定义，利用中心服务器收集的梯度及权重信息还是有可能反推出每个参与方的数据信息。</li>
+<li>三是联邦学习的机制默认所有参与方都是可信方，无法规避某个参与方恶意提供虚假数据甚至病害数据，从而对最终的训练模型造成不可逆转的危害。</li>
+<li>四是由于分布式参与节点计算能力不一致、网络连接状态不稳定、数据通信非独立分布等现实因素，联邦学习的通信效率极易成为联邦学习应用的瓶颈之一。</li>
+</ul>
+<h2 id="PPA"><a href="#PPA" class="headerlink" title="PPA"></a><strong>PPA</strong></h2><p>接下来分享一篇有关隐私计算相关技术——联邦学习的论文，即<strong>PPA: Preference Profiling Attack Against Federated Learning</strong>。</p>
+<p>这篇文章为网安四大顶会之一<strong>NDSS 2023</strong>上的一篇论文，即<strong>针对联邦学习的偏好分析攻击</strong>。</p>
+<p>这篇文章是由南京理工大学、中科院信工所等机构共同完成的。</p>
+<p>首先介绍下分布式深度学习，即联邦学习。联邦学习摆脱了模型训练过程中数据必须中心化的限制，实现了数据的本地操作，允许各方参与者在不交换数据的情况下进行协作，是破解数据隐私保护与数据孤岛难题的新思路，一经提出就成为国际学术界和产业界关注的焦点。</p>
+<p><img src="/image/comment/pic/5-26-10.png" alt="5-26-10.png"></p>
+<p>但联邦学习中仍然存在着一些潜在威胁。</p>
+<p><img src="/image/comment/pic/5-26-11.png" alt="5-26-11.png"></p>
+<p>其中，CCS 2017中的一篇文章提到了GAN攻击，S&amp;P 2017中的一篇文章中提到了成员推断攻击，CCS 2018中的一篇文章提到了属性推断攻击。</p>
+<p><img src="/image/comment/pic/5-26-12.png" alt="5-26-12.png"></p>
+<p><img src="/image/comment/pic/5-26-13.png" alt="5-26-13.png"></p>
+<p><img src="/image/comment/pic/5-26-14.png" alt="5-26-14.png"></p>
+<p>这里对联邦学习中的存在的上述主要隐私风险进行了总结，这些研究证明联邦学习环境下依然存在极大的数据隐私风险。</p>
+<p><img src="/image/comment/pic/5-26-15.png" alt="5-26-15.png"></p>
+<p>现有的针对联邦学习的隐私攻击比如成员推理、属性推理、GAN攻击等，并不能获取有关用户数据分布的隐私信息。这篇文章中提到了一种新型隐私推断攻击，即偏好分析攻击PPA，可以准确地分析出联邦学习本地用户的隐私偏好类别。并且文中设计了一种选择性聚合机制来提升PPA的攻击效率，在隐私相关的任务上对PPA进行了全面评估，尤其是网络购物和自拍分享。</p>
+<p><img src="/image/comment/pic/5-26-16.png" alt="5-26-16.png"></p>
+<p>这里是PPA的攻击模型。服务器作为攻击者对用户发动攻击，目的是通过用户上传的模型分析出对应数据集中的偏好类（数量最多\最少的类别）。</p>
+<p><img src="/image/comment/pic/5-26-17.png" alt="5-26-17.png"></p>
+<p>PPA的攻击流程共分为四步，第一步是用户在本地训练模型并上传；第二步是服务器提取每个用户的模型敏感度；第三步是根据事先训练好的元分类器对提取的模型敏感度进行偏好类别分析；第四步是选择性聚合增强PPA的性能。</p>
+<p><img src="/image/comment/pic/5-26-18.png" alt="5-26-18.png"></p>
+<p>关于步骤1，即为用户本地模型训练。联邦学习中，每个用户在本地独立训练模型，在这个过程中，每个用户的训练集都有独自的偏好类别比如图中用户1的最多类为1，最少类为4，用户n的最多类为6，最少类为7。而偏好类别信息会通过训练隐藏在模型中。</p>
+<p><img src="/image/comment/pic/5-26-19.png" alt="5-26-19.png"></p>
+<p>关于步骤2，即为模型敏感度提取。当服务器获取用户上传的模型后，利用自身的辅助数据集提取模型中每个类的模型敏感度。文章作者们设计了一个模型敏感度算法，用来表示模型训练过程中的梯度变化。模型敏感度提取算法的展示图如下，从图中可以看出，训练集中类别的样本数越多，模型敏感度越低（左图），样本数越少，模型敏感度越高（右图）。</p>
+<p><img src="/image/comment/pic/5-26-20.png" alt="5-26-20.png"></p>
+<p>关于步骤3，即为用户偏好类推断。当服务器提取完模型敏感度后，便将其输入到事先训练好的元分类器（攻击模型）中，分析出用户偏好类别。下图是元分类器的训练过程，服务器将辅助数据集构建为多个不同的影子数据集，并训练成影子模型，分别提取它们的模型敏感度，利用影子数据集的数据分布和对应的模型敏感度训练元分类器（攻击模型）。</p>
+<p><img src="/image/comment/pic/5-26-21.png" alt="5-26-21.png"></p>
+<p>关于步骤4，即为选择性聚合。由于传统联邦学习模式下的全局聚合是将所有用户模型进行聚合，这会导致全局模型无法展现用户个体的数据分布，从而混淆偏好类，因此作者他们设计了选择性聚合机制，将被攻击的用户模型与x个具有与他完全相反偏好的用户模型进行聚合，其余用户依旧采取全局聚合。这个方式可以提高PPA的攻击效果。</p>
+<p><img src="/image/comment/pic/5-26-22.png" alt="5-26-22.png"></p>
+<p>实验测试一共使用了四个数据集，其中后两个是现实世界数据集，分别是商品和人物表情。他们在前两个数据集上进行了PPA的基础测验，用于验证PPA的有效性。在后两个数据集上面对PPA在现实场景中的攻击表现进行了评估，并测试了PPA的可扩展性。</p>
+<p><img src="/image/comment/pic/5-26-23.png" alt="5-26-23.png"></p>
+<p>针对不同的数据集这里也设计了不同的模型结构。</p>
+<p><img src="/image/comment/pic/5-26-24.png" alt="5-26-24.png"></p>
+<p>为了全面地还原联邦学习中用户的数据异构性，作者他们还设计了四种数据分布指标：</p>
+<ul>
+<li>CP：表示每个类别在用户数据集中所占比例</li>
+<li>CD：表示用户数据集中类别数量的差距</li>
+<li>UD：表示联邦学习用户偏好类别的差异</li>
+<li>ID：表示联邦学习用户数据量的差异</li>
+</ul>
+<p><img src="/image/comment/pic/5-26-25.png" alt="5-26-25.png"></p>
+<p>在四种数据分布指标下的PPA表现如图所示，从实验结果可以看出在各种数据分布下PPA都可以表现出较高的攻击成功率，证明PPA可以适应具有数据异构性的联邦学习场景。</p>
+<p><img src="/image/comment/pic/5-26-26.png" alt="5-26-26.png"></p>
+<p>作者他们还测试了数据量和类别数量分别对PPA的影响，结果表明样本数量会对攻击产生些微的影响，因为数据本身数据特征不丰富时（如MNIST），当数据特征丰富时对PPA的影响会减弱很多；此外，类别数量对PPA基本上没有影响。</p>
+<p><img src="/image/comment/pic/5-26-27.png" alt="5-26-27.png"></p>
+<p>在可用性方面，他们还分别测试了有\没有攻击时的用户模型准确率，结果表明，两者之间并无明显差距，证明PPA并不会影响用户模型可用性。</p>
+<p><img src="/image/comment/pic/5-26-28.png" alt="5-26-28.png"></p>
+<p>此外，他们还分别测试了选择性聚合和联邦聚合下的模型敏感度变化情况，实验结果表明，他们设计的选择性聚合可以很好地控制模型敏感度变化方向，使之呈现规律的波纹状，反观联邦聚合下的模型敏感度呈现不规律的变化。这会很大程度上影响PPA的效率。</p>
+<p><img src="/image/comment/pic/5-26-29.png" alt="5-26-29.png"></p>
+<p><img src="/image/comment/pic/5-26-30.png" alt="5-26-30.png"></p>
+<p>对于PPA在现实场景中的表现，他们模拟了两个场景：购物和社交网络，分别推测顾客最喜爱的商品类型和用户照片中最常见的表情，另外他们扩大了攻击范围，推测top-k个偏好类，即前k个偏好类，实验结果表明PPA在现实场景中具有很优秀的攻击表现。目前的PPA对于top-1的判断是很准确的，但是并不能精确地按顺序推测top-2，top-3。</p>
+<p><img src="/image/comment/pic/5-26-31.png" alt="5-26-31.png"></p>
+<p>作者他们还测试了联邦学习中PPA可扩展性相关的几个关键因素：用户数量、用户本地训练轮数，实验结果表明PPA不会受到联邦学习中的因素影响，可扩展性强。</p>
+<p><img src="/image/comment/pic/5-26-32.png" alt="5-26-32.png"></p>
+<p>作者他们还评估了目前主流的几种隐私保护方法：dropout和差分隐私对PPA的抵御能力，实验结果表明，PPA的表现面对dropout时依旧稳定，面对差分隐私时，隐私预算越小，攻击成功率越低，但同时用户模型的可用性也遭受到严重破坏。</p>
+<p><img src="/image/comment/pic/5-26-33.png" alt="5-26-33.png"></p>
+<p>在实验的最后，作者他们测试了PPA各项操作的计算开销，可以看出在所有计算开销中影子模型和元分类器的训练是耗时最多的操作，但是这个步骤是在离线阶段进行的，并不会占用攻击时间。</p>
+<p><img src="/image/comment/pic/5-26-34.png" alt="5-26-34.png"></p>
+<p>总结，以上就是这篇论文的大致内容。</p>
+<p><img src="/image/comment/pic/5-26-35.png" alt="5-26-35.png"></p>
+
+                
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="AuRuier">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>AuRuier
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="/2024/05/16/Preference%20Profiling%20Attack%20Against%20Federated%20Learning/" target="_blank">Preference Profiling Attack Against Federated Learning</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>有志者事竟成！
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+                
+                
+                <div class="article-prev-next">
+                    
+                        <a href="/2024/05/21/advice-collection-service/" class="prev-prefix">« </a> 上一篇：    <a href="/2024/05/21/advice-collection-service/" title="发布于 2024-05-21 09:27">advice-collection-service</a>
+                        <br>
                     
                     
-                        
-                            <div class="archive-title">
-                                <h2 class="archive-year">2023</h2>
-                            </div>
-                            
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/31/Fuzzing101%E2%80%94%E2%80%94Exercise%2010/"><span>Fuzzing101——Exercise 10</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-31</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/30/Fuzzing101%E2%80%94%E2%80%94Exercise%209/"><span>Fuzzing101——Exercise 9</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-30</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/25/Fuzzing101%E2%80%94%E2%80%94Exercise%208/"><span>Fuzzing101——Exercise 8</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-25</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/23/Fuzzing101%E2%80%94%E2%80%94Exercise%207/"><span>Fuzzing101——Exercise 7</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-23</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/20/Fuzzing101%E2%80%94%E2%80%94Exercise%206/"><span>Fuzzing101——Exercise 6</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-20</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/19/Fuzzing101%E2%80%94%E2%80%94Exercise%205/"><span>Fuzzing101——Exercise 5</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-19</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/18/Fuzzing101%E2%80%94%E2%80%94Exercise%204/"><span>Fuzzing101——Exercise 4</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-18</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/17/Fuzzing101%E2%80%94%E2%80%94Exercise%203/"><span>Fuzzing101——Exercise 3</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-17</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/15/Detecting%20Logical%20Bugs%20of%20DBMS%20with%20Coverage-based%20Guidance/"><span>Detecting Logical Bugs of DBMS with Coverage-based Guidance</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-15</span>
-                                </div>
-                            </div>
-                        </div>
-                    
-                           
-                        <div class="article">
-                            <div class="article-header">
-                                <h1 class="article-title"><a href="/2023/08/14/Fuzzing101%E2%80%94%E2%80%94Exercise%202/"><span>Fuzzing101——Exercise 2</span></a></h1>
-                                <div class="article-meta">
-                                    <span class="article-time">08-14</span>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="/2024/04/09/Hexo+Github%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E8%87%B3Mac/" class="next-prefix">» </a> 下一篇：    <a href="/2024/04/09/Hexo+Github%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB%E8%87%B3Mac/" title="发布于 2024-04-09 08:23">Hexo+Github博客迁移至Mac</a>
                     
                 </div>
             </div>
             
+    <div class="article-comments">
         
-    <div class="pagination-bottom">
-        <div class="pagination">
-            
-                <a class="extend prev" rel="prev" href="/archive/2023/">上一页</a><a class="page-number" href="/archive/2023/">1</a><span class="page-number current">2</span><a class="page-number" href="/archive/2023/page/3/">3</a><a class="extend next" rel="next" href="/archive/2023/page/3/">下一页</a>
-            
-        </div>
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
     </div>
-
+    
+ 
+        </div>
     
 </div>
     <div id="footer">
@@ -215,7 +243,7 @@
                     
                         <li class=""><a href="/tag" class="" target="_self"><span class="iconfont icon-discount-fill"></span>标签</a></li>
                     
-                        <li class=" active "><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
+                        <li class=""><a href="/archive" class="" target="_self"><span class="iconfont icon-calendar-fill"></span>归档</a></li>
                     
                         <li class=""><a href="/donate" class="" target="_self"><span class="iconfont icon-heart-fill"></span>赞赏</a></li>
                     
