@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp">
     <title>
         
-            睿儿的Blog
+            mac 制作 win 启动盘
         
     </title>
     <link rel="shortcut icon" href="#"/>
@@ -32,158 +32,125 @@
 <meta name="generator" content="Hexo 6.3.0"></head>
 <body>
     <a id="cover"></a>
-    <link type="text/css" rel="stylesheet" href="/css/index.css">
-<div id="count"></div>
-<div id="header" >
+    <link type="text/css" rel="stylesheet" href="/css/post.css">
+<div id="header" class="header">
     <div class="vertical">
         <div class="inner">
             
-                <h1 class="header-title">AuRuier</h1>
-                <h2 class="header-description" id="hitokoto"></h2>
-                <h3 class="header-info" id="hitokotoAuthor"></h3>
+                <h1 class="header-subtitle">mac 制作 win 启动盘</h1>
+                <div class="header-subinfo">
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2026-04-29
+                        </span>
+                        
+                            
+                                <span id="/2026/04/29/mac制作win启动盘/" class="leancloud_visitors" data-flag-title="mac 制作 win 启动盘">
+                                    <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                                </span>
+                            
+                            
+                                <span>
+                                    <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2026/04/29/mac制作win启动盘/"></span>
+                                </span>
+                              
+                        
+                    </p>
+                    
+                    
+                </div>
             
         </div>
     </div>
-    
-        <a class="scroll-down" href="javascript:;" target="_self" data-offset="-45">
-            <i class="scroll-down-icon iconfont icon-return"></i>
-        </a>
     
 </div>
 <div id="container">
     
-        
-            <!-- 首页 -->
-            <div class="articles">
+        <!-- 文章页面 -->
+        <div id="article">
+            <div class="toc"></div>
+            <div class="article-body">
+                <h1 id="mac-制作-win-启动盘"><a href="#mac-制作-win-启动盘" class="headerlink" title="mac 制作 win 启动盘"></a>mac 制作 win 启动盘</h1><p>这两天给家里的老 Windows 重装系统；重装的过程可以说是各种问题不断，捣鼓了好一阵儿～</p>
+<h3 id="自信满满"><a href="#自信满满" class="headerlink" title="自信满满"></a>自信满满</h3><p>一开始拿自己曾经装系统的U盘直接对这台电脑进行系统重装。U盘可以被识别，但安装过程中却报了许多异常，疑似安装程序损坏，但这个过程前面那步已经将之前的系统全删了，现在只能通过U盘重装了。然而现在，需要重新制作一个U盘启动盘。</p>
+<h3 id="心烦气躁"><a href="#心烦气躁" class="headerlink" title="心烦气躁"></a>心烦气躁</h3><p>因为目前手中只有一台可以正常使用的Mac和一台待装系统的Windows；所以这次制作终极U盘只能通过Mac制作Windows系统的装机U盘；</p>
+<p>这个过程不像直接使用Windows那么简单，直接使用Windows可以直接对官网保存为U盘介质；</p>
+<p>但本次使用Mac的话，就只能先下载ISO，然后重新格式化U盘，再将ISO具体内容移到U盘中；</p>
+<p>当然在制作这个U盘的过程也是非常的坎坷的；</p>
+<p>最一开始尝试的是直接使用第三方软件进行烧录；但它此时会将U盘生成如图这种；这种在Windows上重装的时候，并无法直接识别出U盘的内容；</p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/image-20260429230831671.png?raw=true" alt="image-20260429230831671.png"></p>
+<p>而后又尝试了将这些文件直接复制到格式好的格式化好的U盘上；</p>
+<p>但现在关于Windows系统的镜像文件也是越来越大的，FAT格式的U盘已无法承受将其移入卷宗；</p>
+<p>其中的两个文件内容过大，导致之前格式化的格式不能够支持文件移入U盘；</p>
+<p>为保证文件可以顺利地移入U盘，便尝试了另一种U盘的格式 ExFAT；</p>
+<p>但通过这种格式制成一个Windows系统安装盘时，Windows电脑并不能准确地识别出这个U盘；</p>
+<p>可能是因为这是一台老Windows，也可能是因为别的原因……</p>
+<h3 id="柳暗花明"><a href="#柳暗花明" class="headerlink" title="柳暗花明"></a>柳暗花明</h3><p>而后又将U盘格式化为那个格式；</p>
+<p>想办法将大文件移入这个U盘；</p>
+<p>接下来就尝试了文件切割的方式 当然也是最终制作安装盘成功的方式；也发现了挂载其实就是烧录；</p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/image-20260429233250736.png?raw=true" alt="image-20260429233250736.png"></p>
+<p>具体流程可以参考视频：</p>
+<p>【【折腾必懂S2·第四期】Mac制作Win11启动盘并去掉Win联机安装-哔哩哔哩】 <a target="_blank" rel="noopener" href="https://b23.tv/WpW6ez5">https://b23.tv/WpW6ez5</a></p>
+<p>homebrew安装wimlib命令行工具</p>
+<p><code>brew install wimlib</code></p>
+<p>格式u盘</p>
+<p><img src="https://github.com/AuRuier/AuRuier.github.io/blob/main/image/comment/pic/image-20260429233102212.png?raw=true" alt="image-20260429233102212.png"></p>
+<p>终端输入命令</p>
+<p><code>rsync -avh --progress --exclude=sources/install.wim /Volumes/CCCOMA_X64FRE_ZH-CN_DV9/ /Volumes/WIN10</code></p>
+<p><code>wimlib-imagex split /Volumes/CCCOMA_X64FRE_ZH-CN_DV9/sources/install.wim /Volumes/WIN10/sources/install.swm 4000</code></p>
+<p>即实现了通过分割的方式将大文件移入FAT格式的U盘！</p>
+<h3 id="新的挑战"><a href="#新的挑战" class="headerlink" title="新的挑战"></a>新的挑战</h3><p>在完成新的装机U盘后，本以为接下来可以一切顺利，但却在读取安装文件并安装程序后重启时没有默认从U盘打开，导致又出现联网PXE问题；</p>
+<p>这时需要在按开机键后疯狂按f2键进入BIOS将Boot List Option启动列表模式将legacy改为UEFI；</p>
+<p>然后设置Boot Option#1改为U盘，按f10保存并退出；</p>
+<p>这样再按f12进入BIOS设置界面时重启就会自动从U盘安装，不会再掉到PXE了！</p>
+<h3 id="win激活"><a href="#win激活" class="headerlink" title="win激活"></a>win激活</h3><p>是powershell不是cmd；</p>
+<p>输入 irm <a target="_blank" rel="noopener" href="https://get.activated.win/">https://get.activated.win</a> | hex </p>
+<p>具体流程可以参考视频：</p>
+<p>【Windows系统免费激活最简单的方法来了-哔哩哔哩】 <a target="_blank" rel="noopener" href="https://b23.tv/AbjzT3V">https://b23.tv/AbjzT3V</a></p>
+<h3 id="电脑加速"><a href="#电脑加速" class="headerlink" title="电脑加速"></a>电脑加速</h3><p>【新的Windows10电脑该如何设置，跟我这么做，你的电脑流畅到飞起-哔哩哔哩】 <a target="_blank" rel="noopener" href="https://b23.tv/UwDP9XE">https://b23.tv/UwDP9XE</a></p>
+
                 
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/07/08/How%20to%20give%20a%20good%20research%20talk/">How to give a good research talk</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-07-08
-                            </span>
-                            
-                                
-                                    <span id="/2023/07/08/How to give a good research talk/" class="leancloud_visitors" data-flag-title="How to give a good research talk">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/07/08/How to give a good research talk/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
+                <p class="end">__END__</p>
+            </div>
+            <div class="article-footer">
+                <div class="suffix-box">
+    <div class="suffix-box-left">
+        <img src="/image/sidebar/avatar.jpg" alt="AuRuier">
+    </div>
+    <div class="suffix-box-right">
+        <span class="suffix-box-title">文章作者：</span>AuRuier
+        <br>
+        <span class="suffix-box-title">文章出处：</span><a href="/2026/04/29/mac%E5%88%B6%E4%BD%9Cwin%E5%90%AF%E5%8A%A8%E7%9B%98/" target="_blank">mac 制作 win 启动盘</a>
+        <br>
+        <span class="suffix-box-title">作者签名：</span>有志者事竟成！
+        <br>
+        <span class="suffix-box-title">关于主题：</span><a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+        <br>
+        <span class="suffix-box-title">版权声明：</span>文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+        <br>
+    </div>
+    <div style="clear: both;"></div>
+</div>
                 
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/07/07/So-you-want-to-work-in-security/">So you want to work in security</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-07-07
-                            </span>
-                            
-                                
-                                    <span id="/2023/07/07/So-you-want-to-work-in-security/" class="leancloud_visitors" data-flag-title="So you want to work in security">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/07/07/So-you-want-to-work-in-security/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
                 
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/07/07/hello-girl/">hello-girl</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-07-07
-                            </span>
-                            
-                                
-                                    <span id="/2023/07/07/hello-girl/" class="leancloud_visitors" data-flag-title="hello-girl">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/07/07/hello-girl/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
-                
-                    <div class="article">
-                        <div class="article-title">
-                            <a href="/2023/07/07/hello-world/">Hello World</a>
-                            
-                        </div>
-                        <div class="article-abstract">
-                            
-                        </div>
-                        <div class="clear"></div>
-                        <div class="article-info">
-                            <span>
-                                <i class="iconfont icon-time"></i> 发表时间：2023-07-07
-                            </span>
-                            
-                                
-                                    <span id="/2023/07/07/hello-world/" class="leancloud_visitors" data-flag-title="Hello World">
-                                        <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
-                                    </span>
-                                
-                                
-                                    <span>
-                                        <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2023/07/07/hello-world/"></span>
-                                    </span>
-                                
-                            
-                        </div>
-                        <div class="clear"></div>     
-                    </div>
-                
+                <div class="article-prev-next">
+                    
+                    
+                        <a href="/2024/05/21/advice-collection-service/" class="next-prefix">» </a> 下一篇：    <a href="/2024/05/21/advice-collection-service/" title="发布于 2024-05-21 09:27">advice-collection-service</a>
+                    
+                </div>
             </div>
             
-            
+    <div class="article-comments">
         
-    <div class="pagination-bottom">
-        <div class="pagination">
-            
-                <a class="extend prev" rel="prev" href="/page/3/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
-            
-        </div>
+            <div class="comments-title">
+                评论列表
+            </div>
+        
+        <div class="comments-content"></div>
     </div>
-
+    
+ 
+        </div>
     
 </div>
     <div id="footer">
@@ -215,7 +182,7 @@
             <div class="menu-list">
                 <ul>
                     
-                        <li class=" active "><a href="/" class="" target="_self"><span class="iconfont icon-home-fill"></span>首页</a></li>
+                        <li class=""><a href="/" class="" target="_self"><span class="iconfont icon-home-fill"></span>首页</a></li>
                     
                         <li class=""><a href="/category" class="" target="_self"><span class="iconfont icon-folder-fill"></span>分类</a></li>
                     
